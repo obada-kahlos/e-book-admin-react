@@ -17,7 +17,7 @@ const Nav: React.FC<NavProps> = ({ ...props }) => {
                     border-right-color : ${props.borderRightColor};
                     overflow: hidden; 
                     overflow-y :auto;
-                    transition : 0.4s;
+                    transition : 0.5s;
                 }
                 .${props.className}-nav a.active{
                   background-color : red;

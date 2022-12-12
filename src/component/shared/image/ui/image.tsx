@@ -4,12 +4,14 @@ import { ImageProps } from "../data-access/image";
 const Image: React.FC<ImageProps> = ({ ...props }) => {
   return (
     <>
-      <img src={props.src} alt={props.alt}/>
+      <img src={props.src} alt={props.alt} loading='lazy'/>
       <style>
-        {`
+        {`  
+          img{
             width : ${props.width};
             height : ${props.height};
             border-raduis : ${props.borderRaduis}
+          }
         `}
       </style>
     </>

@@ -1,16 +1,22 @@
 import React from "react";
-import { ButtonProps } from "../data-access/button";
+import Icon from "../../icon/ui/icon";
+import { FlotingButtonProps } from "../data-access/floating-button";
 
-const Button: React.FC<ButtonProps> = ({ ...props }) => {
+const FloatingButton: React.FC<FlotingButtonProps> = ({ ...props }) => {
   return (
     <>
-      <button onClick={props.onClick} className={`${props.className}-btn`}>
-        {props.buttonText}
+      <button
+        onClick={props.onClick}
+        className={`${props.className}-btn`}
+      >
+        <Icon icon={props.icon} />
       </button>
       <style>
         {`  
             .${props.className}-btn{
+                position: ${props.position};
                 width : ${props.width};
+                height : ${props.height};
                 padding : ${props.padding};
                 margin : ${props.margin};
                 background-color : ${props.bgColor};
@@ -18,16 +24,13 @@ const Button: React.FC<ButtonProps> = ({ ...props }) => {
                 font-size : ${props.fontSize};
                 border-radius : ${props.borderRadius};
                 transition : 0.4s;
-                box-shadow: 0px 0px 20px 2px rgba(22, 134, 186, 0.251);
+                top : ${props.top};
+                bottom : ${props.bottom};
+                left : ${props.left};
+                right : ${props.right};
             }
             .${props.className}-btn:hover{
                 background  : ${props.bgHover}
-            }
-            @media(max-width : 768px){
-              .${props.className}-btn{
-                font-size : 14px;
-                padding : 10px 15px
-              }
             }
         `}
       </style>
@@ -35,4 +38,4 @@ const Button: React.FC<ButtonProps> = ({ ...props }) => {
   );
 };
 
-export default Button;
+export default FloatingButton;

@@ -10,7 +10,7 @@ const Li: React.FC<LiProps> = ({ ...props }) => {
         to={props.href}
         className={({ isActive }) => (isActive ? 'bg-[#0b0b51]' : undefined)}
       >
-        <li className="transition-all aside-list hover:bg-hover-color">
+        <li className="transition-all aside-list hover:bg-hover-color" onClick={props.onClick}>
           <Icon icon={props.icon} />
           <span> {props.text} </span>
         </li>

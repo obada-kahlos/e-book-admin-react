@@ -39,9 +39,9 @@ const Books = () => {
           width={"fit-content"}
           padding={"8px 30px"}
           margin={"0px"}
-          borderRadius={"4px"}
-          bgColor={"#0072ca"}
-          bgHover={"#10619f"}
+          borderRadius={"30px"}
+          bgColor={"#0d6289"}
+          bgHover={"#003f5c"}
           color={"#fff"}
           fontSize={"16px"}
           onClick={() => {
@@ -62,7 +62,7 @@ const Books = () => {
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"center"}
-                bgColor={"#0072ca"}
+                bgColor={"#0d6289"}
               />
               <Th
                 text={"Auther Name"}
@@ -72,7 +72,7 @@ const Books = () => {
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"center"}
-                bgColor={"#0072ca"}
+                bgColor={"#0d6289"}
               />
               <Th
                 text={"Price"}
@@ -82,7 +82,7 @@ const Books = () => {
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"center"}
-                bgColor={"#0072ca"}
+                bgColor={"#0d6289"}
               />
               <Th
                 text={"Puplisher"}
@@ -92,7 +92,7 @@ const Books = () => {
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"center"}
-                bgColor={"#0072ca"}
+                bgColor={"#0d6289"}
               />
             </Tr>
           </Thead>
