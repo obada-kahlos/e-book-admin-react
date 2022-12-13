@@ -11,7 +11,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Popup from "../../component/popup/ui/popup";
 
 import CloseIcon from "@mui/icons-material/Close";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field } from "formik";
 import { BooksData } from "./book-data";
 const Books = () => {
   const [popup, setPopup] = useState(false);
@@ -23,6 +23,7 @@ const Books = () => {
     <div className="my-[30px] sm:p-4 px-2">
       <div className="flex justify-between items-end gap-1">
         <Input
+          inputClass="search"
           icon={<SearchIcon sx={{ color: "#5b5a5a" }} />}
           name={"search"}
           type={"text"}
@@ -190,12 +191,12 @@ const Books = () => {
         }}
         icon={
           <CloseIcon
-            sx={{ fontSize: "18px", cursor: "pointer", color: "#555" }}
+            sx={{ fontSize: "24px", cursor: "pointer", color: "#726c6c" }}
           />
         }
         onClick={handleOpenPopup}
         width={"650px"}
-        height={"450px"}
+        height={"400px"}
         bgClor={"#fff"}
         borderRadius={"10px"}
         top={"50%"}
@@ -205,14 +206,26 @@ const Books = () => {
         isOpen={popup}
       >
         <div className="p-2">
-          <Formik initialValues={{}} onSubmit={() => {}}>
+          <Formik
+            initialValues={{
+              bookName: "",
+              author: "",
+              publisher: "",
+              numberOfPages: "",
+            }}
+            onSubmit={(values) => {
+              console.log(values);
+            }}
+          >
             <Form>
               <div className="grid grid-cols-12 gap-4">
                 {BooksData.map((item, key) => (
-                  <div className="md:col-span-6 col-span-12">
-                    <Input
+                  <div className="md:col-span-6 col-span-12" key={key}>
+                    <Field
+                      as={Input}
+                      inputClass={item.inputClass}
                       name={item.name}
-                      type={'text'}
+                      type={"text"}
                       placeholder={item.placeholder}
                       id={item.id}
                       width={item.width}
@@ -228,7 +241,7 @@ const Books = () => {
                   </div>
                 ))}
               </div>
-              <div className="flex justify-center items-center my-[10px]">
+              <div className="flex justify-center items-center mt-[10px] mb-[30px]">
                 <Button
                   className={"add-book"}
                   buttonText={"Submit"}
@@ -239,8 +252,8 @@ const Books = () => {
                   bgHover={"#003f5c"}
                   color={"#fff"}
                   fontSize={"16px"}
-                  onClick={() => console.log("hi")}
-                  width={"fit-content"}
+                  type={"submit"}
+                  width={"40%"}
                 />
               </div>
             </Form>

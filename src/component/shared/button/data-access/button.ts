@@ -1,4 +1,7 @@
 import { ReactEventHandler } from "react";
+
+type buttonType = "button" | "submit" | "reset" | undefined;
+
 export interface ButtonProps {
   className: string;
   buttonText: string;
@@ -10,5 +13,6 @@ export interface ButtonProps {
   color: string;
   fontSize: string;
   bgHover?: string;
+  type?: buttonType;
   onClick?: ReactEventHandler;
 }

@@ -5,11 +5,11 @@ import { InputProps } from "../data-access/input";
 const Input: React.FC<InputProps> = ({ ...props }) => {
   return (
     <>
-        <div className="input-container">
+        <div className={`input-container-${props.inputClass}`}>
             <label className="lable" htmlFor={props.id}>
             {props.lable}
             </label>
-          <input className="" type={props.type} id={props.id} name={props.name} placeholder={props.placeholder}/>
+          <input className={props.inputClass} type={props.type} name={props.name} placeholder={props.placeholder}/>
           <div className="absolute top-[50%] right-[10px] -translate-x-[50%]">
             <Icon icon={props.icon} />
           </div>
@@ -20,7 +20,7 @@ const Input: React.FC<InputProps> = ({ ...props }) => {
                 color : ${props.color};
                 font-size : ${props.fontSize};
             }
-            input{
+            input.${props.inputClass}{
                 width : 100%;
                 padding : ${props.padding};
                 margin : ${props.margin};
@@ -30,7 +30,7 @@ const Input: React.FC<InputProps> = ({ ...props }) => {
                 color : ${props.color};
                 font-size : ${props.fontSize};
             }
-            .input-container{
+            .input-container-${props.inputClass}{
                 width : ${props.width};
                 position : relative;
                 overflow : hidden;
