@@ -2,9 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-*{
+* {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
@@ -27,4 +25,24 @@ th {
 
 tr:nth-child(even) {
   background-color: #f2f2f2;
+}
+
+/* width */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  display: none;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  display: none;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  display: none;
 }

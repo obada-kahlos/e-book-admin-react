@@ -12,6 +12,7 @@ const Icon: React.FC<IconProps> = ({ ...props }) => {
             justify-content: center;
             align-items: center;
             color : #fff;
+            cursor:pointer;
           }
         `}
       </style>

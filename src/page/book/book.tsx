@@ -11,6 +11,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import Popup from "../../component/popup/ui/popup";
 
 import CloseIcon from "@mui/icons-material/Close";
+import { Formik, Form } from "formik";
+import { BooksData } from "./book-data";
 const Books = () => {
   const [popup, setPopup] = useState(false);
   const handleOpenPopup = () => {
@@ -186,10 +188,14 @@ const Books = () => {
         header={{
           title: "Add-Book",
         }}
-        icon={<CloseIcon sx={{ fontSize: "18px", cursor: "pointer"  , color :'#555'}} />}
+        icon={
+          <CloseIcon
+            sx={{ fontSize: "18px", cursor: "pointer", color: "#555" }}
+          />
+        }
         onClick={handleOpenPopup}
-        width={"300px"}
-        height={"300px"}
+        width={"650px"}
+        height={"450px"}
         bgClor={"#fff"}
         borderRadius={"10px"}
         top={"50%"}
@@ -198,7 +204,48 @@ const Books = () => {
         bottom={"0"}
         isOpen={popup}
       >
-        <h1> Hello From Popup </h1>
+        <div className="p-2">
+          <Formik initialValues={{}} onSubmit={() => {}}>
+            <Form>
+              <div className="grid grid-cols-12 gap-4">
+                {BooksData.map((item, key) => (
+                  <div className="md:col-span-6 col-span-12">
+                    <Input
+                      name={item.name}
+                      type={'text'}
+                      placeholder={item.placeholder}
+                      id={item.id}
+                      width={item.width}
+                      margin={item.margin}
+                      padding={item.padding}
+                      borderRadius={item.borderRadius}
+                      border={item.border}
+                      bgColor={item.bgColor}
+                      color={item.color}
+                      fontSize={item.fontSize}
+                      lable={item.lable}
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-center items-center my-[10px]">
+                <Button
+                  className={"add-book"}
+                  buttonText={"Submit"}
+                  padding={"8px 30px"}
+                  margin={"0px"}
+                  borderRadius={"30px"}
+                  bgColor={"#0d6289"}
+                  bgHover={"#003f5c"}
+                  color={"#fff"}
+                  fontSize={"16px"}
+                  onClick={() => console.log("hi")}
+                  width={"fit-content"}
+                />
+              </div>
+            </Form>
+          </Formik>
+        </div>
       </Popup>
     </div>
   );
