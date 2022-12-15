@@ -4,6 +4,7 @@ import Layout from './page/layout/layout';
 import { BrowserRouter , Routes , Route} from 'react-router-dom'
 import Books from './page/book/book';
 import Dashbord from './page/dashbord/dashbord';
+import Profile from './page/profile/profile';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
             <Route path='/' element={<Layout />}>
               <Route path='/' element={<Dashbord />} />
               <Route path='books' element={<Books />} />
+              <Route path='Profile' element={<Profile/>}/>
             </Route>
         </Routes>
       </BrowserRouter>

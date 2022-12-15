@@ -48,7 +48,7 @@ const Layout = () => {
     <>
       <div className="relative lg:grid grid-cols-12 gap-0">
         <div
-          className={`transition-[0.5s] col-span-2 ${
+          className={`transition-[0.5s] xl:col-span-2 col-span-3 ${
             showNav ? "show-aside" : "hide-aside"
           } `}
         >
@@ -81,7 +81,7 @@ const Layout = () => {
               >
                 <>
                   <Li
-                    href={"Books"}
+                    href={"books"}
                     text={"Books"}
                     fontSize={"18px"}
                     color={"#fff"}
@@ -120,29 +120,24 @@ const Layout = () => {
             </>
           </Nav>
         </div>
-        <div className={`col-span-10`}>
+        <div className={`xl:col-span-10 col-span-9`}>
           <div className="bg-main-color text-[white] h-[60px]  w-full p-2 px-8 flex justify-between items-center">
-            {/* <Image src={logo} alt={"logo"} width={"120px"} height={"120px"} borderRaduis={""}/> */}
             <h1> Logo Here... </h1>
-            {/* <div className="lg:hidden block">
-              <Icon
-                onClick={handlerShowNav}
-                icon={<MenuIcon sx={{ fontSize: "30px", cursor: "pointer" }} />}
-              />
-            </div> */}
-            <div className="flex gap-2 items-center relative">
-              <Icon
-                icon={
-                  <NotificationsNoneIcon
-                    sx={{ fontSize: "26px", cursor: "pointer" }}
-                  />
-                }
-              />
-              <Avatar src="./not-found.png" />
-              <span className="text-slate-300"> obada Kahlous </span>
-            </div>
+            <Link to={'profile'}>
+              <div className="flex gap-2 items-center relative">
+                <Icon
+                  icon={
+                    <NotificationsNoneIcon
+                      sx={{ fontSize: "26px", cursor: "pointer" }}
+                    />
+                  }
+                />
+                <Avatar src="./not-found.png" />
+                <span className="text-slate-300"> obada Kahlous </span>
+              </div>
+            </Link>
           </div>
-          <div className="h-[calc(100vh-60px)] overflow-hidden overflow-y-auto">
+          <div className="h-[calc(100vh-60px)] overflow-y-auto">
             <Outlet />
           </div>
         </div>

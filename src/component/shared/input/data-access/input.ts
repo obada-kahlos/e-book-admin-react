@@ -20,7 +20,7 @@ type InputType =
   | "range";
 export interface InputProps extends IconProps {
   lable?: string;
-  inputClass : string;
+  className?: string;
   name: string;
   type?: InputType;
   placeholder: string;
@@ -28,9 +28,9 @@ export interface InputProps extends IconProps {
   width: string;
   margin: string;
   padding: string;
-  borderRadius: string;
+  borderradius: string;
   border: string;
-  bgColor: string;
+  bgcolor: string;
   color: string;
   fontSize: string;
 }

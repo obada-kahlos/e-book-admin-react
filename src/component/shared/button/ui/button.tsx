@@ -4,7 +4,7 @@ import { ButtonProps } from "../data-access/button";
 const Button: React.FC<ButtonProps> = ({ ...props }) => {
   return (
     <>
-      <button onClick={props.onClick} className={`${props.className}-btn`} type={props.type}>
+      <button onClick={props.onClick} className={`${props.className}-btn`} type={'submit'}>
         {props.buttonText}
       </button>
       <style>

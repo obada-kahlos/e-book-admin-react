@@ -15,6 +15,7 @@ const Td: React.FC<TdProps> = ({ ...props }) => {
                 margin: ${props.margin};
                 text-align: ${props.textAlign};
                 max-width : 300px;
+                min-width : 180px;
             }
         `}
       </style>

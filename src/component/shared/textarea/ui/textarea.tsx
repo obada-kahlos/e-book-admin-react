@@ -1,16 +1,14 @@
 import React from "react";
-import Icon from "../../icon/ui/icon";
-import { InputProps } from "../data-access/input";
-const Input: React.FC<InputProps> = ({ ...props }) => {
+import { TextareaProps } from "../data-access/textarea";
+const TextArea: React.FC<TextareaProps> = ({ ...props }) => {
   return (
     <>
-        <div className={`input-container-${props.className}`}>
+        <div className={`textarea-container-${props.className}`}>
             <label className="lable" htmlFor={props.id}>
             {props.lable}
             </label>
-          <input className={props.className} type={props.type} {...props} placeholder={props.placeholder} />
+          <textarea className={props.className} {...props} placeholder={props.placeholder} />
           <div className="absolute top-[50%] right-[10px] -translate-x-[50%]">
-            <Icon icon={props.icon} />
           </div>
         </div>
       <style>
@@ -19,8 +17,9 @@ const Input: React.FC<InputProps> = ({ ...props }) => {
                 color : ${props.color};
                 font-size : ${props.fontSize};
             }
-            input.${props.className}{
-                width : 100%;
+            textarea.${props.className}{
+                width : ${props.width};
+                height : ${props.height};
                 padding : ${props.padding};
                 margin : ${props.margin};
                 background-color : ${props.bgcolor};
@@ -28,9 +27,11 @@ const Input: React.FC<InputProps> = ({ ...props }) => {
                 border: ${props.border};
                 color : ${props.color};
                 font-size : ${props.fontSize};
+                resize: none;
             }
-            .input-container-${props.className}{
+            .textarea-container-${props.className}{
                 width : ${props.width};
+                height : ${props.height}
                 position : relative;
                 overflow : hidden;
             }
@@ -40,4 +41,4 @@ const Input: React.FC<InputProps> = ({ ...props }) => {
   );
 };
 
-export default Input;
+export default TextArea;

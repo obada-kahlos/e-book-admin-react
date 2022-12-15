@@ -16,6 +16,7 @@ const Th: React.FC<ThProps> = ({ ...props }) => {
                 margin: ${props.margin};
                 text-align: ${props.textAlign};
                 max-width : 300px;
+                min-width : 180px;
             }
         `}
       </style>
