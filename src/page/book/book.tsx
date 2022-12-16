@@ -341,6 +341,7 @@ const Books = () => {
               publisher: "",
               numberofpages: "",
               description : "",
+              image : "",
             }}
             onSubmit={(values) => {
               console.log(values);
@@ -368,6 +369,7 @@ const Books = () => {
                           color={item.color}
                           fontSize={item.fontSize}
                           lable={item.lable}
+                          type={item.type}
                         />
                         <ErrorMessage
                           name={item.name}

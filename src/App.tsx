@@ -5,6 +5,7 @@ import { BrowserRouter , Routes , Route} from 'react-router-dom'
 import Books from './page/book/book';
 import Dashbord from './page/dashbord/dashbord';
 import Profile from './page/profile/profile';
+import Users from './page/users/users';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
               <Route path='/' element={<Dashbord />} />
               <Route path='books' element={<Books />} />
               <Route path='Profile' element={<Profile/>}/>
+              <Route path='users' element={<Users />} />
             </Route>
         </Routes>
       </BrowserRouter>

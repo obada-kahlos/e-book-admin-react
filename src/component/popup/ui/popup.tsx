@@ -43,13 +43,6 @@ const Popup: React.FC<PopupProps> = ({ ...props }) => {
                     overflow : hidden;
                     z-index : 1001;
                 }
-                @media(max-width : 600px){
-                    .popup-container{
-                        width : 100%;
-                        height : 100%;
-                        border-radius : 0px;
-                    }
-                }
                 .pupup-header{
                     position : sticky;
                     top : 0;
@@ -67,6 +60,19 @@ const Popup: React.FC<PopupProps> = ({ ...props }) => {
                     height : ${props.height};
                     padding-bottom : 60px;
                 }
+                @media(max-width : 600px){
+                  .popup-container{
+                      width : 100%;
+                      height : 100%;
+                      border-radius : 0px;
+                  }
+                  .pupup-body{
+                    overflow: hidden;
+                    overflow-y: auto; 
+                    height : 100%;
+                    padding-bottom : 60px;
+                }
+              }
                 .layout{
                     position : fixed;
                     top : 0;

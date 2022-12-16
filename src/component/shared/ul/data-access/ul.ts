@@ -3,5 +3,5 @@ export interface UiProps {
   margin: string;
   padding: string;
   className: string;
-  children: JSX.Element;
+  children: ReactElement | ReactElement[];
 }

@@ -9,17 +9,14 @@ import { Avatar } from "@mui/material";
 import FloatingButton from "../../component/shared/floating-button/ui/floating-button";
 
 /// logo
-import logo from '../../assets/logo.jpg'
-
+import logo from "../../assets/logo.jpg";
 
 /// icon from MUI
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import MenuIcon from "@mui/icons-material/Menu";
-import AddLinkIcon from "@mui/icons-material/AddLink";
 import SpeedIcon from "@mui/icons-material/Speed";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
-import CloseIcon from '@mui/icons-material/Close';
-import Image from "../../component/shared/image/ui/image";
+import CloseIcon from "@mui/icons-material/Close";
+import { asidedata } from "./layout-data";
 const Layout = () => {
   const [showNav, setShowNav] = useState(false);
   const handlerShowNav = () => {
@@ -64,7 +61,10 @@ const Layout = () => {
           >
             <>
               <Link to="/">
-                <div className="flex gap-2 justify-start items-center px-4 py-4" onClick={handlerShowNav}>
+                <div
+                  className="flex gap-2 justify-start items-center px-4 py-4"
+                  onClick={handlerShowNav}
+                >
                   <Icon icon={<SpeedIcon />} />
                   <li className="text-[#fff] "> Dashboard </li>
                 </div>
@@ -79,38 +79,18 @@ const Layout = () => {
                 padding={asideData.Ul.padding}
                 className={asideData.Ul.className}
               >
-                <>
+                {asidedata.map((item, key) => (
                   <Li
-                    href={"books"}
-                    text={"Books"}
-                    fontSize={"18px"}
-                    color={"#fff"}
-                    padding={"10px 15px"}
-                    margin={"1px"}
-                    icon={<MenuBookIcon />}
+                    href={item.href}
+                    text={item.text}
+                    fontSize={item.fontSize}
+                    color={item.color}
+                    padding={item.padding}
+                    margin={item.margin}
+                    icon={<item.icon />}
                     onClick={handlerShowNav}
                   />
-                  <Li
-                    href={""}
-                    text={"Link"}
-                    fontSize={"18px"}
-                    color={"#fff"}
-                    padding={"10px 15px"}
-                    margin={"1px"}
-                    icon={<AddLinkIcon />}
-                    onClick={handlerShowNav}
-                  />
-                  <Li
-                    href={""}
-                    text={"Link"}
-                    fontSize={"18px"}
-                    color={"#fff"}
-                    padding={"10px 15px"}
-                    margin={"1px"}
-                    icon={<AddLinkIcon />}
-                    onClick={handlerShowNav}
-                  />
-                </>
+                ))}
               </Ul>
               <Divider
                 height={"1px"}
@@ -123,7 +103,7 @@ const Layout = () => {
         <div className={`xl:col-span-10 col-span-9`}>
           <div className="bg-main-color text-[white] h-[60px]  w-full p-2 px-8 flex justify-between items-center">
             <h1> Logo Here... </h1>
-            <Link to={'profile'}>
+            <Link to={"profile"}>
               <div className="flex gap-2 items-center relative">
                 <Icon
                   icon={
@@ -143,7 +123,13 @@ const Layout = () => {
         </div>
         <div className="lg:hidden block">
           <FloatingButton
-            icon={ showNav ?  <CloseIcon sx={{ fontSize: "30px", cursor: "pointer" }} /> :  <MenuIcon sx={{ fontSize: "30px", cursor: "pointer" }} /> }
+            icon={
+              showNav ? (
+                <CloseIcon sx={{ fontSize: "30px", cursor: "pointer" }} />
+              ) : (
+                <MenuIcon sx={{ fontSize: "30px", cursor: "pointer" }} />
+              )
+            }
             position={"fixed"}
             top={""}
             bottom={"40px"}
