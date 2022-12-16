@@ -20,7 +20,7 @@ const Users = () => {
           icon={<SearchIcon sx={{ color: "#5b5a5a" }} />}
           name={"search"}
           type={"text"}
-          placeholder={"What are you looking for..."}
+          placeholder={"Search for a user"}
           id={"search"}
           width={"70%"}
           margin={"0px"}
