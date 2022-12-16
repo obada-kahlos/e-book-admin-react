@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { InfoCartProps } from "../../component/shared/info-cart/data-access/info-cart";
 import InfoCart from "../../component/shared/info-cart/ui/info-cart";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import PersonIcon from "@mui/icons-material/Person";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+
+
 const Dashbord = () => {
   const CartInfo: InfoCartProps[] = [
     {
@@ -56,6 +58,7 @@ const Dashbord = () => {
     },
   ];
 
+
   return (
     <div className="my-[30px] sm:p-4 sm:flex gap-0 items-center flex-wrap">
       {CartInfo.map((item, key) => (
@@ -74,6 +77,7 @@ const Dashbord = () => {
           />
         </div>
       ))}
+      
     </div>
   );
 };

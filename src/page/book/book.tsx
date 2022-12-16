@@ -45,6 +45,8 @@ const Books = () => {
       .string()
       .max(20, "max length is 20")
       .required("This field is required"),
+      image: yup.string()
+      .required("This field is required"),
     numberofpages: yup
       .string()
       .max(20, "max length is 20")
@@ -67,6 +69,8 @@ const Books = () => {
   //     setCurrentValue(e.target.value);
   //     }}
   // />
+  
+
 
   return (
     <div className="my-[30px] sm:p-4 px-2">
@@ -78,9 +82,9 @@ const Books = () => {
           type={"text"}
           placeholder={"What are you looking for..."}
           id={"search"}
-          width={"70%"}
+          width={'70%'}
           margin={"0px"}
-          padding={"8px 16px"}
+          padding={"8px 16px 8px 40px"}
           borderradius={"5px"}
           border={"1px solid #ccc"}
           bgcolor={""}

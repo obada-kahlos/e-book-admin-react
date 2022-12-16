@@ -6,6 +6,7 @@ import Books from './page/book/book';
 import Dashbord from './page/dashbord/dashbord';
 import Profile from './page/profile/profile';
 import Users from './page/users/users';
+import Admins from './page/admins/admins';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
               <Route path='books' element={<Books />} />
               <Route path='Profile' element={<Profile/>}/>
               <Route path='users' element={<Users />} />
+              <Route path='admins' element={<Admins />} />
             </Route>
         </Routes>
       </BrowserRouter>
