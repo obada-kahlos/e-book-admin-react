@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Li from "../../component/shared/li/ui/li";
 import Nav from "../../component/shared/nav/ui/nav";
 import Ul from "../../component/shared/ul/ui/ul";
@@ -9,7 +9,7 @@ import { Avatar } from "@mui/material";
 import FloatingButton from "../../component/shared/floating-button/ui/floating-button";
 
 /// logo
-import logo from "../../assets/logo.jpg";
+import logo from "../../assets/Logo.png";
 
 /// icon from MUI
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
@@ -17,6 +17,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SpeedIcon from "@mui/icons-material/Speed";
 import CloseIcon from "@mui/icons-material/Close";
 import { asidedata } from "./layout-data";
+import Image from "../../component/shared/image/ui/image";
 const Layout = () => {
   const [showNav, setShowNav] = useState(false);
   const handlerShowNav = () => {
@@ -101,8 +102,8 @@ const Layout = () => {
           </Nav>
         </div>
         <div className={`xl:col-span-10 col-span-9`}>
-          <div className="bg-main-color text-[white] h-[60px]  w-full p-2 px-8 flex justify-between items-center">
-            <h1> Logo Here... </h1>
+          <div className="bg-main-color text-[white] h-[70px]  w-full p-2 px-8 flex justify-between items-center">
+            <Image src={logo} alt="" width={'120px'} height={'80px'} borderRaduis={''}/>
             <Link to={"profile"}>
               <div className="flex gap-2 items-center relative">
                 <Icon
@@ -117,7 +118,7 @@ const Layout = () => {
               </div>
             </Link>
           </div>
-          <div className="h-[calc(100vh-60px)] overflow-y-auto">
+          <div className="h-[calc(100vh-70px)] overflow-y-auto">
             <Outlet />
           </div>
         </div>

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
 import { InfoCartProps } from "../../component/shared/info-cart/data-access/info-cart";
 import InfoCart from "../../component/shared/info-cart/ui/info-cart";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import PersonIcon from "@mui/icons-material/Person";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+import Loader from "../../component/loader/loader";
+import { useEffect, useState } from "react";
 
 
 const Dashbord = () => {
@@ -59,26 +60,39 @@ const Dashbord = () => {
   ];
 
 
+  const [isLoading , setIsloading] = useState(true)
+  useEffect(()=>{
+    setTimeout(()=>{
+      setIsloading(false)
+    },6000)
+  },[])
+
+
   return (
-    <div className="my-[30px] sm:p-4 sm:flex gap-0 items-center flex-wrap">
-      {CartInfo.map((item, key) => (
-        <div className="sm:w-[calc(100%/2)]">
-          <InfoCart
-            className={`${item.className}-${key}`}
-            bgColor={item.bgColor}
-            borderRadius={item.borderRadius}
-            padding={item.padding}
-            margin={item.margin}
-            width={item.width}
-            height={item.height}
-            icon={item.icon}
-            title={item.title}
-            count={item.count}
-          />
+    <>
+      {
+         isLoading ? <Loader /> :  
+        <div className="my-[30px] sm:p-4 sm:flex gap-0 items-center flex-wrap">
+          {CartInfo.map((item, key) => (
+            <div className="sm:w-[calc(100%/2)]">
+              <InfoCart
+                className={`${item.className}-${key}`}
+                bgColor={item.bgColor}
+                borderRadius={item.borderRadius}
+                padding={item.padding}
+                margin={item.margin}
+                width={item.width}
+                height={item.height}
+                icon={item.icon}
+                title={item.title}
+                count={item.count}
+              />
+            </div>
+          ))}
+          
         </div>
-      ))}
-      
-    </div>
+      }
+    </>
   );
 };
 

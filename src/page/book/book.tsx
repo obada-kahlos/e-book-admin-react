@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "../../component/shared/button/ui/button";
 import Input from "../../component/shared/input/ui/input";
 import Table from "../../component/shared/table/ui/table";
@@ -17,6 +17,8 @@ import { Pagination } from "@mui/material";
 
 import * as yup from "yup";
 import TextArea from "../../component/shared/textarea/ui/textarea";
+
+import { useGetBooksQuery } from "../../api/books/books";
 
 const Books = () => {
   // open popup
@@ -53,6 +55,12 @@ const Books = () => {
       .required("This field is required"),
       description : yup.string().max(250, 'Must be less than 250').required("This field is required"),
   });
+
+  const {data : booksData} = useGetBooksQuery({})
+  console.log({booksData});
+  
+
+  
 
   // const textareaRef = useRef<any>(null);
   // const [currentValue, setCurrentValue ] = useState("");// you can manage data with it

@@ -28,6 +28,7 @@ const FloatingButton: React.FC<FlotingButtonProps> = ({ ...props }) => {
                 bottom : ${props.bottom};
                 left : ${props.left};
                 right : ${props.right};
+                z-index : 1002;
             }
             .${props.className}-btn:hover{
                 background  : ${props.bgHover}
