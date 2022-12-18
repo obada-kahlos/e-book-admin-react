@@ -156,7 +156,7 @@ const Layout = () => {
           @media(max-width : 1024px){
             .show-aside{
               position : fixed;
-              top : 60px;
+              top : 70px;
               left : 0;
               width : 300px;
               height : 100vh;
@@ -165,7 +165,7 @@ const Layout = () => {
             }
             .hide-aside{
               position : fixed;
-              top : 60px;
+              top : 70px;
               left : -100%;
               width : 300px;
               height : 100vh;
