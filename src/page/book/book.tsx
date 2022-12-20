@@ -19,6 +19,7 @@ import * as yup from "yup";
 import TextArea from "../../component/shared/textarea/ui/textarea";
 
 import { useGetBooksQuery } from "../../api/books/books";
+import Image from "../../component/shared/image/ui/image";
 
 const Books = () => {
   // open popup
@@ -47,20 +48,19 @@ const Books = () => {
       .string()
       .max(20, "max length is 20")
       .required("This field is required"),
-      image: yup.string()
-      .required("This field is required"),
+    image: yup.string().required("This field is required"),
     numberofpages: yup
       .string()
       .max(20, "max length is 20")
       .required("This field is required"),
-      description : yup.string().max(250, 'Must be less than 250').required("This field is required"),
+    description: yup
+      .string()
+      .max(250, "Must be less than 250")
+      .required("This field is required"),
   });
 
-  const {data : booksData} = useGetBooksQuery({})
-  console.log({booksData});
-  
-
-  
+  const { data: booksData } = useGetBooksQuery({});
+  console.log({ booksData });
 
   // const textareaRef = useRef<any>(null);
   // const [currentValue, setCurrentValue ] = useState("");// you can manage data with it
@@ -77,8 +77,17 @@ const Books = () => {
   //     setCurrentValue(e.target.value);
   //     }}
   // />
-  
-
+  const [uploadedImage, setUploadedImage] = useState<any>(undefined);
+  const onUploadFile = (event: { target: { files: string | any[] } }) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        const image = reader.result;
+        setUploadedImage(image);
+      });
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  };
 
   return (
     <div className="my-[30px] sm:p-4 px-2">
@@ -90,7 +99,7 @@ const Books = () => {
           type={"text"}
           placeholder={"What are you looking for..."}
           id={"search"}
-          width={'70%'}
+          width={"70%"}
           margin={"0px"}
           padding={"8px 16px 8px 40px"}
           borderradius={"5px"}
@@ -170,7 +179,6 @@ const Books = () => {
                 bgColor={"#0d6289"}
               />
             </Tr>
-            
           </Thead>
           <Tbody>
             <Tr>
@@ -352,8 +360,8 @@ const Books = () => {
               author: "",
               publisher: "",
               numberofpages: "",
-              description : "",
-              image : "",
+              description: "",
+              image: "",
             }}
             onSubmit={(values) => {
               console.log(values);
@@ -393,13 +401,46 @@ const Books = () => {
                     ))}
                     <div className="md:col-span-12 col-span-12">
                       <Field
+                        as={Input}
+                        className={"add-image"}
+                        name={"image"}
+                        placeholder={"Add Image"}
+                        id={""}
+                        width={"100%"}
+                        margin={""}
+                        padding={"8px 5px"}
+                        borderradius={"4px"}
+                        border={"1px solid #ccc"}
+                        bgcolor={""}
+                        color={"#5b5a5a"}
+                        fontSize={""}
+                        lable={"Image"}
+                        type={"file"}
+                        onChange={onUploadFile}
+                      />
+                    </div>
+                    {uploadedImage && (
+                      <div className="col-span-12 h-[300px]">
+                        <Image
+                          src={uploadedImage}
+                          alt={"iamge"}
+                          width={"100%"}
+                          height={"100%"}
+                          borderRaduis={""}
+                          className={'add-image'}
+                        />
+                      </div>
+                    )}
+
+                    <div className="md:col-span-12 col-span-12">
+                      <Field
                         as={TextArea}
-                        className={'description'}
+                        className={"description"}
                         name={"description"}
                         placeholder={"description here..."}
                         id={""}
                         width={"100%"}
-                        height={'120px'}
+                        height={"120px"}
                         margin={"0px"}
                         padding={"10px"}
                         borderradius={"5px"}
@@ -409,7 +450,7 @@ const Books = () => {
                         fontSize={"16px"}
                       />
                       <ErrorMessage
-                        name={'description'}
+                        name={"description"}
                         render={(msg) => (
                           <p className="text-[red] text-[14px]">{msg}</p>
                         )}

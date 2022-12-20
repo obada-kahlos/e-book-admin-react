@@ -170,6 +170,7 @@ const Layout = () => {
               width={"120px"}
               height={"80px"}
               borderRaduis={""}
+              className={'logo'}
             />
             <Link to={"profile"}>
               <div className="flex gap-2 items-center relative">

@@ -14,7 +14,7 @@ export interface PopupProps extends IconProps {
   left: string;
   right: string;
   bottom: string;
-  isOpen: boolean;
+  isOpen: boolean | string | any;
   children?: ReactElement;
   onClick?: ReactEventHandler;
 }
