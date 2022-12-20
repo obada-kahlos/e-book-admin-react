@@ -16,12 +16,21 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import MenuIcon from "@mui/icons-material/Menu";
 import SpeedIcon from "@mui/icons-material/Speed";
 import CloseIcon from "@mui/icons-material/Close";
-import { asidedata } from "./layout-data";
+import { asidedata, dropDownBookData } from "./layout-data";
 import Image from "../../component/shared/image/ui/image";
+import Button from "../../component/shared/button/ui/button";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import SegmentIcon from "@mui/icons-material/Segment";
 const Layout = () => {
   const [showNav, setShowNav] = useState(false);
   const handlerShowNav = () => {
     setShowNav((prev) => !prev);
+  };
+
+  const [bookDropWoen, setBookDropDown] = useState<boolean>(false);
+  const handleOpenBookDropDown = () => {
+    setBookDropDown((prev) => !prev);
   };
 
   const asideData = {
@@ -80,18 +89,70 @@ const Layout = () => {
                 padding={asideData.Ul.padding}
                 className={asideData.Ul.className}
               >
-                {asidedata.map((item, key) => (
-                  <Li
-                    href={item.href}
-                    text={item.text}
-                    fontSize={item.fontSize}
-                    color={item.color}
-                    padding={item.padding}
-                    margin={item.margin}
-                    icon={<item.icon />}
-                    onClick={handlerShowNav}
+                <div
+                  onClick={handleOpenBookDropDown}
+                  className="transition-[0.4s] rounded-[4px] hover:bg-hover-color w-full flex justify-between items-center cursor-pointer px-[15px] py-[10px]"
+                >
+                  <div className="flex items-center gap-[10px]">
+                    <Icon icon={<SegmentIcon fontSize="medium"/>}/>
+                    <Button
+                      className={"frop-down"}
+                      buttonText={"Products"}
+                      width={""}
+                      padding={"0"}
+                      margin={"0"}
+                      borderRadius={"0"}
+                      bgColor={"transparent"}
+                      color={"#fff"}
+                      fontSize={"18px"}
+                    />
+                  </div>
+                  <Icon
+                    icon={
+                      bookDropWoen ? (
+                        <ArrowDropUpIcon fontSize="medium" />
+                      ) : (
+                        <ArrowDropDownIcon fontSize="medium" />
+                      )
+                    }
                   />
-                ))}
+                </div>
+                <>
+                  {bookDropWoen && (
+                    <Ul
+                      className="book-frop-down"
+                      margin=""
+                      padding="0px 0px 0px 20px"
+                    >
+                      {dropDownBookData.map((item, key) => (
+                        <Li
+                          href={item.href}
+                          text={item.text}
+                          fontSize={item.fontSize}
+                          color={item.color}
+                          padding={item.padding}
+                          margin={item.margin}
+                          icon={<item.icon fontSize="medium"/>}
+                          onClick={handlerShowNav}
+                        />
+                      ))}
+                    </Ul>
+                  )}
+                </>
+                <>
+                  {asidedata.map((item, key) => (
+                    <Li
+                      href={item.href}
+                      text={item.text}
+                      fontSize={item.fontSize}
+                      color={item.color}
+                      padding={item.padding}
+                      margin={item.margin}
+                      icon={<item.icon />}
+                      onClick={handlerShowNav}
+                    />
+                  ))}
+                </>
               </Ul>
               <Divider
                 height={"1px"}
@@ -103,7 +164,13 @@ const Layout = () => {
         </div>
         <div className={`xl:col-span-10 col-span-9`}>
           <div className="bg-main-color text-[white] h-[70px]  w-full p-2 px-8 flex justify-between items-center">
-            <Image src={logo} alt="" width={'120px'} height={'80px'} borderRaduis={''}/>
+            <Image
+              src={logo}
+              alt=""
+              width={"120px"}
+              height={"80px"}
+              borderRaduis={""}
+            />
             <Link to={"profile"}>
               <div className="flex gap-2 items-center relative">
                 <Icon

@@ -18,7 +18,7 @@ const Button: React.FC<ButtonProps> = ({ ...props }) => {
                 font-size : ${props.fontSize};
                 border-radius : ${props.borderRadius};
                 transition : 0.4s;
-                box-shadow: 0px 0px 20px 2px rgba(22, 134, 186, 0.251);
+                // box-shadow: 0px 0px 20px 2px rgba(22, 134, 186, 0.251);
             }
             .${props.className}-btn:hover{
                 background  : ${props.bgHover}
