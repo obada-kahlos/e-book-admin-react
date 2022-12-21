@@ -48,7 +48,6 @@ const Books = () => {
       .string()
       .max(20, "max length is 20")
       .required("This field is required"),
-    image: yup.string().required("This field is required"),
     numberofpages: yup
       .string()
       .max(20, "max length is 20")
@@ -59,26 +58,10 @@ const Books = () => {
       .required("This field is required"),
   });
 
-  const { data: booksData } = useGetBooksQuery({});
-  console.log({ booksData });
+  // const { data: booksData } = useGetBooksQuery({});
 
-  // const textareaRef = useRef<any>(null);
-  // const [currentValue, setCurrentValue ] = useState("");// you can manage data with it
-  // useEffect(() => {
-  //     textareaRef.current.style.height = "120px";
-  //     const scrollHeight = textareaRef.current.scrollHeight;
-  //     textareaRef.current.style.height = scrollHeight + "px";
-  // }, [currentValue]);
-  //     <textarea
-  //     className="w-[100%] p-[10px] border border-[#ccc] resize-none"
-  //     ref={textareaRef}
-  //     value={currentValue}
-  //     onChange={e=>{
-  //     setCurrentValue(e.target.value);
-  //     }}
-  // />
   const [uploadedImage, setUploadedImage] = useState<any>(undefined);
-  const onUploadFile = (event: { target: { files: string | any[] } }) => {
+  const onUploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const reader = new FileReader();
       reader.addEventListener("load", () => {
@@ -91,24 +74,26 @@ const Books = () => {
 
   return (
     <div className="my-[30px] sm:p-4 px-2">
-      <div className="flex justify-between items-end gap-1">
-        <Input
-          className="search"
-          icon={<SearchIcon sx={{ color: "#5b5a5a" }} />}
-          name={"search"}
-          type={"text"}
-          placeholder={"What are you looking for..."}
-          id={"search"}
-          width={"70%"}
-          margin={"0px"}
-          padding={"8px 16px 8px 40px"}
-          borderradius={"5px"}
-          border={"1px solid #ccc"}
-          bgcolor={""}
-          color={"#5b5a5a"}
-          fontSize={"16px"}
-          lable={"search"}
-        />
+      <div className="flex justify-between items-end gap-4">
+        <div className="w-8/12">
+          <Input
+            className="search"
+            icon={<SearchIcon sx={{ color: "#5b5a5a" }} />}
+            name={"search"}
+            type={"text"}
+            placeholder={"What are you looking for..."}
+            id={"search"}
+            width={"80%"}
+            margin={"0px"}
+            padding={"8px 16px 8px 40px"}
+            borderradius={"20px"}
+            border={"1px solid #ccc"}
+            bgcolor={""}
+            color={"#5b5a5a"}
+            fontSize={"16px"}
+            lable={"search"}
+          />
+        </div>
         <Button
           className={"add"}
           buttonText={"Add Book"}
@@ -342,6 +327,7 @@ const Books = () => {
             sx={{ fontSize: "24px", cursor: "pointer", color: "#726c6c" }}
           />
         }
+        translate={'translate(-50% , -50%)'}
         onClick={handleOpenPopup}
         width={"650px"}
         height={"400px"}
@@ -352,6 +338,9 @@ const Books = () => {
         right={"0"}
         bottom={"0"}
         isOpen={popup}
+        paddingBodyBottom={'60px'}
+        className="add-book"
+        zIndex="1002"
       >
         <div className="p-2">
           <Formik
@@ -361,7 +350,6 @@ const Books = () => {
               publisher: "",
               numberofpages: "",
               description: "",
-              image: "",
             }}
             onSubmit={(values) => {
               console.log(values);
@@ -375,6 +363,7 @@ const Books = () => {
                     {BooksData.map((item, key) => (
                       <div className="md:col-span-6 col-span-12" key={key}>
                         <Field
+                          key={key}
                           as={Input}
                           className={item.className}
                           name={item.name}
@@ -419,19 +408,6 @@ const Books = () => {
                         onChange={onUploadFile}
                       />
                     </div>
-                    {uploadedImage && (
-                      <div className="col-span-12 h-[300px]">
-                        <Image
-                          src={uploadedImage}
-                          alt={"iamge"}
-                          width={"100%"}
-                          height={"100%"}
-                          borderRaduis={""}
-                          className={'add-image'}
-                        />
-                      </div>
-                    )}
-
                     <div className="md:col-span-12 col-span-12">
                       <Field
                         as={TextArea}
@@ -477,6 +453,39 @@ const Books = () => {
           </Formik>
         </div>
       </Popup>
+
+      {uploadedImage && (
+        <Popup
+          header={{
+            title: "",
+          }}
+          translate={''}
+          width={"335px"}
+          height={"200px"}
+          bgClor={"#fff"}
+          borderRadius={"0px"}
+          top={"0px"}
+          left={""}
+          right={"0px"}
+          bottom={""}
+          isOpen={popup}
+          padding="10px"
+          paddingBodyBottom="20px"
+          className="showImage"
+          zIndex="1001"
+        >
+          <div className="">
+            <Image
+              src={uploadedImage}
+              alt={"image"}
+              width={"100%"}
+              height={"100%"}
+              borderRaduis={""}
+              className={"add-image"}
+            />
+          </div>
+        </Popup>
+      )}
     </div>
   );
 };

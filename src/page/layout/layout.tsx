@@ -94,7 +94,7 @@ const Layout = () => {
                   className="transition-[0.4s] rounded-[4px] hover:bg-hover-color w-full flex justify-between items-center cursor-pointer px-[15px] py-[10px]"
                 >
                   <div className="flex items-center gap-[10px]">
-                    <Icon icon={<SegmentIcon fontSize="medium"/>}/>
+                    <Icon icon={<SegmentIcon fontSize="medium" />} />
                     <Button
                       className={"frop-down"}
                       buttonText={"Products"}
@@ -126,13 +126,14 @@ const Layout = () => {
                     >
                       {dropDownBookData.map((item, key) => (
                         <Li
+                          key={key}
                           href={item.href}
                           text={item.text}
                           fontSize={item.fontSize}
                           color={item.color}
                           padding={item.padding}
                           margin={item.margin}
-                          icon={<item.icon fontSize="medium"/>}
+                          icon={<item.icon fontSize="medium" />}
                           onClick={handlerShowNav}
                         />
                       ))}
@@ -142,6 +143,7 @@ const Layout = () => {
                 <>
                   {asidedata.map((item, key) => (
                     <Li
+                      key={key}
                       href={item.href}
                       text={item.text}
                       fontSize={item.fontSize}
@@ -170,7 +172,7 @@ const Layout = () => {
               width={"120px"}
               height={"80px"}
               borderRaduis={""}
-              className={'logo'}
+              className={"logo"}
             />
             <Link to={"profile"}>
               <div className="flex gap-2 items-center relative">

@@ -14,23 +14,25 @@ const Users = () => {
   return (
     <div className="my-[30px] sm:p-4 px-2">
       <div className="flex justify-between items-end gap-1">
-        <Input
-          className="search"
-          icon={<SearchIcon sx={{ color: "#5b5a5a" }} />}
-          name={"search"}
-          type={"text"}
-          placeholder={"Search for a user"}
-          id={"search"}
-          width={"100%"}
-          margin={"0px"}
-          padding={"8px 16px 8px 40px"}
-          borderradius={"5px"}
-          border={"1px solid #ccc"}
-          bgcolor={""}
-          color={"#5b5a5a"}
-          fontSize={"16px"}
-          lable={"search"}
-        />
+        <div className="w-full">
+          <Input
+            className="search"
+            icon={<SearchIcon sx={{ color: "#5b5a5a" }} />}
+            name={"search"}
+            type={"text"}
+            placeholder={"Search for a user"}
+            id={"search"}
+            width={"100%"}
+            margin={"0px"}
+            padding={"8px 16px 8px 40px"}
+            borderradius={"20px"}
+            border={"1px solid #ccc"}
+            bgcolor={""}
+            color={"#5b5a5a"}
+            fontSize={"16px"}
+            lable={"search"}
+          />
+        </div>
       </div>
       <div className="md:w-[100%] my-[20px] overflow-x-auto">
         <Table width="100%">

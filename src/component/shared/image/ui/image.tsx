@@ -10,7 +10,8 @@ const Image: React.FC<ImageProps> = ({ ...props }) => {
           img.${props.className}{
             width : ${props.width};
             height : ${props.height};
-            border-raduis : ${props.borderRaduis}
+            border-raduis : ${props.borderRaduis};
+            object-fit: contain;
           }
         `}
       </style>

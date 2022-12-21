@@ -11,7 +11,7 @@ const Input: React.FC<InputProps> = ({ ...props }) => {
             <label className="lable" htmlFor={props.id}>
             {props.lable}
             </label>
-          <input className={props.className} type={props.type} {...props} placeholder={props.placeholder} onChange={props.onChange}/>
+          <input className={props.className}  type={props.type} {...props} placeholder={props.placeholder} onChange={props.onChange}/>
           <span className="absolute top-[50%] left-[20px] -translate-x-[50%]">
             <Icon icon={props.icon} />
           </span>
@@ -24,9 +24,10 @@ const Input: React.FC<InputProps> = ({ ...props }) => {
             .lable{
                 color : ${props.color};
                 font-size : ${props.fontSize};
+                display: block;
             }
             input.${props.className}{
-                width : 100%;
+                width : ${props.width};
                 padding : ${props.padding};
                 margin : ${props.margin};
                 background-color : ${props.bgcolor};
@@ -34,12 +35,14 @@ const Input: React.FC<InputProps> = ({ ...props }) => {
                 border: ${props.border};
                 color : ${props.color};
                 font-size : ${props.fontSize};
-                transition : 0.1s;
+                transition : 0.2s ease-in;
             }
             .input-container-${props.className}{
-                width : ${props.width};
                 position : relative;
                 overflow : hidden;
+            }
+            input.${props.className}:focus{
+              width : 100%;
             }
         `}
       </style>

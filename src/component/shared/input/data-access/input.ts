@@ -1,4 +1,4 @@
-import { ReactEventHandler } from 'react';
+import { ReactEventHandler } from "react";
 import { IconProps } from "../../icon/data-access/icon";
 
 type InputType =
@@ -34,5 +34,5 @@ export interface InputProps extends IconProps {
   bgcolor: string;
   color: string;
   fontSize: string;
-  onChange? : ReactEventHandler ;
+  onChange?: ReactEventHandler;
 }

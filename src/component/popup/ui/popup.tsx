@@ -8,11 +8,13 @@ const Popup: React.FC<PopupProps> = ({ ...props }) => {
     <>
       {props.isOpen && (
         <>
-          <div className="popup-container">
-            <div className="pupup-header">
-              <p> {props.header.title} </p>
-              <IconButton onClick={props.onClick}><Icon icon={props.icon} /></IconButton>
-            </div>
+          <div className={`${props.className}-popup-container`}>
+            {props.header.title ?
+              <div className="pupup-header">
+                <p> {props.header.title} </p>
+                <IconButton onClick={props.onClick}><Icon icon={props.icon} /></IconButton>
+              </div> : ''            
+            }
             <div className="pupup-body">{props.children}</div>
           </div>
           <div className="layout" onClick={props.onClick}></div>
@@ -27,13 +29,13 @@ const Popup: React.FC<PopupProps> = ({ ...props }) => {
       )}
       <style>
         {`
-                .popup-container{
+                .${props.className}-popup-container{
                     position : fixed;
                     top : ${props.top};
                     left: ${props.left};
                     right: ${props.right};
                     bottom: ${props.bottom};
-                    transform : translate(-50% , -50%);
+                    transform : ${props.translate};
                     width : ${props.width};
                     height : ${props.height};
                     background-color : ${props.bgClor};
@@ -41,7 +43,7 @@ const Popup: React.FC<PopupProps> = ({ ...props }) => {
                     padding : ${props.padding};
                     box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.1), 0 2px 20px 0 rgba(0, 0, 0, 0.19);
                     overflow : hidden;
-                    z-index : 1001;
+                    z-index : ${props.zIndex};
                 }
                 .pupup-header{
                     position : sticky;
@@ -54,19 +56,19 @@ const Popup: React.FC<PopupProps> = ({ ...props }) => {
                     border-bottom : 1px solid #ccc;
 
                 }
-                .pupup-body{
+                .${props.className}-popup-container .pupup-body{
                     overflow: hidden;
                     overflow-y: auto; 
                     height : ${props.height};
-                    padding-bottom : 60px;
+                    padding-bottom : ${props.paddingBodyBottom};
                 }
                 @media(max-width : 600px){
-                  .popup-container{
+                  .${props.className}-popup-container{
                       width : 100%;
                       height : 100%;
                       border-radius : 0px;
                   }
-                  .pupup-body{
+                  .${props.className}-popup-container .pupup-body{
                     overflow: hidden;
                     overflow-y: auto; 
                     height : 100%;

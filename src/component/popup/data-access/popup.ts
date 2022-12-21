@@ -6,6 +6,8 @@ export interface PopupProps extends IconProps {
     title: string;
   };
   width: string;
+  className: string;
+  translate: string;
   height: string;
   bgClor: string;
   padding?: string;
@@ -14,6 +16,8 @@ export interface PopupProps extends IconProps {
   left: string;
   right: string;
   bottom: string;
+  zIndex: string;
+  paddingBodyBottom: string;
   isOpen: boolean | string | any;
   children?: ReactElement;
   onClick?: ReactEventHandler;
