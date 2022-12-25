@@ -2,9 +2,17 @@ import { apiSlice } from '../api-slice'
 
 const extendedApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getBooks: builder.query({
+    getDashbordInfo: builder.query({
       query: () => ({
-        url : 'api/Books/get-all-books?PageNumber=1',
+        url : '/api/AdminBooks/GetCounts',
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+        },
+      }),
+    }),
+    getAuter: builder.query({
+      query: () => ({
+        url : '/api/AdminAuthors/GetAllAuthors/get-all-authors',
         headers: {
             'Access-Control-Allow-Origin': '*',
         },
@@ -13,4 +21,4 @@ const extendedApi = apiSlice.injectEndpoints({
   }),
 })
 
-export const { useGetBooksQuery } = extendedApi
+export const { useGetDashbordInfoQuery , useGetAuterQuery } = extendedApi

@@ -22,7 +22,7 @@ type InputType =
 export interface InputProps extends IconProps {
   lable?: string;
   className?: string;
-  name: string;
+  name?: string;
   type?: InputType;
   placeholder: string;
   id: string;

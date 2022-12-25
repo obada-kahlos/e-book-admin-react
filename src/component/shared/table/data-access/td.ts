@@ -1,10 +1,11 @@
+import { ReactElement } from 'react';
 export interface TdProps {
-    text: string;
     color: string;
     fontSize: string;
     fontWeight: string;
     padding: string;
     margin: string;
     textAlign: string;
+    children?: ReactElement | ReactElement[]
   }
   

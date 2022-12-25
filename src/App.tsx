@@ -7,6 +7,7 @@ import Dashbord from './page/dashbord/dashbord';
 import Profile from './page/profile/profile';
 import Users from './page/users/users';
 import Admins from './page/admins/admins';
+import Author from './page/auther/auters';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path='/' element={<Layout />}>
               <Route path='/' element={<Dashbord />} />
               <Route path='books' element={<Books />} />
+              <Route path='auther' element={<Author />} />
               <Route path='Profile' element={<Profile/>}/>
               <Route path='users' element={<Users />} />
               <Route path='admins' element={<Admins />} />

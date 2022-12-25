@@ -169,7 +169,7 @@ const Layout = () => {
             <Image
               src={logo}
               alt=""
-              width={"120px"}
+              width={"140px"}
               height={"80px"}
               borderRaduis={""}
               className={"logo"}

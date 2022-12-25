@@ -4,15 +4,18 @@ import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import PersonIcon from "@mui/icons-material/Person";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import Loader from "../../component/loader/loader";
-import { useEffect, useState } from "react";
+import { useGetDashbordInfoQuery } from "../../api/books/books";
 
 
 const Dashbord = () => {
+  const { data: booksData , isLoading } = useGetDashbordInfoQuery({});
+  console.log({booksData});
+  
   const CartInfo: InfoCartProps[] = [
     {
       title: "Books",
       icon: <LibraryBooksIcon sx={{ color: "#c3c3c3", fontSize: "36px" }} />,
-      count: "1,350",
+      count: booksData?.countOfBooks,
       className: "books-count",
       bgColor: "#fff",
       borderRadius: "5px",
@@ -24,7 +27,7 @@ const Dashbord = () => {
     {
       title: "Users",
       icon: <PersonIcon sx={{ color: "#c3c3c3", fontSize: "36px" }} />,
-      count: "4,102",
+      count: booksData?.countOfUser,
       className: "Users",
       bgColor: "#fff",
       borderRadius: "5px",
@@ -34,9 +37,9 @@ const Dashbord = () => {
       height: "100px",
     },
     {
-      title: "Something",
+      title: "Publishers",
       icon: <InsertEmoticonIcon sx={{ color: "#c3c3c3", fontSize: "36px" }} />,
-      count: "9,000",
+      count: booksData?.countOfPublishers,
       className: "something",
       bgColor: "#fff",
       borderRadius: "5px",
@@ -46,9 +49,9 @@ const Dashbord = () => {
       height: "100px",
     },
     {
-      title: "Something",
+      title: "Authors",
       icon: <InsertEmoticonIcon sx={{ color: "#c3c3c3", fontSize: "36px" }} />,
-      count: "1,200",
+      count: booksData?.countOfAuthors,
       className: "something",
       bgColor: "#fff",
       borderRadius: "5px",
@@ -58,14 +61,6 @@ const Dashbord = () => {
       height: "100px",
     },
   ];
-
-
-  const [isLoading , setIsloading] = useState(true)
-  useEffect(()=>{
-    setTimeout(()=>{
-      setIsloading(false)
-    },6000)
-  },[])
 
 
   return (

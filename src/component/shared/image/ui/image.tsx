@@ -4,12 +4,10 @@ import { ImageProps } from "../data-access/image";
 const Image: React.FC<ImageProps> = ({ ...props }) => {
   return (
     <>
-      <img src={props.src} alt={props.alt} className={props.className} />
+      <img src={props.src} alt={props.alt} className={props.className} width={props.width} height={props.height}/>
       <style>
         {`  
           img.${props.className}{
-            width : ${props.width};
-            height : ${props.height};
             border-raduis : ${props.borderRaduis};
             object-fit: contain;
           }

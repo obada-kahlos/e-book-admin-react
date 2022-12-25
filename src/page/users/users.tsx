@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-import Button from "../../component/shared/button/ui/button";
 import Input from "../../component/shared/input/ui/input";
 import SearchIcon from "@mui/icons-material/Search";
 import Table from "../../component/shared/table/ui/table";
@@ -8,9 +6,11 @@ import Tr from "../../component/shared/table/ui/tr";
 import Th from "../../component/shared/table/ui/th";
 import Tbody from "../../component/shared/table/ui/tbody";
 import Td from "../../component/shared/table/ui/td";
-
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
+import { IconButton } from '@mui/material';
+import Icon from "../../component/shared/icon/ui/icon";
 const Users = () => {
-
   return (
     <div className="my-[30px] sm:p-4 px-2">
       <div className="flex justify-between items-end gap-1">
@@ -47,6 +47,7 @@ const Users = () => {
                 margin={"0px"}
                 textAlign={"center"}
                 bgColor={"#0d6289"}
+                className={"firstName"}
               />
               <Th
                 text={"Last name"}
@@ -57,6 +58,7 @@ const Users = () => {
                 margin={"0px"}
                 textAlign={"center"}
                 bgColor={"#0d6289"}
+                className={"lastName"}
               />
               <Th
                 text={"Email"}
@@ -67,6 +69,7 @@ const Users = () => {
                 margin={"0px"}
                 textAlign={"center"}
                 bgColor={"#0d6289"}
+                className={"email"}
               />
               <Th
                 text={"Gender"}
@@ -77,85 +80,131 @@ const Users = () => {
                 margin={"0px"}
                 textAlign={"center"}
                 bgColor={"#0d6289"}
+                className={"gender"}
+              />
+              <Th
+                text={"Actions"}
+                color={"#333"}
+                fontSize={"15px"}
+                fontWeight={"600"}
+                padding={"10px 15px"}
+                margin={"0px"}
+                textAlign={"center"}
+                bgColor={"#fff"}
+                className={"icon"}
               />
             </Tr>
           </Thead>
           <Tbody>
             <Tr>
               <Td
-                text={"Obada"}
                 color={"#333"}
                 fontSize={"15px"}
                 fontWeight={"500"}
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"left"}
-              />
+              >
+                <span>obada</span>
+              </Td>
               <Td
-                text={"Kahlous"}
                 color={"#333"}
                 fontSize={"15px"}
                 fontWeight={"500"}
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"left"}
-              />
+              >
+                <span>kahlous</span>
+              </Td>
               <Td
-                text={"Obada@gmail.com"}
                 color={"#333"}
                 fontSize={"15px"}
                 fontWeight={"500"}
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"left"}
-              />
+              >
+                <span>obada@gmail.com</span>
+              </Td>
               <Td
-                text={"Male"}
                 color={"#333"}
                 fontSize={"15px"}
                 fontWeight={"500"}
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"left"}
-              />
+              >
+                <span>Male</span>
+              </Td>
+              <Td
+                color={"#333"}
+                fontSize={"15px"}
+                fontWeight={"500"}
+                padding={"10px 15px"}
+                margin={"0px"}
+                textAlign={"left"}
+              >
+                <div className="flex justify-center items-center gap-10">
+                  <IconButton><Icon icon={<DeleteOutlineOutlinedIcon sx={{color : '#333'}}/>} /></IconButton>
+                  <IconButton><Icon icon={<ModeEditOutlinedIcon sx={{color : '#333'}}/>} /></IconButton>
+                </div>
+              </Td>
             </Tr>
             <Tr>
               <Td
-                text={"Bahaa"}
                 color={"#333"}
                 fontSize={"15px"}
                 fontWeight={"500"}
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"left"}
-              />
+              >
+                <span>bahaa</span>
+              </Td>
               <Td
-                text={"ATK"}
                 color={"#333"}
                 fontSize={"15px"}
                 fontWeight={"500"}
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"left"}
-              />
+              >
+                <span>atk</span>
+              </Td>
               <Td
-                text={"Bahaa@gmail.com"}
                 color={"#333"}
                 fontSize={"15px"}
                 fontWeight={"500"}
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"left"}
-              />
+              >
+                <span>bahaa@gmail.com</span>
+              </Td>
               <Td
-                text={"Male"}
                 color={"#333"}
                 fontSize={"15px"}
                 fontWeight={"500"}
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"left"}
-              />
+              >
+                <span>Male</span>
+              </Td>
+              <Td
+                color={"#333"}
+                fontSize={"15px"}
+                fontWeight={"500"}
+                padding={"10px 15px"}
+                margin={"0px"}
+                textAlign={"left"}
+              >
+                <div className="flex justify-center items-center gap-10">
+                  <IconButton><Icon icon={<DeleteOutlineOutlinedIcon sx={{color : '#333'}}/>} /></IconButton>
+                  <IconButton><Icon icon={<ModeEditOutlinedIcon sx={{color : '#333'}}/>} /></IconButton>
+                </div>
+              </Td>
             </Tr>
           </Tbody>
         </Table>

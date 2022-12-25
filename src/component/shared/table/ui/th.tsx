@@ -4,10 +4,10 @@ import { ThProps } from "../data-access/th";
 const Th: React.FC<ThProps> = ({ ...props }) => {
   return (
     <>
-      <th> {props.text} </th>
+      <th className={props.className}> {props.text} </th>
       <style>
         {`
-            th{
+            th.${props.className}{
                 background-color :${props.bgColor};
                 color: ${props.color};
                 font-size: ${props.fontSize};

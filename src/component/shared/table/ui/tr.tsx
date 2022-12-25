@@ -8,7 +8,6 @@ const Tr: React.FC<TrProps> = ({...props}) => {
       <style>
             {`
                 tr{
-                    cursor : pointer;
                     transition : 0.4s;
                 }
                 tr:hover{

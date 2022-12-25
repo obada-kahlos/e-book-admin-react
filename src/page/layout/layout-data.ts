@@ -33,7 +33,7 @@ export const dropDownBookData = [
         icon: MenuBookIcon,
     },
     {
-        href:"author",
+        href:"auther",
         text:"Author",
         fontSize:"18px",
         color:"#fff",

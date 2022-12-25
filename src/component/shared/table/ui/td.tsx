@@ -4,7 +4,7 @@ import { TdProps } from "../data-access/td";
 const Td: React.FC<TdProps> = ({ ...props }) => {
   return (
     <>
-      <td> {props.text} </td>
+      <td> {props.children} </td>
       <style>
         {`
             td{
@@ -15,7 +15,8 @@ const Td: React.FC<TdProps> = ({ ...props }) => {
                 margin: ${props.margin};
                 text-align: ${props.textAlign};
                 max-width : 300px;
-                min-width : 180px;
+                min-width : 140px;
+                vertical-align: top;
             }
         `}
       </style>
