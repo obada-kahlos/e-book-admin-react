@@ -5,4 +5,5 @@ export interface ImageProps {
   width: string;
   height: string;
   borderRaduis: string;
+  SmWidth?: string;
 }

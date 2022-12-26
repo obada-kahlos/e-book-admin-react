@@ -8,8 +8,13 @@ const Image: React.FC<ImageProps> = ({ ...props }) => {
       <style>
         {`  
           img.${props.className}{
-            border-raduis : ${props.borderRaduis};
+            border-radius: ${props.borderRaduis};
             object-fit: contain;
+          }
+          @media(max-width : 768px){
+            img.${props.className}{
+              width : ${props.SmWidth}
+            }
           }
         `}
       </style>

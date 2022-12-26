@@ -89,10 +89,10 @@ const Auth = () => {
                   padding={"10px 15px"}
                   margin={"30px 0px 10px 0px"}
                   borderRadius={"6px"}
-                  bgColor={"#0d6289"}
+                  bgColor={"bg-main-color"}
                   color={"#fff"}
                   fontSize={"18px"}
-                  bgHover={"#003f5c"}
+                  bgHover={"bg-hover-color"}
                 />
                 <div className="flex justify-between items-center">
                   <p className="text-secondary-colour cursor-pointer font-bold"> Forgot Password </p>

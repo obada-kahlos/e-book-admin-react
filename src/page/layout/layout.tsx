@@ -53,7 +53,7 @@ const Layout = () => {
 
   return (
     <>
-      <div className="relative lg:grid grid-cols-12 gap-0">
+      <div className="lg:grid grid-cols-12 gap-0">
         <div
           className={`transition-[0.5s] xl:col-span-2 col-span-3 ${
             showNav ? "show-aside" : "hide-aside"
@@ -75,7 +75,7 @@ const Layout = () => {
                   className="flex gap-2 justify-start items-center px-4 py-4"
                   onClick={handlerShowNav}
                 >
-                  <Icon icon={<SpeedIcon />} />
+                  <Icon icon={<SpeedIcon sx={{color : '#fff'}}/>} />
                   <li className="text-[#fff] "> Dashboard </li>
                 </div>
               </Link>
@@ -94,7 +94,7 @@ const Layout = () => {
                   className="transition-[0.4s] rounded-[4px] hover:bg-hover-color w-full flex justify-between items-center cursor-pointer px-[15px] py-[10px]"
                 >
                   <div className="flex items-center gap-[10px]">
-                    <Icon icon={<SegmentIcon fontSize="medium" />} />
+                    <Icon icon={<SegmentIcon fontSize="medium" sx={{color : '#fff'}}/>} />
                     <Button
                       className={"frop-down"}
                       buttonText={"Products"}
@@ -110,9 +110,9 @@ const Layout = () => {
                   <Icon
                     icon={
                       bookDropWoen ? (
-                        <ArrowDropUpIcon fontSize="medium" />
+                        <ArrowDropUpIcon fontSize="medium" sx={{color : '#fff'}}/>
                       ) : (
-                        <ArrowDropDownIcon fontSize="medium" />
+                        <ArrowDropDownIcon fontSize="medium" sx={{color : '#fff'}}/>
                       )
                     }
                   />
@@ -172,6 +172,7 @@ const Layout = () => {
               width={"140px"}
               height={"80px"}
               borderRaduis={""}
+              SmWidth={"80px"}
               className={"logo"}
             />
             <Link to={"profile"}>
@@ -179,12 +180,12 @@ const Layout = () => {
                 <Icon
                   icon={
                     <NotificationsNoneIcon
-                      sx={{ fontSize: "26px", cursor: "pointer" }}
+                      sx={{ fontSize: "24px", cursor: "pointer" }}
                     />
                   }
                 />
                 <Avatar src="./not-found.png" />
-                <span className="text-slate-300"> obada Kahlous </span>
+                <span className="text-slate-300 md:text-[18px] text-[14px]"> obada Kahlous </span>
               </div>
             </Link>
           </div>
@@ -213,8 +214,8 @@ const Layout = () => {
             padding={""}
             margin={""}
             borderRadius={"50%"}
-            bgColor={"#0d6289"}
-            bgHover={"#003f5c"}
+            bgColor={"bg-main-color"}
+            bgHover={"bg-hover-color"}
             color={"#fff"}
             fontSize={""}
             onClick={handlerShowNav}

@@ -444,35 +444,7 @@ const Loader = () => {
                   transform: rotateZ(-90deg);
                 }
               }
-              html {
-                box-sizing: border-box;
-                -webkit-font-smoothing: antialiased;
-              }
-              
-              * {
-                box-sizing: inherit;
-              }
-              *:before, *:after {
-                box-sizing: inherit;
-              }
-              
-              body {
-                min-height: 100vh;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background: #275EFE;
-              }
-              body .dribbble {
-                position: fixed;
-                display: block;
-                right: 24px;
-                bottom: 24px;
-              }
-              body .dribbble img {
-                display: block;
-                width: 76px;
-              }
+             
                 `}
       </style>
     </>

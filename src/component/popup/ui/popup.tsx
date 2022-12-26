@@ -12,7 +12,7 @@ const Popup: React.FC<PopupProps> = ({ ...props }) => {
             {props.header.title ?
               <div className="pupup-header">
                 <p> {props.header.title} </p>
-                <IconButton onClick={props.onClick}><Icon icon={props.icon} /></IconButton>
+                <IconButton onClick={props.onClick}><Icon icon={props.icon} className={'popup-close-icon'}/></IconButton>
               </div> : ''            
             }
             <div className="pupup-body">{props.children}</div>
@@ -52,7 +52,7 @@ const Popup: React.FC<PopupProps> = ({ ...props }) => {
                     display : flex;
                     justify-content : space-between;
                     align-items : center;
-                    padding : 20px 10px;
+                    padding : 15px 10px;
                     border-bottom : 1px solid #ccc;
 
                 }

@@ -11,9 +11,10 @@ const Input: React.FC<InputProps> = ({ ...props }) => {
             {props.lable}
             </label>
           <input className={props.className}  type={props.type} {...props} placeholder={props.placeholder} onChange={props.onChange}/>
-            <Icon className="input-icon" icon={props.icon} />
+          <span className="input-icon"> <Icon icon={props.icon} /> </span>
+            
           {
-            props.name === 'password' ? <Icon className="password-icon" icon={props.passwordIcon?.icon} onClick={props.passwordIcon?.onClick}/>: ''
+            props.name === 'password' ? <span className="password-icon"> <Icon  icon={props.passwordIcon?.icon} onClick={props.passwordIcon?.onClick}/></span>: ''
           }
         </div>
       <style>
@@ -37,8 +38,7 @@ const Input: React.FC<InputProps> = ({ ...props }) => {
             .input-icon{
               position: absolute;
               top: 50%;
-              left: 20px;
-              transform : translateX(-50%)
+              left: 10px;
             }
             .password-icon{
               position: absolute;

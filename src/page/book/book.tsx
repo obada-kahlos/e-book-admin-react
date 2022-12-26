@@ -65,7 +65,7 @@ const Books = () => {
       .required("This field is required"),
   });
 
-  const [uploadedImage, setUploadedImage] = useState<any>();
+  const [uploadedImage, setUploadedImage] = useState<any>(undefined);
   const onUploadFile = (event: any) => {
     if (event.target.files && event.target.files.length > 0) {
       const reader = new FileReader();
@@ -111,8 +111,8 @@ const Books = () => {
           padding={"8px 30px"}
           margin={"0px"}
           borderRadius={"30px"}
-          bgColor={"#0d6289"}
-          bgHover={"#003f5c"}
+          bgColor={"bg-main-color"}
+          bgHover={"bg-hover-color"}
           color={"#fff"}
           fontSize={"16px"}
           onClick={handleOpenPopup}
@@ -495,8 +495,8 @@ const Books = () => {
         }
         translate={"translate(-50% , -50%)"}
         onClick={handleOpenPopup}
-        width={"650px"}
-        height={"400px"}
+        width={"800px"}
+        height={"500px"}
         bgClor={"#fff"}
         borderRadius={"10px"}
         top={"50%"}

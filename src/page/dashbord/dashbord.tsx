@@ -5,8 +5,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import Loader from "../../component/loader/loader";
 import { useGetDashbordInfoQuery } from "../../api/books/books";
-
-
+import AddBusinessIcon from '@mui/icons-material/AddBusiness';
+import CreateIcon from '@mui/icons-material/Create';
 const Dashbord = () => {
   const { data: booksData , isLoading } = useGetDashbordInfoQuery({});
   console.log({booksData});
@@ -38,7 +38,7 @@ const Dashbord = () => {
     },
     {
       title: "Publishers",
-      icon: <InsertEmoticonIcon sx={{ color: "#c3c3c3", fontSize: "36px" }} />,
+      icon: <AddBusinessIcon sx={{ color: "#c3c3c3", fontSize: "36px" }} />,
       count: booksData?.countOfPublishers,
       className: "something",
       bgColor: "#fff",
@@ -50,7 +50,7 @@ const Dashbord = () => {
     },
     {
       title: "Authors",
-      icon: <InsertEmoticonIcon sx={{ color: "#c3c3c3", fontSize: "36px" }} />,
+      icon: <CreateIcon sx={{ color: "#c3c3c3", fontSize: "36px" }} />,
       count: booksData?.countOfAuthors,
       className: "something",
       bgColor: "#fff",

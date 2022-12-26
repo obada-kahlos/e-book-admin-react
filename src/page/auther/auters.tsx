@@ -12,9 +12,9 @@ import { useGetAuterQuery } from "../../api/books/books";
 import Loader from "../../component/loader/loader";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import Icon from "../../component/shared/icon/ui/icon";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import { IconButton } from "@mui/material";
-import Icon from "../../component/shared/icon/ui/icon";
 import ActionButton from "../../component/action-buttom/ui/action-button";
 
 const Author = () => {
@@ -56,8 +56,8 @@ const Author = () => {
               padding={"8px 30px"}
               margin={"0px"}
               borderRadius={"30px"}
-              bgColor={"#0d6289"}
-              bgHover={"#003f5c"}
+              bgColor={"bg-main-color"}
+              bgHover={"bg-hover-color"}
               color={"#fff"}
               fontSize={"16px"}
               onClick={() => {

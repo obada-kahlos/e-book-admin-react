@@ -7,7 +7,7 @@ const FloatingButton: React.FC<FlotingButtonProps> = ({ ...props }) => {
     <>
       <button
         onClick={props.onClick}
-        className={`${props.className}-btn`}
+        className={`${props.className}-btn ${props.bgColor} hover:${props.bgHover}`}
       >
         <Icon icon={props.icon} />
       </button>
@@ -19,7 +19,6 @@ const FloatingButton: React.FC<FlotingButtonProps> = ({ ...props }) => {
                 height : ${props.height};
                 padding : ${props.padding};
                 margin : ${props.margin};
-                background-color : ${props.bgColor};
                 color : ${props.color};
                 font-size : ${props.fontSize};
                 border-radius : ${props.borderRadius};
@@ -29,9 +28,6 @@ const FloatingButton: React.FC<FlotingButtonProps> = ({ ...props }) => {
                 left : ${props.left};
                 right : ${props.right};
                 z-index : 1002;
-            }
-            .${props.className}-btn:hover{
-                background  : ${props.bgHover}
             }
         `}
       </style>
