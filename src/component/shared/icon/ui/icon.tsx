@@ -1,21 +1,11 @@
 import React from "react";
 import { IconProps } from "../data-access/icon";
+import { IconButton } from '@mui/material';
 
 const Icon: React.FC<IconProps> = ({ ...props }) => {
   return (
     <>
-      <span className="icon" onClick={props.onClick}> {props.icon} </span>
-      <style>
-        {`
-          span.icon{
-            display : flex;
-            justify-content: center;
-            align-items: center;
-            color : #fff;
-            cursor:pointer;
-          }
-        `}
-      </style>
+      <span className={props.className} onClick={props.onClick} > {props.icon} </span>
     </>
   );
 };

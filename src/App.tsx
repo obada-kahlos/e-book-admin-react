@@ -8,14 +8,16 @@ import Profile from './page/profile/profile';
 import Users from './page/users/users';
 import Admins from './page/admins/admins';
 import Author from './page/auther/auters';
+import Auth from './page/auth/auth';
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-            <Route path='/' element={<Layout />}>
-              <Route path='/' element={<Dashbord />} />
+            <Route path="/" element={<Auth />} />
+            <Route path='dashbord' element={<Layout />}>
+              <Route path='info' element={<Dashbord />} />
               <Route path='books' element={<Books />} />
               <Route path='auther' element={<Author />} />
               <Route path='Profile' element={<Profile/>}/>

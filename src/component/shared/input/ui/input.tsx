@@ -1,22 +1,19 @@
 import React , {useState} from "react";
 import Icon from "../../icon/ui/icon";
 import { InputProps } from "../data-access/input";
-import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
-import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+
 const Input: React.FC<InputProps> = ({ ...props }) => {
 
   return (
     <>
-        <div className={`input-container-${props.className}`}>
-            <label className="lable" htmlFor={props.id}>
+        <div className={`input-container-${props.className} relative`}>
+            <label className="lable " htmlFor={props.id}>
             {props.lable}
             </label>
           <input className={props.className}  type={props.type} {...props} placeholder={props.placeholder} onChange={props.onChange}/>
-          <span className="absolute top-[50%] left-[20px] -translate-x-[50%]">
-            <Icon icon={props.icon} />
-          </span>
+            <Icon className="input-icon" icon={props.icon} />
           {
-            props.name === 'password' ? <span> <RemoveRedEyeOutlinedIcon /> </span> : ''
+            props.name === 'password' ? <Icon className="password-icon" icon={props.passwordIcon?.icon} onClick={props.passwordIcon?.onClick}/>: ''
           }
         </div>
       <style>
@@ -36,6 +33,19 @@ const Input: React.FC<InputProps> = ({ ...props }) => {
                 color : ${props.color};
                 font-size : ${props.fontSize};
                 transition : 0.2s ease-in;
+            }
+            .input-icon{
+              position: absolute;
+              top: 50%;
+              left: 20px;
+              transform : translateX(-50%)
+            }
+            .password-icon{
+              position: absolute;
+              top: 50%;
+              right: 0px;
+              transform : translateX(-50%);
+              cursor : pointer;
             }
             .input-container-${props.className}{
                 position : relative;

@@ -70,7 +70,7 @@ const Layout = () => {
             borderRightColor={asideData.Nav.borderRightColor}
           >
             <>
-              <Link to="/">
+              <Link to="/dashbord/info">
                 <div
                   className="flex gap-2 justify-start items-center px-4 py-4"
                   onClick={handlerShowNav}

@@ -12,14 +12,17 @@ import { useGetAuterQuery } from "../../api/books/books";
 import Loader from "../../component/loader/loader";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
-import { IconButton } from '@mui/material';
+import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
+import { IconButton } from "@mui/material";
 import Icon from "../../component/shared/icon/ui/icon";
+import ActionButton from "../../component/action-buttom/ui/action-button";
 
 const Author = () => {
   const { data: getAuther, isLoading } = useGetAuterQuery({});
   console.log({ getAuther });
-
+  const handleClick = () =>{
+    
+  }
   return (
     <>
       {isLoading ? (
@@ -141,24 +144,22 @@ const Author = () => {
                         margin={"0px"}
                         textAlign={"left"}
                       >
-                        <div className="flex justify-center items-center gap-10">
-                          <IconButton>
-                            <Icon
-                              icon={
-                                <DeleteOutlineOutlinedIcon
-                                  sx={{ color: "#333" }}
-                                />
-                              }
-                            />
-                          </IconButton>
-                          <IconButton>
-                            <Icon
-                              icon={
-                                <ModeEditOutlinedIcon sx={{ color: "#333" }} />
-                              }
-                            />
-                          </IconButton>
-                        </div>
+                        <ActionButton
+                          deleteIcon={{
+                            icon: (
+                              <DeleteOutlineOutlinedIcon
+                                sx={{ color: "#333" }}
+                              />
+                            ),
+                            onClick: handleClick,
+                          }}
+                          editIcon={{
+                            icon: (
+                              <ModeEditOutlinedIcon sx={{ color: "#333" }} />
+                            ),
+                            onClick: handleClick,
+                          }}
+                        />
                       </Td>
                     </>
                   </Tr>

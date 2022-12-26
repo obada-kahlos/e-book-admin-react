@@ -34,5 +34,6 @@ export interface InputProps extends IconProps {
   bgcolor: string;
   color: string;
   fontSize: string;
+  passwordIcon?: IconProps;
   onChange?: ReactEventHandler;
 }
