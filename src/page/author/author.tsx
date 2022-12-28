@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Button from "../../component/shared/button/ui/button";
 import Input from "../../component/shared/input/ui/input";
 import Table from "../../component/shared/table/ui/table";
@@ -8,21 +9,45 @@ import Thead from "../../component/shared/table/ui/thead";
 import Tr from "../../component/shared/table/ui/tr";
 
 import SearchIcon from "@mui/icons-material/Search";
-import { useGetAuterQuery } from "../../api/books/books";
+import { useAddAuthorMutation, useGetAuterQuery } from "../../api/books/books";
 import Loader from "../../component/loader/loader";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import Icon from "../../component/shared/icon/ui/icon";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
-import { IconButton } from "@mui/material";
 import ActionButton from "../../component/action-buttom/ui/action-button";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+
+import * as yup from "yup";
+import Popup from "../../component/popup/ui/popup";
+
+import { toastStatus } from "../../utils/Toastify/toastify";
 
 const Author = () => {
   const { data: getAuther, isLoading } = useGetAuterQuery({});
-  console.log({ getAuther });
-  const handleClick = () =>{
-    
-  }
+  const [addAuthor, { isSuccess, isError }] = useAddAuthorMutation();
+  const handleClick = () => {};
+
+  const personSchema = yup.object().shape({
+    name: yup
+      .string()
+      .matches(/^[a-zA-Z ]*$/, "Must be character")
+      .max(40, "Must be less than 40")
+      .required("This field is required"),
+  });
+
+  const [popup, setPopup] = useState(false);
+  const handleOpenPopup = () => {
+    setPopup((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      toastStatus("isSuccess", "Added successfully");
+    } else if (isError) {
+      toastStatus("isError", "Something went wrong");
+    }
+  }, [isSuccess, addAuthor]);
+
   return (
     <>
       {isLoading ? (
@@ -51,7 +76,7 @@ const Author = () => {
             </div>
             <Button
               className={"add"}
-              buttonText={"Add Book"}
+              buttonText={"Add Author"}
               width={"fit-content"}
               padding={"8px 30px"}
               margin={"0px"}
@@ -60,46 +85,43 @@ const Author = () => {
               bgHover={"bg-hover-color"}
               color={"#fff"}
               fontSize={"16px"}
-              onClick={() => {
-                console.log("");
-              }}
+              onClick={handleOpenPopup}
             />
           </div>
-          <div className="md:w-[100%] my-[20px] overflow-x-auto">
             <Table width="100%">
               <Thead>
                 <Tr>
                   <Th
-                    text={"Auther"}
+                    text={"Author"}
                     color={"#fff"}
                     fontSize={"15px"}
                     fontWeight={"600"}
                     padding={"10px 15px"}
                     margin={"0px"}
                     textAlign={"center"}
-                    bgColor={"#0d6289"}
+                    bgColor={"bg-main-color"}
                     className={"auther"}
                   />
                   <Th
-                    text={"Auther's Books"}
+                    text={"Author's Books"}
                     color={"#fff"}
                     fontSize={"15px"}
                     fontWeight={"600"}
                     padding={"10px 15px"}
                     margin={"0px"}
                     textAlign={"center"}
-                    bgColor={"#0d6289"}
+                    bgColor={"bg-main-color"}
                     className={"autherBook"}
                   />
                   <Th
                     text={"Actions"}
-                    color={"#333"}
+                    color={"#fff"}
                     fontSize={"15px"}
                     fontWeight={"600"}
                     padding={"10px 15px"}
                     margin={"0px"}
                     textAlign={"center"}
-                    bgColor={"#fff"}
+                    bgColor={"bg-main-color"}
                     className={"icons"}
                   />
                 </Tr>
@@ -126,15 +148,21 @@ const Author = () => {
                         margin={""}
                         textAlign={""}
                       >
-                        <select className="w-full h-full p-[10px] border border-[#ccc]">
-                          <option disabled selected>
-                            {" "}
-                            See The Books{" "}
-                          </option>
-                          <option> Obada Kahlous </option>
-                          <option> Obada Kahlous </option>
-                          <option> Obada Kahlous </option>
-                        </select>
+                        <>
+                          {item.books?.length > 0 ? (
+                            <select className="w-full h-full p-[10px] border border-[#ccc]">
+                              <option disabled selected>
+                                {" "}
+                                See The Books{" "}
+                              </option>
+                              {item.books?.map((book: any, key: any) => (
+                                <option key={key}> {book.title} </option>
+                              ))}
+                            </select>
+                          ) : (
+                            "There is no books"
+                          )}
+                        </>
                       </Td>
                       <Td
                         color={"#333"}
@@ -166,7 +194,78 @@ const Author = () => {
                 ))}
               </Tbody>
             </Table>
-          </div>
+            <Popup
+              headerTitle={"Add-Author"}
+              translate={"translate(-50% , -50%)"}
+              onClick={handleOpenPopup}
+              width={"800px"}
+              height={"300px"}
+              bgClor={"#fff"}
+              borderRadius={"10px"}
+              top={"50%"}
+              left={"50%"}
+              right={"0"}
+              bottom={"0"}
+              isOpen={popup}
+              paddingBodyBottom={"0px"}
+              className="add-author"
+              zIndex="1002"
+            >
+              <div className="p-2">
+                <Formik
+                  validationSchema={personSchema}
+                  initialValues={{
+                    name: "",
+                  }}
+                  onSubmit={(values, { resetForm }) => {
+                    addAuthor(values);
+                    resetForm();
+                  }}
+                >
+                  <Form>
+                    <div className="my-[10px]">
+                      <Field
+                        as={Input}
+                        className={"author-name"}
+                        name={"name"}
+                        placeholder={"Author name"}
+                        id={"Author"}
+                        width={"100%"}
+                        margin={"10px 0px"}
+                        padding={"6px 10px"}
+                        borderradius={"5px"}
+                        border={"1px solid #ccc"}
+                        bgcolor={"transparent"}
+                        color={"#333"}
+                        fontSize={"18px"}
+                        lable={"Author Name"}
+                        type={"text"}
+                      />
+                      <ErrorMessage
+                        name={"name"}
+                        render={(msg) => (
+                          <p className="text-[red] text-[18px]">{msg}</p>
+                        )}
+                      />
+                      <div className="flex justify-center items-center mt-[10px] mb-[30px]">
+                        <Button
+                          className={"add-author"}
+                          buttonText={"Submit"}
+                          padding={"8px 30px"}
+                          margin={"10px 0px"}
+                          borderRadius={"30px"}
+                          bgColor={"bg-main-color"}
+                          bgHover={"bg-hover-color"}
+                          color={"#fff"}
+                          fontSize={"16px"}
+                          width={"200px"}
+                        />
+                      </div>
+                    </div>
+                  </Form>
+                </Formik>
+              </div>
+            </Popup>
         </div>
       )}
     </>

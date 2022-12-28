@@ -4,10 +4,11 @@ import { NavProps } from "../data-access/nav";
 const Nav: React.FC<NavProps> = ({ ...props }) => {
   return (
     <>
-      <nav className={`${props.className}-nav bg-main-color`}>{props.children}</nav>
+      <nav className={`${props.className}-nav ${props.bgColor}`}>{props.children}</nav>
       <style>
         {`
                 .${props.className}-nav{
+                    position : ${props.position};
                     width : ${props.width};
                     height : ${props.height};
                     padding : ${props.padding};

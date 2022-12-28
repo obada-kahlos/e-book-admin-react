@@ -6,8 +6,10 @@ export interface NavProps {
   padding: string;
   margin: string;
   className: string;
+  bgColor: string;
   borderRightColor?: string;
   borderRightStyle?: string;
   borderRightWidth?: string;
+  position?: string;
   children: ReactElement;
 }

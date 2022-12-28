@@ -53,7 +53,7 @@ const Layout = () => {
 
   return (
     <>
-      <div className="lg:grid grid-cols-12 gap-0">
+      <div className="lg:grid grid-cols-12 gap-0 ">
         <div
           className={`transition-[0.5s] xl:col-span-2 col-span-3 ${
             showNav ? "show-aside" : "hide-aside"
@@ -68,6 +68,7 @@ const Layout = () => {
             borderRightStyle={asideData.Nav.borderRightStyle}
             borderRightWidth={asideData.Nav.borderRightWidth}
             borderRightColor={asideData.Nav.borderRightColor}
+            bgColor="bg-main-color"
           >
             <>
               <Link to="/dashbord/info">
@@ -75,7 +76,7 @@ const Layout = () => {
                   className="flex gap-2 justify-start items-center px-4 py-4"
                   onClick={handlerShowNav}
                 >
-                  <Icon icon={<SpeedIcon sx={{color : '#fff'}}/>} />
+                  <Icon icon={<SpeedIcon sx={{ color: "#fff" }} />} />
                   <li className="text-[#fff] "> Dashboard </li>
                 </div>
               </Link>
@@ -94,7 +95,11 @@ const Layout = () => {
                   className="transition-[0.4s] rounded-[4px] hover:bg-hover-color w-full flex justify-between items-center cursor-pointer px-[15px] py-[10px]"
                 >
                   <div className="flex items-center gap-[10px]">
-                    <Icon icon={<SegmentIcon fontSize="medium" sx={{color : '#fff'}}/>} />
+                    <Icon
+                      icon={
+                        <SegmentIcon fontSize="medium" sx={{ color: "#fff" }} />
+                      }
+                    />
                     <Button
                       className={"frop-down"}
                       buttonText={"Products"}
@@ -110,9 +115,15 @@ const Layout = () => {
                   <Icon
                     icon={
                       bookDropWoen ? (
-                        <ArrowDropUpIcon fontSize="medium" sx={{color : '#fff'}}/>
+                        <ArrowDropUpIcon
+                          fontSize="medium"
+                          sx={{ color: "#fff" }}
+                        />
                       ) : (
-                        <ArrowDropDownIcon fontSize="medium" sx={{color : '#fff'}}/>
+                        <ArrowDropDownIcon
+                          fontSize="medium"
+                          sx={{ color: "#fff" }}
+                        />
                       )
                     }
                   />
@@ -185,9 +196,33 @@ const Layout = () => {
                   }
                 />
                 <Avatar src="./not-found.png" />
-                <span className="text-slate-300 md:text-[18px] text-[14px]"> obada Kahlous </span>
+                <span className="text-slate-300 md:text-[18px] text-[14px]">
+                  obada Kahlous
+                </span>
               </div>
             </Link>
+            {/* <div className="drop-down-menu-container">
+              <Nav
+                width={"200px"}
+                height={"200px"}
+                padding={"0px 0px"}
+                margin={"0px"}
+                className={"dropDownMenu"}
+                bgColor="bg-[red]"
+              >
+                <Ul margin={""} padding={""} className={""}>
+                  <Li
+                    href={""}
+                    text={""}
+                    fontSize={""}
+                    color={""}
+                    padding={""}
+                    margin={""}
+                    className="logout"
+                  ></Li>
+                </Ul>
+              </Nav>
+            </div> */}
           </div>
           <div className="h-[calc(100vh-70px)] overflow-y-auto">
             <Outlet />
@@ -224,6 +259,16 @@ const Layout = () => {
       </div>
       <style>
         {`
+          div.drop-down-menu-container{
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            animation: drop 0.5s
+          }
+          @keyframes drop {
+            from {transform: translateY(-30px);}
+            to {transform: translateY(0px)}
+          }
           @media(max-width : 1024px){
             .show-aside{
               position : fixed;

@@ -29,6 +29,7 @@ const Profile = () => {
             width={"250px"}
             height={"250px"}
             borderRaduis={"50%"}
+            border={'border-[5px] border-main-color'}
           />
         ) : (
           <Avatar
@@ -37,10 +38,8 @@ const Profile = () => {
           />
         )}
 
-        <label htmlFor="add" className="absolute bottom-[10px] right-[25px]">
-          {/* <IconButton > */}
-          <Icon icon={<CameraAltIcon />} />
-          {/* </IconButton> */}
+        <label htmlFor="add" className="absolute bottom-[25px] right-[25px] w-[25px] h-[25px] rounded-full cursor-pointer">
+              <Icon icon={<CameraAltIcon sx={{color : '#333'}}/>} />
         </label>
       </div>
 
@@ -60,7 +59,6 @@ const Profile = () => {
           bgHover={"bg-hover-color"}
         />
       </div>
-
       <input hidden type={"file"} id="add" onChange={onUploadFile} />
     </div>
   );

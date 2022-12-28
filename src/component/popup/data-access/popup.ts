@@ -2,9 +2,7 @@ import { ReactElement, ReactEventHandler } from "react";
 import { IconProps } from "../../shared/icon/data-access/icon";
 
 export interface PopupProps extends IconProps {
-  header: {
-    title: string;
-  };
+  headerTitle:string;
   width: string;
   className: string;
   translate: string;

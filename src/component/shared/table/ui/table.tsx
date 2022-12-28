@@ -1,14 +1,14 @@
-import React from 'react'
-import { TableProps } from '../data-access/table'
+import React from "react";
+import { TableProps } from "../data-access/table";
 
-const Table : React.FC<TableProps> = ({...props}) => {
+const Table: React.FC<TableProps> = ({ ...props }) => {
   return (
     <>
-        <table style={{width : props.width}}>
-            {props.children}
-        </table>
+      <div className="md:w-[100%] my-[20px] h-[500px] overflow-auto">
+        <table style={{ width: props.width }}>{props.children}</table>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default Table
+export default Table;

@@ -5,20 +5,26 @@ const extendedApi = apiSlice.injectEndpoints({
     getDashbordInfo: builder.query({
       query: () => ({
         url : '/api/AdminBooks/GetCounts',
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-        },
+        method : 'GET'
       }),
+      providesTags: ['Author'],
     }),
     getAuter: builder.query({
       query: () => ({
         url : '/api/AdminAuthors/GetAllAuthors/get-all-authors',
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-        },
+        method : 'GET'
       }),
+      providesTags: ['Author'],
+    }),
+    addAuthor: builder.mutation({
+      query: (body) => ({
+        url: `/api/AdminAuthors/AddAuthor/add-author`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Author'],
     }),
   }),
 })
 
-export const { useGetDashbordInfoQuery , useGetAuterQuery } = extendedApi
+export const { useGetDashbordInfoQuery , useGetAuterQuery , useAddAuthorMutation } = extendedApi

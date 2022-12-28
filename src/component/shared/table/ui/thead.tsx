@@ -7,10 +7,13 @@ const Thead: React.FC<TheadProps> = ({ ...props }) => {
       <thead>{props.children}</thead>
       <style>
         {`
+        thead{
           position: sticky;
           top: 0;
-          left: 0;
-          width: 100%;  
+          z-index: 10;
+          width: 100%;
+          border : 1px solid #ccc;
+        }
         `}
       </style>
     </>

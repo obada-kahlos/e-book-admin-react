@@ -2,6 +2,7 @@ import { IconButton } from "@mui/material";
 import React from "react";
 import Icon from "../../shared/icon/ui/icon";
 import { PopupProps } from "../data-access/popup";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Popup: React.FC<PopupProps> = ({ ...props }) => {
   return (
@@ -9,15 +10,30 @@ const Popup: React.FC<PopupProps> = ({ ...props }) => {
       {props.isOpen && (
         <>
           <div className={`${props.className}-popup-container`}>
-            {props.header.title ?
+            {props.headerTitle ? (
               <div className="pupup-header">
-                <p> {props.header.title} </p>
-                <IconButton onClick={props.onClick}><Icon icon={props.icon} className={'popup-close-icon'}/></IconButton>
-              </div> : ''            
-            }
+                <p> {props.headerTitle} </p>
+                <IconButton color="primary" onClick={props.onClick}>
+                  <Icon
+                    icon={
+                      <CloseIcon
+                        sx={{
+                          fontSize: "24px",
+                          cursor: "pointer",
+                          color: "#726c6c",
+                        }}
+                      />
+                    }
+                    className={"popup-close-icon"}
+                  />
+                </IconButton>
+              </div>
+            ) : (
+              ""
+            )}
             <div className="pupup-body">{props.children}</div>
           </div>
-          <div className="layout" onClick={props.onClick}></div>
+          <div className="overlay" onClick={props.onClick}></div>
           <style>
             {`
                 body{
@@ -54,7 +70,6 @@ const Popup: React.FC<PopupProps> = ({ ...props }) => {
                     align-items : center;
                     padding : 15px 10px;
                     border-bottom : 1px solid #ccc;
-
                 }
                 .${props.className}-popup-container .pupup-body{
                     overflow: hidden;
@@ -75,7 +90,7 @@ const Popup: React.FC<PopupProps> = ({ ...props }) => {
                     padding-bottom : 60px;
                 }
               }
-                .layout{
+                .overlay{
                     position : fixed;
                     top : 0;
                     left : 0;

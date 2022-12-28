@@ -57,11 +57,15 @@ const Books = () => {
       .required("This field is required"),
     numberofpages: yup
       .string()
-      .max(20, "max length is 20")
+      .matches(/[1-9]/ , 'Just Number')
       .required("This field is required"),
     description: yup
       .string()
       .max(250, "Must be less than 250")
+      .required("This field is required"),
+    price: yup
+      .string()
+      .matches(/[1-9]/ , 'Just Number')
       .required("This field is required"),
   });
 
@@ -77,10 +81,9 @@ const Books = () => {
     }
   };
 
-  const handleClick = () =>{
-    console.log('s');
-    
-  }
+  const handleClick = () => {
+    console.log("s");
+  };
 
   return (
     <div className="my-[30px] sm:p-4 px-2">
@@ -131,7 +134,7 @@ const Books = () => {
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"center"}
-                bgColor={"#0d6289"}
+                bgColor={"bg-main-color"}
                 className={"booksName"}
               />
               <Th
@@ -142,7 +145,7 @@ const Books = () => {
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"center"}
-                bgColor={"#0d6289"}
+                bgColor={"bg-main-color"}
                 className={"booksName"}
               />
               <Th
@@ -153,7 +156,7 @@ const Books = () => {
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"center"}
-                bgColor={"#0d6289"}
+                bgColor={"bg-main-color"}
                 className={"autherName"}
               />
               <Th
@@ -164,7 +167,7 @@ const Books = () => {
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"center"}
-                bgColor={"#0d6289"}
+                bgColor={"bg-main-color"}
                 className={"bla"}
               />
               <Th
@@ -175,7 +178,7 @@ const Books = () => {
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"center"}
-                bgColor={"#0d6289"}
+                bgColor={"bg-main-color"}
                 className={"puplisher"}
               />
               <Th
@@ -186,7 +189,7 @@ const Books = () => {
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"center"}
-                bgColor={"#0d6289"}
+                bgColor={"bg-main-color"}
                 className={"price"}
               />
               <Th
@@ -281,14 +284,14 @@ const Books = () => {
                 margin={"0px"}
                 textAlign={"right"}
               >
-               <ActionButton
+                <ActionButton
                   deleteIcon={{
                     icon: <DeleteOutlineOutlinedIcon sx={{ color: "#333" }} />,
                     onClick: handleClick,
                   }}
                   editIcon={{
-                    icon : <ModeEditOutlinedIcon sx={{ color: "#333" }} />,
-                    onClick : handleClick
+                    icon: <ModeEditOutlinedIcon sx={{ color: "#333" }} />,
+                    onClick: handleClick,
                   }}
                 />
               </Td>
@@ -377,8 +380,8 @@ const Books = () => {
                     onClick: handleClick,
                   }}
                   editIcon={{
-                    icon : <ModeEditOutlinedIcon sx={{ color: "#333" }} />,
-                    onClick : handleClick
+                    icon: <ModeEditOutlinedIcon sx={{ color: "#333" }} />,
+                    onClick: handleClick,
                   }}
                 />
               </Td>
@@ -461,14 +464,14 @@ const Books = () => {
                 margin={"0px"}
                 textAlign={"right"}
               >
-               <ActionButton
+                <ActionButton
                   deleteIcon={{
                     icon: <DeleteOutlineOutlinedIcon sx={{ color: "#333" }} />,
                     onClick: handleClick,
                   }}
                   editIcon={{
-                    icon : <ModeEditOutlinedIcon sx={{ color: "#333" }} />,
-                    onClick : handleClick
+                    icon: <ModeEditOutlinedIcon sx={{ color: "#333" }} />,
+                    onClick: handleClick,
                   }}
                 />
               </Td>
@@ -485,14 +488,7 @@ const Books = () => {
         />
       </div>
       <Popup
-        header={{
-          title: "Add-Book",
-        }}
-        icon={
-          <CloseIcon
-            sx={{ fontSize: "24px", cursor: "pointer", color: "#726c6c" }}
-          />
-        }
+        headerTitle="Add Book"
         translate={"translate(-50% , -50%)"}
         onClick={handleOpenPopup}
         width={"800px"}
@@ -517,11 +513,13 @@ const Books = () => {
               publisher: "",
               numberofpages: "",
               description: "",
+              price : "",
               image: uploadedImage,
             }}
             onSubmit={(values) => {
               console.log(values);
             }}
+            validationSchema={personSchema}
           >
             {(values) => (
               <Form>
@@ -607,8 +605,8 @@ const Books = () => {
                       padding={"8px 30px"}
                       margin={"0px"}
                       borderRadius={"30px"}
-                      bgColor={"#0d6289"}
-                      bgHover={"#003f5c"}
+                      bgColor={"bg-main-color"}
+                      bgHover={"bg-hover-color"}
                       color={"#fff"}
                       fontSize={"16px"}
                       width={"40%"}
@@ -623,9 +621,7 @@ const Books = () => {
 
       {uploadedImage && (
         <Popup
-          header={{
-            title: "",
-          }}
+          headerTitle=""
           translate={""}
           width={"335px"}
           height={"200px"}
