@@ -22,16 +22,24 @@ import Button from "../../component/shared/button/ui/button";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import SegmentIcon from "@mui/icons-material/Segment";
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import LogoutIcon from '@mui/icons-material/Logout';
+import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
 const Layout = () => {
   const [showNav, setShowNav] = useState(false);
   const handlerShowNav = () => {
     setShowNav((prev) => !prev);
   };
 
-  const [bookDropWoen, setBookDropDown] = useState<boolean>(false);
+  const [bookDropDoen, setBookDropDown] = useState<boolean>(false);
   const handleOpenBookDropDown = () => {
     setBookDropDown((prev) => !prev);
   };
+
+  const [dropDown , setDropDown] = useState(false)  
+  const handleDropDown = () =>{
+    setDropDown((prev) => !prev)
+  }
 
   const asideData = {
     Nav: {
@@ -114,7 +122,7 @@ const Layout = () => {
                   </div>
                   <Icon
                     icon={
-                      bookDropWoen ? (
+                      bookDropDoen ? (
                         <ArrowDropUpIcon
                           fontSize="medium"
                           sx={{ color: "#fff" }}
@@ -129,7 +137,7 @@ const Layout = () => {
                   />
                 </div>
                 <>
-                  {bookDropWoen && (
+                  {bookDropDoen && (
                     <Ul
                       className="book-frop-down"
                       margin=""
@@ -145,7 +153,9 @@ const Layout = () => {
                           padding={item.padding}
                           margin={item.margin}
                           icon={<item.icon fontSize="medium" />}
+                          borderRadius={"4px"}
                           onClick={handlerShowNav}
+                          className={item.className}
                         />
                       ))}
                     </Ul>
@@ -162,7 +172,9 @@ const Layout = () => {
                       padding={item.padding}
                       margin={item.margin}
                       icon={<item.icon />}
+                      borderRadius={"4px"}
                       onClick={handlerShowNav}
+                      className={item.className}
                     />
                   ))}
                 </>
@@ -186,7 +198,7 @@ const Layout = () => {
               SmWidth={"80px"}
               className={"logo"}
             />
-            <Link to={"profile"}>
+            <div onClick={handleDropDown} className='cursor-pointer'>
               <div className="flex gap-2 items-center relative">
                 <Icon
                   icon={
@@ -200,29 +212,62 @@ const Layout = () => {
                   obada Kahlous
                 </span>
               </div>
-            </Link>
-            {/* <div className="drop-down-menu-container">
-              <Nav
-                width={"200px"}
-                height={"200px"}
-                padding={"0px 0px"}
-                margin={"0px"}
-                className={"dropDownMenu"}
-                bgColor="bg-[red]"
-              >
-                <Ul margin={""} padding={""} className={""}>
-                  <Li
-                    href={""}
-                    text={""}
-                    fontSize={""}
-                    color={""}
+            </div>
+            {
+              dropDown ?
+              <>
+                <div className="drop-down-menu-container">
+                  <Nav
+                    width={""}
+                    height={""}
                     padding={""}
                     margin={""}
-                    className="logout"
-                  ></Li>
-                </Ul>
-              </Nav>
-            </div> */}
+                    className={""}
+                    bgColor=""
+                  >
+                    <Ul margin={""} padding={""} className={""}>
+                      <Li
+                        href={"Profile"}
+                        text={"Profile"}
+                        fontSize={""}
+                        color={"#333"}
+                        padding={"15px 15px"}
+                        margin={"0px"}
+                        className="profile"
+                        borderRadius="0px"
+                        onClick={handleDropDown}
+                        icon={<PersonOutlineOutlinedIcon />}
+                      ></Li>
+                      <Li
+                        href={"/"}
+                        text={"Link"}
+                        fontSize={""}
+                        color={"#333"}
+                        padding={"15px 15px"}
+                        margin={"0px"}
+                        className="Link"
+                        borderRadius="0px"
+                        onClick={handleDropDown}
+                        icon={<InsertLinkOutlinedIcon />}
+                      ></Li>
+                      <Li
+                        href={"/"}
+                        text={"Logout"}
+                        fontSize={""}
+                        color={"#333"}
+                        padding={"15px 15px"}
+                        margin={"0px"}
+                        className="logout"
+                        borderRadius="0px"
+                        onClick={handleDropDown}
+                        icon={<LogoutIcon />}
+                      ></Li>
+                    </Ul>
+                  </Nav>
+                </div>
+                <div className="fixed top-0 left-0 w-full h-full bg-[rgba(255,255,255,0.1)]" onClick={handleDropDown}></div>
+              </>: null
+            }
           </div>
           <div className="h-[calc(100vh-70px)] overflow-y-auto">
             <Outlet />
@@ -261,8 +306,15 @@ const Layout = () => {
         {`
           div.drop-down-menu-container{
             position: absolute;
-            top: 70px;
+            top: 75px;
             right: 20px;
+            border-radius: 5px;
+            overflow : hidden;
+            width : 180px;
+            height : auto;
+            background-color: #fff;
+            z-index : 10001;
+            box-shadow : 0px 3px 20px 0px rgba(115,115,115,0.2) ,0px 3px 20px 0px rgba(115,115,115,0.2) ;
             animation: drop 0.5s
           }
           @keyframes drop {

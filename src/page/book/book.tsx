@@ -194,13 +194,13 @@ const Books = () => {
               />
               <Th
                 text={"Actions"}
-                color={"#333"}
+                color={"#fff"}
                 fontSize={"15px"}
                 fontWeight={"600"}
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"center"}
-                bgColor={"#fff"}
+                bgColor={"bg-main-color"}
                 className={"Actions"}
               />
             </Tr>

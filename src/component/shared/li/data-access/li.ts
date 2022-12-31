@@ -8,5 +8,7 @@ export interface LiProps extends IconProps {
   color: string;
   padding: string;
   margin: string;
+  className: string;
+  borderRadius: string;
   onClick? : ReactEventHandler
 }
