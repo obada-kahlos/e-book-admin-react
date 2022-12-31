@@ -14,7 +14,7 @@ import {
   useDeleteAuthorMutation,
   useGetAuterQuery,
   useUpdateAuthorMutation,
-} from "../../api/books/books";
+} from "../../api/author/author";
 import Loader from "../../component/loader/loader";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -31,7 +31,6 @@ const Author = () => {
   const { data: getAuther, isLoading } = useGetAuterQuery({});
   const [addAuthor, { isSuccess, isError, reset: resetAdd }] =
     useAddAuthorMutation();
-  const handleClick = () => {};
 
   const personSchema = yup.object().shape({
     authorName: yup

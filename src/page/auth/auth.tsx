@@ -1,6 +1,6 @@
 import { Formik, Form, Field } from "formik";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState , useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../../component/shared/button/ui/button";
 import Input from "../../component/shared/input/ui/input";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
@@ -9,13 +9,30 @@ import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 
 import registerTow from '../../assets/register-tow.jpg'
+import { useLoginMutation } from "../../api/auth/auth";
 
 
 const Auth = () => {
+
+  const navigate = useNavigate()
+
   const [isPassword, setIsPassWord] = useState(false);
   const handleShowPasswWord = () => {
     setIsPassWord((prev) => !prev);
   };
+
+  const [login , {isLoading ,data}] = useLoginMutation()
+  console.log(data);
+  localStorage.setItem('login' , data?.token)
+
+
+
+  useEffect(()=>{
+    if(data?.status === 202 && data?.token){
+      navigate('dashbord/info')
+    }
+  },[login , data])
+
   return (
     <>
       <div className="grid grid-cols-12">
@@ -32,18 +49,17 @@ const Auth = () => {
             <Formik
               initialValues={{
                 password: "",
-                username: "",
+                email: "",
               }}
               onSubmit={(values) => {
-                console.log(values);
+                login(values)
               }}
-              
             >
               <Form>
                 <Field
                   as={Input}
-                  placeholder={"Username"}
-                  id={"username"}
+                  placeholder={"email"}
+                  id={"email"}
                   width={"100%"}
                   margin={"20px 0px"}
                   padding={"10px 10px 10px 40px"}
@@ -52,13 +68,14 @@ const Auth = () => {
                   bgcolor={""}
                   color={"#333"}
                   fontSize={"18px"}
-                  lable={"Username"}
-                  name={"username"}
-                  className={"username"}
+                  lable={"email"}
+                  name={"email"}
+                  className={"email"}
                   type={"text"}
                   icon={<PersonOutlineOutlinedIcon sx={{ color: "#333" }} />}
                 />
-                <Input
+                <Field
+                  as={Input}
                   placeholder={"Password"}
                   id={"password"}
                   width={"100%"}
