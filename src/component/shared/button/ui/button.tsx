@@ -16,8 +16,9 @@ const Button: React.FC<ButtonProps> = ({ ...props }) => {
                 color : ${props.color};
                 font-size : ${props.fontSize};
                 border-radius : ${props.borderRadius};
+                border : ${props.border};
+                cursor : pointer;
                 transition : 0.4s;
-                // box-shadow: 0px 0px 20px 2px rgba(22, 134, 186, 0.251);
             }
             @media(max-width : 768px){
               .${props.className}-btn{

@@ -29,7 +29,7 @@ export const BooksData = [
     color: "#5b5a5a",
     fontsize: "16px",
     lable: "author",
-    className: 'author'
+    className: 'author-book'
   },
   {
     name: "publisher",

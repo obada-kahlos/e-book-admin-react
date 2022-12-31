@@ -12,5 +12,6 @@ export interface ButtonProps {
   color: string;
   fontSize: string;
   bgHover?: string;
+  border?: string;
   onClick?: ReactEventHandler;
 }

@@ -7,6 +7,7 @@ module.exports = {
       colors : {
         'main-color' : '#31588a',
         'hover-color' : '#638ccc',
+        'error' : '#CC1016',
         'secondary-colour' : '#b3b3b3',
       }
     },

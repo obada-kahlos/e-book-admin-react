@@ -192,7 +192,7 @@ const Layout = () => {
             <Image
               src={logo}
               alt="Logo"
-              width={"140px"}
+              width={"80px"}
               height={"80px"}
               borderRaduis={""}
               SmWidth={"80px"}
@@ -265,7 +265,7 @@ const Layout = () => {
                     </Ul>
                   </Nav>
                 </div>
-                <div className="fixed top-0 left-0 w-full h-full bg-[rgba(255,255,255,0.1)]" onClick={handleDropDown}></div>
+                <div className="fixed top-0 left-0 w-full h-full z-[999] bg-[rgba(255,255,255,0.1)]" onClick={handleDropDown}></div>
               </>: null
             }
           </div>

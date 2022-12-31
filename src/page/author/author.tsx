@@ -26,6 +26,7 @@ import Popup from "../../component/popup/ui/popup";
 
 import * as yup from "yup";
 import { toastStatus } from "../../utils/Toastify/toastify";
+import Alert from "../../component/alert/ui/alert";
 
 const Author = () => {
   const { data: getAuther, isLoading } = useGetAuterQuery({});
@@ -43,6 +44,7 @@ const Author = () => {
   const [popup, setPopup] = useState(false);
   const handleOpenPopup = () => {
     setPopup((prev) => !prev);
+    setGetAuthorInfo(null)
   };
 
   //// get author by id and update it
@@ -62,8 +64,15 @@ const Author = () => {
     useUpdateAuthorMutation();
 
   //// delete author
+  const [openAlert, setOpenAlert] = useState(false);
+  const [authorId, setAuthorId] = useState(null);
+  console.log(authorId);
   const [deleteAuthor, { isSuccess: isDeleted, reset: resetDelete }] =
     useDeleteAuthorMutation();
+  const handleDeleteAuthor = () => {
+    deleteAuthor(authorId);
+    setOpenAlert(false)
+  };
 
   useEffect(() => {
     if (isSuccess) {
@@ -96,6 +105,9 @@ const Author = () => {
       ) : (
         <div className="my-[30px] sm:p-4 px-2">
           <div className="flex justify-between items-end gap-4">
+            <Alert isOpen={openAlert} onClose={() => {setOpenAlert(false)}} 
+              onAction={() => {handleDeleteAuthor()}}
+            />
             <div className="w-8/12">
               <Input
                 className="search"
@@ -142,7 +154,7 @@ const Author = () => {
                   margin={"0px"}
                   textAlign={"center"}
                   bgColor={"bg-main-color"}
-                  className={"auther"}
+                  className={"auther-th"}
                 />
                 <Th
                   text={"Author's Books"}
@@ -174,7 +186,9 @@ const Author = () => {
                   if (search === "") {
                     return value;
                   } else if (
-                    value.name.toLowerCase().includes(search.toLocaleLowerCase())
+                    value.name
+                      .toLowerCase()
+                      .includes(search.toLocaleLowerCase())
                   ) {
                     return value;
                   }
@@ -232,8 +246,12 @@ const Author = () => {
                               />
                             ),
                             onClick: () => {
-                              deleteAuthor(item.id);
+                              setOpenAlert(true);
+                              setAuthorId(item.id);
                             },
+                            // onClick: () => {
+                            //   deleteAuthor(item.id);
+                            // },
                           }}
                           editIcon={{
                             icon: (
@@ -248,72 +266,6 @@ const Author = () => {
                     </>
                   </Tr>
                 ))}
-              {/* 
-              {getAuther?.map((item: any, key: any) => (
-                <Tr key={key}>
-                  <>
-                    <Td
-                      color={"#333"}
-                      fontSize={"15px"}
-                      fontWeight={"500"}
-                      padding={"10px 15px"}
-                      margin={"0px"}
-                      textAlign={"left"}
-                    >
-                      {item?.name}
-                    </Td>
-                    <Td
-                      color={""}
-                      fontSize={""}
-                      fontWeight={""}
-                      padding={""}
-                      margin={""}
-                      textAlign={""}
-                    >
-                      <>
-                        {item.books?.length > 0 ? (
-                          <select className="w-full h-full p-[10px] border border-[#ccc]">
-                            <option disabled selected>
-                              {" "}
-                              See The Books{" "}
-                            </option>
-                            {item.books?.map((book: any, key: any) => (
-                              <option key={key}> {book.title} </option>
-                            ))}
-                          </select>
-                        ) : (
-                          "There is no books"
-                        )}
-                      </>
-                    </Td>
-                    <Td
-                      color={"#333"}
-                      fontSize={"15px"}
-                      fontWeight={"500"}
-                      padding={"10px 15px"}
-                      margin={"0px"}
-                      textAlign={"left"}
-                    >
-                      <ActionButton
-                        deleteIcon={{
-                          icon: (
-                            <DeleteOutlineOutlinedIcon sx={{ color: "#333" }} />
-                          ),
-                          onClick: () => {
-                            deleteAuthor(item.id);
-                          },
-                        }}
-                        editIcon={{
-                          icon: <ModeEditOutlinedIcon sx={{ color: "#333" }} />,
-                          onClick: () => {
-                            updateHandler(item.id);
-                          },
-                        }}
-                      />
-                    </Td>
-                  </>
-                </Tr>
-              ))} */}
             </Tbody>
           </Table>
           <Popup
