@@ -20,9 +20,6 @@ const Nav: React.FC<NavProps> = ({ ...props }) => {
                     overflow-y :auto;
                     transition : 0.5s;
                 }
-                .${props.className}-nav a.active{
-                  background-color : red;
-                }
             `}
       </style>
     </>

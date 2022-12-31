@@ -9,7 +9,12 @@ import Thead from "../../component/shared/table/ui/thead";
 import Tr from "../../component/shared/table/ui/tr";
 
 import SearchIcon from "@mui/icons-material/Search";
-import { useAddAuthorMutation, useGetAuterQuery } from "../../api/books/books";
+import {
+  useAddAuthorMutation,
+  useDeleteAuthorMutation,
+  useGetAuterQuery,
+  useUpdateAuthorMutation,
+} from "../../api/books/books";
 import Loader from "../../component/loader/loader";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -17,21 +22,22 @@ import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
 import ActionButton from "../../component/action-buttom/ui/action-button";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 
-import * as yup from "yup";
 import Popup from "../../component/popup/ui/popup";
 
+import * as yup from "yup";
 import { toastStatus } from "../../utils/Toastify/toastify";
 
 const Author = () => {
   const { data: getAuther, isLoading } = useGetAuterQuery({});
-  const [addAuthor, { isSuccess, isError }] = useAddAuthorMutation();
+  const [addAuthor, { isSuccess, isError, reset: resetAdd }] =
+    useAddAuthorMutation();
   const handleClick = () => {};
 
   const personSchema = yup.object().shape({
-    name: yup
+    authorName: yup
       .string()
       .matches(/^[a-zA-Z ]*$/, "Must be character")
-      .max(40, "Must be less than 40")
+      .min(10, "Must be more than 10")
       .required("This field is required"),
   });
 
@@ -40,13 +46,49 @@ const Author = () => {
     setPopup((prev) => !prev);
   };
 
+  //// get author by id and update it
+  const [getAuthorInfo, setGetAuthorInfo] = useState<any>();
+  const getAuthorById = (id: number) => {
+    const selectAuthor = getAuther.find((item: any) => item.id === id);
+    setGetAuthorInfo((prev: any) => {
+      return { ...prev, ...selectAuthor };
+    });
+  };
+
+  const updateHandler = (id: number) => {
+    getAuthorById(id);
+    setPopup(true);
+  };
+  const [updateAuthor, { isSuccess: isUpdated, reset: resetUpdate }] =
+    useUpdateAuthorMutation();
+
+  //// delete author
+  const [deleteAuthor, { isSuccess: isDeleted, reset: resetDelete }] =
+    useDeleteAuthorMutation();
+
   useEffect(() => {
     if (isSuccess) {
       toastStatus("isSuccess", "Added successfully");
-    } else if (isError) {
+    }
+    if (isUpdated) {
+      toastStatus("isSuccess", "Updated successfully");
+    }
+    if (isError) {
       toastStatus("isError", "Something went wrong");
     }
-  }, [isSuccess, addAuthor]);
+    if (isDeleted) {
+      toastStatus("isDeleted", "Deleted successfully");
+    }
+    resetDelete();
+    resetUpdate();
+    resetAdd();
+  }, [isSuccess, addAuthor, deleteAuthor, isError, isDeleted, isUpdated]);
+
+  //// search
+  const [search, setSearch] = useState("");
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
 
   return (
     <>
@@ -72,6 +114,7 @@ const Author = () => {
                 color={"#5b5a5a"}
                 fontSize={"16px"}
                 lable={"search"}
+                onChange={handleChange}
               />
             </div>
             <Button
@@ -88,46 +131,56 @@ const Author = () => {
               onClick={handleOpenPopup}
             />
           </div>
-            <Table width="100%">
-              <Thead>
-                <Tr>
-                  <Th
-                    text={"Author"}
-                    color={"#fff"}
-                    fontSize={"15px"}
-                    fontWeight={"600"}
-                    padding={"10px 15px"}
-                    margin={"0px"}
-                    textAlign={"center"}
-                    bgColor={"bg-main-color"}
-                    className={"auther"}
-                  />
-                  <Th
-                    text={"Author's Books"}
-                    color={"#fff"}
-                    fontSize={"15px"}
-                    fontWeight={"600"}
-                    padding={"10px 15px"}
-                    margin={"0px"}
-                    textAlign={"center"}
-                    bgColor={"bg-main-color"}
-                    className={"autherBook"}
-                  />
-                  <Th
-                    text={"Actions"}
-                    color={"#fff"}
-                    fontSize={"15px"}
-                    fontWeight={"600"}
-                    padding={"10px 15px"}
-                    margin={"0px"}
-                    textAlign={"center"}
-                    bgColor={"bg-main-color"}
-                    className={"icons"}
-                  />
-                </Tr>
-              </Thead>
-              <Tbody>
-                {getAuther?.map((item: any, key: any) => (
+          <Table width="100%">
+            <Thead>
+              <Tr>
+                <Th
+                  text={"Author"}
+                  color={"#fff"}
+                  fontSize={"15px"}
+                  fontWeight={"600"}
+                  padding={"10px 15px"}
+                  margin={"0px"}
+                  textAlign={"center"}
+                  bgColor={"bg-main-color"}
+                  className={"auther"}
+                />
+                <Th
+                  text={"Author's Books"}
+                  color={"#fff"}
+                  fontSize={"15px"}
+                  fontWeight={"600"}
+                  padding={"10px 15px"}
+                  margin={"0px"}
+                  textAlign={"center"}
+                  bgColor={"bg-main-color"}
+                  className={"autherBook"}
+                />
+                <Th
+                  text={"Actions"}
+                  color={"#fff"}
+                  fontSize={"15px"}
+                  fontWeight={"600"}
+                  padding={"10px 15px"}
+                  margin={"0px"}
+                  textAlign={"center"}
+                  bgColor={"bg-main-color"}
+                  className={"icons"}
+                />
+              </Tr>
+            </Thead>
+            <Tbody>
+              {getAuther
+                ?.filter((value: any) => {
+                  if (search === "") {
+                    return value;
+                  } else if (
+                    value.name.toLowerCase().includes(search.toLocaleLowerCase())
+                  ) {
+                    return value;
+                  }
+                })
+                .map((item: any, key: any) => (
                   <Tr key={key}>
                     <>
                       <Td
@@ -179,93 +232,176 @@ const Author = () => {
                                 sx={{ color: "#333" }}
                               />
                             ),
-                            onClick: handleClick,
+                            onClick: () => {
+                              deleteAuthor(item.id);
+                            },
                           }}
                           editIcon={{
                             icon: (
                               <ModeEditOutlinedIcon sx={{ color: "#333" }} />
                             ),
-                            onClick: handleClick,
+                            onClick: () => {
+                              updateHandler(item.id);
+                            },
                           }}
                         />
                       </Td>
                     </>
                   </Tr>
                 ))}
-              </Tbody>
-            </Table>
-            <Popup
-              headerTitle={"Add-Author"}
-              translate={"translate(-50% , -50%)"}
-              onClick={handleOpenPopup}
-              width={"800px"}
-              height={"300px"}
-              bgClor={"#fff"}
-              borderRadius={"10px"}
-              top={"50%"}
-              left={"50%"}
-              right={"0"}
-              bottom={"0"}
-              isOpen={popup}
-              paddingBodyBottom={"0px"}
-              className="add-author"
-              zIndex="1002"
-            >
-              <div className="p-2">
-                <Formik
-                  validationSchema={personSchema}
-                  initialValues={{
-                    name: "",
-                  }}
-                  onSubmit={(values, { resetForm }) => {
-                    addAuthor(values);
-                    resetForm();
-                  }}
-                >
-                  <Form>
-                    <div className="my-[10px]">
-                      <Field
-                        as={Input}
-                        className={"author-name"}
-                        name={"name"}
-                        placeholder={"Author name"}
-                        id={"Author"}
-                        width={"100%"}
-                        margin={"10px 0px"}
-                        padding={"6px 10px"}
-                        borderradius={"5px"}
-                        border={"1px solid #ccc"}
-                        bgcolor={"transparent"}
-                        color={"#333"}
-                        fontSize={"18px"}
-                        lable={"Author Name"}
-                        type={"text"}
-                      />
-                      <ErrorMessage
-                        name={"name"}
-                        render={(msg) => (
-                          <p className="text-[red] text-[18px]">{msg}</p>
+              {/* 
+              {getAuther?.map((item: any, key: any) => (
+                <Tr key={key}>
+                  <>
+                    <Td
+                      color={"#333"}
+                      fontSize={"15px"}
+                      fontWeight={"500"}
+                      padding={"10px 15px"}
+                      margin={"0px"}
+                      textAlign={"left"}
+                    >
+                      {item?.name}
+                    </Td>
+                    <Td
+                      color={""}
+                      fontSize={""}
+                      fontWeight={""}
+                      padding={""}
+                      margin={""}
+                      textAlign={""}
+                    >
+                      <>
+                        {item.books?.length > 0 ? (
+                          <select className="w-full h-full p-[10px] border border-[#ccc]">
+                            <option disabled selected>
+                              {" "}
+                              See The Books{" "}
+                            </option>
+                            {item.books?.map((book: any, key: any) => (
+                              <option key={key}> {book.title} </option>
+                            ))}
+                          </select>
+                        ) : (
+                          "There is no books"
                         )}
+                      </>
+                    </Td>
+                    <Td
+                      color={"#333"}
+                      fontSize={"15px"}
+                      fontWeight={"500"}
+                      padding={"10px 15px"}
+                      margin={"0px"}
+                      textAlign={"left"}
+                    >
+                      <ActionButton
+                        deleteIcon={{
+                          icon: (
+                            <DeleteOutlineOutlinedIcon sx={{ color: "#333" }} />
+                          ),
+                          onClick: () => {
+                            deleteAuthor(item.id);
+                          },
+                        }}
+                        editIcon={{
+                          icon: <ModeEditOutlinedIcon sx={{ color: "#333" }} />,
+                          onClick: () => {
+                            updateHandler(item.id);
+                          },
+                        }}
                       />
-                      <div className="flex justify-center items-center mt-[10px] mb-[30px]">
-                        <Button
-                          className={"add-author"}
-                          buttonText={"Submit"}
-                          padding={"8px 30px"}
-                          margin={"10px 0px"}
-                          borderRadius={"30px"}
-                          bgColor={"bg-main-color"}
-                          bgHover={"bg-hover-color"}
-                          color={"#fff"}
-                          fontSize={"16px"}
-                          width={"200px"}
-                        />
-                      </div>
+                    </Td>
+                  </>
+                </Tr>
+              ))} */}
+            </Tbody>
+          </Table>
+          <Popup
+            headerTitle={"Add-Author"}
+            translate={"translate(-50% , -50%)"}
+            onClick={handleOpenPopup}
+            width={"800px"}
+            height={"300px"}
+            bgClor={"#fff"}
+            borderRadius={"10px"}
+            top={"50%"}
+            left={"50%"}
+            right={"0"}
+            bottom={"0"}
+            isOpen={popup}
+            paddingBodyBottom={"0px"}
+            className="add-author"
+            zIndex="1002"
+          >
+            <div className="p-2">
+              <Formik
+                validationSchema={personSchema}
+                initialValues={
+                  getAuthorInfo
+                    ? {
+                        authorName: getAuthorInfo?.name,
+                      }
+                    : {
+                        authorName: "",
+                      }
+                }
+                onSubmit={(values, { resetForm }) => {
+                  getAuthorInfo
+                    ? updateAuthor({
+                        authorName: values.authorName,
+                        id: getAuthorInfo?.id,
+                      })
+                    : addAuthor(values);
+                  setPopup(false);
+                  setGetAuthorInfo(null);
+                  resetForm();
+                }}
+              >
+                <Form>
+                  <div className="my-[10px]">
+                    <Field
+                      as={Input}
+                      className={"author-name"}
+                      name={"authorName"}
+                      placeholder={"Author name"}
+                      id={"Author"}
+                      width={"100%"}
+                      margin={"10px 0px"}
+                      padding={"6px 10px"}
+                      borderradius={"5px"}
+                      border={"1px solid #ccc"}
+                      bgcolor={"transparent"}
+                      color={"#333"}
+                      fontSize={"18px"}
+                      lable={"Author Name"}
+                      type={"text"}
+                    />
+                    <ErrorMessage
+                      name={"authorName"}
+                      render={(msg) => (
+                        <p className="text-[red] text-[18px]">{msg}</p>
+                      )}
+                    />
+                    <div className="flex justify-center items-center mt-[10px] mb-[30px]">
+                      <Button
+                        className={"add-author"}
+                        buttonText={getAuthorInfo ? "Update" : "Add"}
+                        padding={"8px 30px"}
+                        margin={"10px 0px"}
+                        borderRadius={"30px"}
+                        bgColor={"bg-main-color"}
+                        bgHover={"bg-hover-color"}
+                        color={"#fff"}
+                        fontSize={"16px"}
+                        width={"200px"}
+                      />
                     </div>
-                  </Form>
-                </Formik>
-              </div>
-            </Popup>
+                  </div>
+                </Form>
+              </Formik>
+            </div>
+          </Popup>
         </div>
       )}
     </>

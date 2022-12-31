@@ -10,9 +10,6 @@ const Ul: React.FC<UiProps> = ({ ...props }) => {
                 margin : ${props.margin};
                 padding : ${props.padding};
             }
-            .${props.className}-ul a.active{
-              background-color : red;
-            }
         `}
     </style>
   </>

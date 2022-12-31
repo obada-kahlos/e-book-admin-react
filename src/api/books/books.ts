@@ -24,7 +24,22 @@ const extendedApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Author'],
     }),
+    updateAuthor: builder.mutation({
+      query: (body) => ({
+        url: `/api/AdminAuthors/UpdateAuthor/update-author/${body.id}`,
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: ['Author'],
+    }),
+    deleteAuthor: builder.mutation({
+      query: (id) => ({
+        url: `/api/AdminAuthors/DeleteAuthor/delete-author/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Author'],
+    }),
   }),
 })
 
-export const { useGetDashbordInfoQuery , useGetAuterQuery , useAddAuthorMutation } = extendedApi
+export const { useGetDashbordInfoQuery , useGetAuterQuery , useAddAuthorMutation , useDeleteAuthorMutation , useUpdateAuthorMutation} = extendedApi

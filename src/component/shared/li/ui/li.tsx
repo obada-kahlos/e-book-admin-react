@@ -6,17 +6,15 @@ import { NavLink } from "react-router-dom";
 const Li: React.FC<LiProps> = ({ ...props }) => {
   return (
     <>
-      <NavLink
-        to={props.href}
-      >
-        <li className="transition-all aside-list hover:bg-hover-color" onClick={props.onClick}>
+      <li className="" onClick={props.onClick}>
+        <NavLink to={props.href} className={"aside-list"}>
           <Icon icon={props.icon} />
           <span> {props.text} </span>
-        </li>
-      </NavLink>
+        </NavLink>
+      </li>
       <style>
         {`
-            li.aside-list{
+            .aside-list{
                 color : ${props.color};
                 font-size : ${props.fontSize};
                 padding : ${props.padding};
@@ -28,6 +26,12 @@ const Li: React.FC<LiProps> = ({ ...props }) => {
                 gap: 10px;
                 border-radius : 4px;
                 transition : 0.4s;
+            }
+            .aside-list:hover{
+              background-color : #638ccc;
+          }
+            a.active{
+              background-color : #638ccc;
             }
         `}
       </style>

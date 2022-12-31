@@ -179,7 +179,7 @@ const Layout = () => {
           <div className="bg-main-color text-[white] h-[70px]  w-full p-2 px-8 flex justify-between items-center">
             <Image
               src={logo}
-              alt=""
+              alt="Logo"
               width={"140px"}
               height={"80px"}
               borderRaduis={""}
