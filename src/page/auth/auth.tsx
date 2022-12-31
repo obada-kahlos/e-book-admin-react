@@ -1,5 +1,5 @@
 import { Formik, Form, Field } from "formik";
-import React, { useState , useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../component/shared/button/ui/button";
 import Input from "../../component/shared/input/ui/input";
@@ -8,34 +8,39 @@ import HttpsOutlinedIcon from "@mui/icons-material/HttpsOutlined";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 
-import registerTow from '../../assets/register-tow.jpg'
+import registerTow from "../../assets/register-tow.jpg";
 import { useLoginMutation } from "../../api/auth/auth";
-
+import Loader from "../../component/loader/loader";
 
 const Auth = () => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [isPassword, setIsPassWord] = useState(false);
   const handleShowPasswWord = () => {
     setIsPassWord((prev) => !prev);
   };
 
-  const [login , {isLoading ,data}] = useLoginMutation()
+
+  const [login, { isLoading, data, isError , isSuccess}] = useLoginMutation();
+  const handleLogin = (values: {}) => {
+    login(values);
+  };
+  if(isSuccess) localStorage.setItem("login", data?.token);
+
   console.log(data);
-  localStorage.setItem('login' , data?.token)
+  
 
-
-
-  useEffect(()=>{
-    if(data?.status === 202 && data?.token){
-      navigate('dashbord/info')
+  useEffect(() => {
+    const getToken = localStorage.getItem("login");
+    if (getToken) {
+      navigate("dashbord/info");
     }
-  },[login , data])
+  }, [handleLogin]);
 
   return (
     <>
-      <div className="grid grid-cols-12">
+      {
+        isLoading ? <Loader /> : <div className="grid grid-cols-12">
         <div className="xl:col-span-6 lg:col-span-8 col-span-12 h-screen min-h-[600px] w-[100%] lg:px-20 sm:px-12 px-1 flex justify-center items-center flex-col bg-[#F6F7FC]">
           <div className="md:w-[70%] w-[100%]">
             <div className="mb-4">
@@ -52,7 +57,7 @@ const Auth = () => {
                 email: "",
               }}
               onSubmit={(values) => {
-                login(values)
+                handleLogin(values);
               }}
             >
               <Form>
@@ -113,11 +118,16 @@ const Auth = () => {
                   bgHover={"bg-hover-color"}
                 />
                 <div className="flex justify-between items-center">
-                  <p className="text-secondary-colour cursor-pointer font-bold"> Forgot Password </p>
-                  <p className="text-secondary-colour cursor-pointer font-bold"> Do't have an account!1
-                  <Link to='/dashbord/info'>
-                    <span className="text-main-color"> Create One</span>
-                  </Link> 
+                  <p className="text-secondary-colour cursor-pointer font-bold">
+                    {" "}
+                    Forgot Password{" "}
+                  </p>
+                  <p className="text-secondary-colour cursor-pointer font-bold">
+                    {" "}
+                    Do't have an account!1
+                    <Link to="/dashbord/info">
+                      <span className="text-main-color"> Create One</span>
+                    </Link>
                   </p>
                 </div>
               </Form>
@@ -128,6 +138,8 @@ const Auth = () => {
           <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.6)]"></div>
         </div>
       </div>
+      }
+      
       <style>
         {`
           .bg-image{

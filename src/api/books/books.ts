@@ -7,9 +7,16 @@ const extendedApi = apiSlice.injectEndpoints({
         url : '/api/AdminBooks/GetCounts',
         method : 'GET'
       }),
-      providesTags: ['Author'],
-    })
+      providesTags: ['Book'],
+    }),
+    getBooks: builder.query({
+      query: () => ({
+        url : '/api/AdminBooks/GetAllBook?PageNumber=1',
+        method : 'GET'
+      }),
+      providesTags: ['Book'],
+    }),
   }),
 })
 
-export const { useGetDashbordInfoQuery } = extendedApi
+export const { useGetDashbordInfoQuery , useGetBooksQuery} = extendedApi

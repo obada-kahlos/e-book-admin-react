@@ -27,6 +27,7 @@ import { IconButton } from "@mui/material";
 
 import testIamge from "../../assets/testing-image.jpg";
 import ActionButton from "../../component/action-buttom/ui/action-button";
+import { useGetBooksQuery } from "../../api/books/books";
 
 const Books = () => {
   // open popup
@@ -82,8 +83,12 @@ const Books = () => {
   };
 
   const handleClick = () => {
-    console.log("s");
   };
+
+  const {data : getBooks} = useGetBooksQuery({})
+  console.log({getBooks});
+  
+
 
   return (
     <div className="my-[30px] sm:p-4 px-2">
@@ -121,7 +126,6 @@ const Books = () => {
           onClick={handleOpenPopup}
         />
       </div>
-      <p className="text-center mt-[20px]"> PAGE : {page} </p>
       <div className="md:w-[100%] my-[20px] overflow-x-auto">
         <Table width="100%">
           <Thead>
@@ -160,7 +164,7 @@ const Books = () => {
                 className={"autherName"}
               />
               <Th
-                text={"bla"}
+                text={"Genre"}
                 color={"#fff"}
                 fontSize={"15px"}
                 fontWeight={"600"}
@@ -182,6 +186,17 @@ const Books = () => {
                 className={"puplisher"}
               />
               <Th
+                text={"Languages"}
+                color={"#fff"}
+                fontSize={"15px"}
+                fontWeight={"600"}
+                padding={"10px 15px"}
+                margin={"0px"}
+                textAlign={"center"}
+                bgColor={"bg-main-color"}
+                className={"languages"}
+              />
+              <Th
                 text={"Price"}
                 color={"#fff"}
                 fontSize={"15px"}
@@ -191,6 +206,39 @@ const Books = () => {
                 textAlign={"center"}
                 bgColor={"bg-main-color"}
                 className={"price"}
+              />
+              <Th
+                text={"Number Of pages"}
+                color={"#fff"}
+                fontSize={"15px"}
+                fontWeight={"600"}
+                padding={"10px 15px"}
+                margin={"0px"}
+                textAlign={"center"}
+                bgColor={"bg-main-color"}
+                className={"Number-Of-Pages"}
+              />
+              <Th
+                text={"Publication date"}
+                color={"#fff"}
+                fontSize={"15px"}
+                fontWeight={"600"}
+                padding={"10px 15px"}
+                margin={"0px"}
+                textAlign={"center"}
+                bgColor={"bg-main-color"}
+                className={"publication-date"}
+              />
+              <Th
+                text={"Description"}
+                color={"#fff"}
+                fontSize={"15px"}
+                fontWeight={"600"}
+                padding={"10px 15px"}
+                margin={"0px"}
+                textAlign={"center"}
+                bgColor={"bg-main-color"}
+                className={"description"}
               />
               <Th
                 text={"Actions"}
@@ -206,280 +254,144 @@ const Books = () => {
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td
-                color={""}
-                fontSize={""}
-                fontWeight={""}
-                padding={""}
-                margin={""}
-                textAlign={""}
-              >
-                <div className="flex items-center justify-center">
-                  <Image
-                    className={""}
-                    src={testIamge}
-                    alt={""}
-                    width={"80px"}
-                    height={"80px"}
-                    borderRaduis={""}
-                  />
-                </div>
-              </Td>
-              <Td
-                color={"#333"}
-                fontSize={"16px"}
-                fontWeight={""}
-                padding={""}
-                margin={""}
-                textAlign={"right"}
-              >
-                <span> ليطمئن قلبي </span>
-              </Td>
-              <Td
-                color={"#333"}
-                fontSize={"16px"}
-                fontWeight={""}
-                padding={""}
-                margin={""}
-                textAlign={"right"}
-              >
-                <span> ادهم شرقاوي </span>
-              </Td>
-              <Td
-                color={"#333"}
-                fontSize={"16px"}
-                fontWeight={""}
-                padding={""}
-                margin={""}
-                textAlign={"right"}
-              >
-                <span> دار الحافظ</span>
-              </Td>
-              <Td
-                color={"#333"}
-                fontSize={"16px"}
-                fontWeight={""}
-                padding={""}
-                margin={""}
-                textAlign={"right"}
-              >
-                <span> دار الحافظ</span>
-              </Td>
-              <Td
-                color={"#333"}
-                fontSize={"16px"}
-                fontWeight={""}
-                padding={""}
-                margin={""}
-                textAlign={"right"}
-              >
-                <span> 1600 S.P </span>
-              </Td>
-              <Td
-                color={"#333"}
-                fontSize={"15px"}
-                fontWeight={"500"}
-                padding={"10px 15px"}
-                margin={"0px"}
-                textAlign={"right"}
-              >
-                <ActionButton
-                  deleteIcon={{
-                    icon: <DeleteOutlineOutlinedIcon sx={{ color: "#333" }} />,
-                    onClick: handleClick,
-                  }}
-                  editIcon={{
-                    icon: <ModeEditOutlinedIcon sx={{ color: "#333" }} />,
-                    onClick: handleClick,
-                  }}
-                />
-              </Td>
-            </Tr>
-            <Tr>
-              <Td
-                color={""}
-                fontSize={""}
-                fontWeight={""}
-                padding={""}
-                margin={""}
-                textAlign={""}
-              >
-                <div className="flex items-center justify-center">
-                  <Image
-                    className={""}
-                    src={testIamge}
-                    alt={""}
-                    width={"80px"}
-                    height={"80px"}
-                    borderRaduis={""}
-                  />
-                </div>
-              </Td>
-              <Td
-                color={"#333"}
-                fontSize={"16px"}
-                fontWeight={""}
-                padding={""}
-                margin={""}
-                textAlign={"right"}
-              >
-                <span> ليطمئن قلبي </span>
-              </Td>
-              <Td
-                color={"#333"}
-                fontSize={"16px"}
-                fontWeight={""}
-                padding={""}
-                margin={""}
-                textAlign={"right"}
-              >
-                <span> ادهم شرقاوي </span>
-              </Td>
-              <Td
-                color={"#333"}
-                fontSize={"16px"}
-                fontWeight={""}
-                padding={""}
-                margin={""}
-                textAlign={"right"}
-              >
-                <span> دار الحافظ</span>
-              </Td>
-              <Td
-                color={"#333"}
-                fontSize={"16px"}
-                fontWeight={""}
-                padding={""}
-                margin={""}
-                textAlign={"right"}
-              >
-                <span> دار الحافظ</span>
-              </Td>
-              <Td
-                color={"#333"}
-                fontSize={"16px"}
-                fontWeight={""}
-                padding={""}
-                margin={""}
-                textAlign={"right"}
-              >
-                <span> 1600 S.P </span>
-              </Td>
-              <Td
-                color={"#333"}
-                fontSize={"15px"}
-                fontWeight={"500"}
-                padding={"10px 15px"}
-                margin={"0px"}
-                textAlign={"right"}
-              >
-                <ActionButton
-                  deleteIcon={{
-                    icon: <DeleteOutlineOutlinedIcon sx={{ color: "#333" }} />,
-                    onClick: handleClick,
-                  }}
-                  editIcon={{
-                    icon: <ModeEditOutlinedIcon sx={{ color: "#333" }} />,
-                    onClick: handleClick,
-                  }}
-                />
-              </Td>
-            </Tr>
-            <Tr>
-              <Td
-                color={""}
-                fontSize={""}
-                fontWeight={""}
-                padding={""}
-                margin={""}
-                textAlign={""}
-              >
-                <div className="flex items-center justify-center">
-                  <Image
-                    className={""}
-                    src={testIamge}
-                    alt={""}
-                    width={"80px"}
-                    height={"80px"}
-                    borderRaduis={""}
-                  />
-                </div>
-              </Td>
-              <Td
-                color={"#333"}
-                fontSize={"16px"}
-                fontWeight={""}
-                padding={""}
-                margin={""}
-                textAlign={"right"}
-              >
-                <span> ليطمئن قلبي </span>
-              </Td>
-              <Td
-                color={"#333"}
-                fontSize={"16px"}
-                fontWeight={""}
-                padding={""}
-                margin={""}
-                textAlign={"right"}
-              >
-                <span> ادهم شرقاوي </span>
-              </Td>
-              <Td
-                color={"#333"}
-                fontSize={"16px"}
-                fontWeight={""}
-                padding={""}
-                margin={""}
-                textAlign={"right"}
-              >
-                <span> دار الحافظ</span>
-              </Td>
-              <Td
-                color={"#333"}
-                fontSize={"16px"}
-                fontWeight={""}
-                padding={""}
-                margin={""}
-                textAlign={"right"}
-              >
-                <span> دار الحافظ</span>
-              </Td>
-              <Td
-                color={"#333"}
-                fontSize={"16px"}
-                fontWeight={""}
-                padding={""}
-                margin={""}
-                textAlign={"right"}
-              >
-                <span> 1600 S.P </span>
-              </Td>
-              <Td
-                color={"#333"}
-                fontSize={"15px"}
-                fontWeight={"500"}
-                padding={"10px 15px"}
-                margin={"0px"}
-                textAlign={"right"}
-              >
-                <ActionButton
-                  deleteIcon={{
-                    icon: <DeleteOutlineOutlinedIcon sx={{ color: "#333" }} />,
-                    onClick: handleClick,
-                  }}
-                  editIcon={{
-                    icon: <ModeEditOutlinedIcon sx={{ color: "#333" }} />,
-                    onClick: handleClick,
-                  }}
-                />
-              </Td>
-            </Tr>
+            {
+              getBooks?.map((item : any , key : any)=>(
+                <Tr>
+                  <Td
+                    color={""}
+                    fontSize={""}
+                    fontWeight={""}
+                    padding={""}
+                    margin={""}
+                    textAlign={""}
+                  >
+                    <div className="flex items-center justify-center">
+                      <Image
+                        className={""}
+                        src={testIamge}
+                        alt={""}
+                        width={"80px"}
+                        height={"80px"}
+                        borderRaduis={""}
+                      />
+                    </div>
+                  </Td>
+                  <Td
+                    color={"#333"}
+                    fontSize={"16px"}
+                    fontWeight={""}
+                    padding={""}
+                    margin={""}
+                    textAlign={"left"}
+                  >
+                    <span> {item?.title} </span>
+                  </Td>
+                  <Td
+                    color={"#333"}
+                    fontSize={"16px"}
+                    fontWeight={""}
+                    padding={""}
+                    margin={""}
+                    textAlign={"left"}
+                  >
+                    <span> {item.title} </span>
+                  </Td>
+                  <Td
+                    color={"#333"}
+                    fontSize={"16px"}
+                    fontWeight={""}
+                    padding={""}
+                    margin={""}
+                    textAlign={"left"}
+                  >
+                    <span> {item.genres.name}</span>
+                  </Td>
+                  <Td
+                    color={"#333"}
+                    fontSize={"16px"}
+                    fontWeight={""}
+                    padding={""}
+                    margin={""}
+                    textAlign={"left"}
+                  >
+                    <span> {item.publishers} </span>
+                  </Td>
+                  <Td
+                    color={"#333"}
+                    fontSize={"16px"}
+                    fontWeight={""}
+                    padding={""}
+                    margin={""}
+                    textAlign={"left"}
+                  >
+                    <span> {item.languages} </span>
+                  </Td>
+                  <Td
+                    color={"#333"}
+                    fontSize={"16px"}
+                    fontWeight={""}
+                    padding={""}
+                    margin={""}
+                    textAlign={"left"}
+                  >
+                    <span> {item.price} </span>
+                  </Td>
+                  <Td
+                    color={"#333"}
+                    fontSize={"16px"}
+                    fontWeight={""}
+                    padding={""}
+                    margin={""}
+                    textAlign={"left"}
+                  >
+                    <span> {item.numberPages} </span>
+                  </Td>
+                  <Td
+                    color={"#333"}
+                    fontSize={"16px"}
+                    fontWeight={""}
+                    padding={""}
+                    margin={""}
+                    textAlign={"left"}
+                  >
+                    <span> {item.publicationDate.slice(0,10)} </span>
+                  </Td>
+                  <Td
+                    color={"#333"}
+                    fontSize={"16px"}
+                    fontWeight={""}
+                    padding={""}
+                    margin={""}
+                    textAlign={"left"}
+                  >
+                    <span> {item.description.slice(0,60)} </span>
+                  </Td>
+                  <Td
+                    color={"#333"}
+                    fontSize={"15px"}
+                    fontWeight={"500"}
+                    padding={"10px 15px"}
+                    margin={"0px"}
+                    textAlign={"left"}
+                  >
+                    <ActionButton
+                      deleteIcon={{
+                        icon: <DeleteOutlineOutlinedIcon sx={{ color: "#333" }} />,
+                        onClick: handleClick,
+                      }}
+                      editIcon={{
+                        icon: <ModeEditOutlinedIcon sx={{ color: "#333" }} />,
+                        onClick: handleClick,
+                      }}
+                    />
+                  </Td>
+                </Tr>
+              ))
+            }
           </Tbody>
         </Table>
       </div>
-      <div className="flex justify-center items-center my-[10px] ">
+      <div className="flex justify-center items-center">
         <Pagination
           count={10}
           page={page}
@@ -517,7 +429,6 @@ const Books = () => {
               image: uploadedImage,
             }}
             onSubmit={(values) => {
-              console.log(values);
             }}
             validationSchema={personSchema}
           >

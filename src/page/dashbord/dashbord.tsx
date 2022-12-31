@@ -9,7 +9,6 @@ import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import CreateIcon from '@mui/icons-material/Create';
 const Dashbord = () => {
   const { data: booksData , isLoading } = useGetDashbordInfoQuery({});
-  console.log({booksData});
   
   const CartInfo: InfoCartProps[] = [
     {
@@ -69,7 +68,7 @@ const Dashbord = () => {
          isLoading ? <Loader /> :  
         <div className="my-[30px] sm:p-4 sm:flex gap-0 items-center flex-wrap">
           {CartInfo.map((item, key) => (
-            <div className="sm:w-[calc(100%/2)]">
+            <div className="sm:w-[calc(100%/2)]" key={key}>
               <InfoCart
                 className={`${item.className}-${key}`}
                 bgColor={item.bgColor}

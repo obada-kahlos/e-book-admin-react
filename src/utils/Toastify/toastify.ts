@@ -14,7 +14,7 @@ export const toastStatus = (status: string, message: string) => {
         theme: "light",
       });
     case "isError":
-      return toast.error("message", {
+      return toast.error(message, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,

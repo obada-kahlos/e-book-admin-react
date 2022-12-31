@@ -38,6 +38,7 @@ const Author = () => {
       .string()
       .matches(/^[a-zA-Z ]*$/, "Must be character")
       .min(10, "Must be more than 10")
+      .max(30, "Must be less than 30")
       .required("This field is required"),
   });
 
@@ -66,7 +67,6 @@ const Author = () => {
   //// delete author
   const [openAlert, setOpenAlert] = useState(false);
   const [authorId, setAuthorId] = useState(null);
-  console.log(authorId);
   const [deleteAuthor, { isSuccess: isDeleted, reset: resetDelete }] =
     useDeleteAuthorMutation();
   const handleDeleteAuthor = () => {
@@ -114,7 +114,7 @@ const Author = () => {
                 icon={<SearchIcon sx={{ color: "#5b5a5a" }} />}
                 name={"search"}
                 type={"text"}
-                placeholder={"What are you looking for..."}
+                placeholder={"Find Author"}
                 id={"search"}
                 width={"80%"}
                 margin={"0px"}

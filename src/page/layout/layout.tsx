@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Li from "../../component/shared/li/ui/li";
 import Nav from "../../component/shared/nav/ui/nav";
 import Ul from "../../component/shared/ul/ui/ul";
 import Icon from "../../component/shared/icon/ui/icon";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import Divider from "../../component/shared/divider/ui/divider";
 import { Avatar } from "@mui/material";
 import FloatingButton from "../../component/shared/floating-button/ui/floating-button";
@@ -22,10 +22,12 @@ import Button from "../../component/shared/button/ui/button";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import SegmentIcon from "@mui/icons-material/Segment";
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import LogoutIcon from '@mui/icons-material/Logout';
-import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import LogoutIcon from "@mui/icons-material/Logout";
+import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
 const Layout = () => {
+  const navigate = useNavigate();
+
   const [showNav, setShowNav] = useState(false);
   const handlerShowNav = () => {
     setShowNav((prev) => !prev);
@@ -36,10 +38,10 @@ const Layout = () => {
     setBookDropDown((prev) => !prev);
   };
 
-  const [dropDown , setDropDown] = useState(false)  
-  const handleDropDown = () =>{
-    setDropDown((prev) => !prev)
-  }
+  const [dropDown, setDropDown] = useState(false);
+  const handleDropDown = () => {
+    setDropDown((prev) => !prev);
+  };
 
   const asideData = {
     Nav: {
@@ -58,6 +60,19 @@ const Layout = () => {
       className: "ul-list",
     },
   };
+
+  const getToken = localStorage.getItem("login");
+  const [token , setToken] = useState(getToken)
+  const logOut = () => {
+    localStorage.removeItem('login');
+    setToken(null)
+  };
+  
+  useEffect(() => {
+    // if (!token) {
+    //   navigate("/");
+    // }
+  }, [logOut, token]);
 
   return (
     <>
@@ -198,7 +213,7 @@ const Layout = () => {
               SmWidth={"80px"}
               className={"logo"}
             />
-            <div onClick={handleDropDown} className='cursor-pointer'>
+            <div onClick={handleDropDown} className="cursor-pointer">
               <div className="flex gap-2 items-center relative">
                 <Icon
                   icon={
@@ -213,8 +228,7 @@ const Layout = () => {
                 </span>
               </div>
             </div>
-            {
-              dropDown ?
+            {dropDown ? (
               <>
                 <div className="drop-down-menu-container">
                   <Nav
@@ -250,8 +264,21 @@ const Layout = () => {
                         onClick={handleDropDown}
                         icon={<InsertLinkOutlinedIcon />}
                       ></Li>
-                      <Li
-                        href={"/"}
+                      <div
+                        className="
+                        transition duration-[0.4s]
+                        flex justify-start items-center gap-[10px] cursor-pointer
+                        p-[15px]
+                        text-[#333] 
+                        hover:bg-hover-color
+                        hover:text-[#fff]
+                      "
+                        onClick={logOut}
+                      >
+                        <Icon icon={<LogoutIcon />} />
+                        <span> LogOut </span>
+                      </div>
+                      {/* <Li
                         text={"Logout"}
                         fontSize={""}
                         color={"#333"}
@@ -259,15 +286,19 @@ const Layout = () => {
                         margin={"0px"}
                         className="logout"
                         borderRadius="0px"
-                        onClick={handleDropDown}
+                        onClick={() => {console.log('s');
+                        }}
                         icon={<LogoutIcon />}
-                      ></Li>
+                      ></Li> */}
                     </Ul>
                   </Nav>
                 </div>
-                <div className="fixed top-0 left-0 w-full h-full z-[999] bg-[rgba(255,255,255,0.1)]" onClick={handleDropDown}></div>
-              </>: null
-            }
+                <div
+                  className="fixed top-0 left-0 w-full h-full z-[999] bg-[rgba(255,255,255,0.1)]"
+                  onClick={handleDropDown}
+                ></div>
+              </>
+            ) : null}
           </div>
           <div className="h-[calc(100vh-70px)] overflow-y-auto">
             <Outlet />
