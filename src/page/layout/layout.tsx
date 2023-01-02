@@ -69,9 +69,9 @@ const Layout = () => {
   };
   
   useEffect(() => {
-    // if (!token) {
-    //   navigate("/");
-    // }
+    if (!token) {
+      navigate("/");
+    }
   }, [logOut, token]);
 
   return (

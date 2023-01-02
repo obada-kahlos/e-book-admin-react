@@ -16,22 +16,6 @@ export const BooksData = [
     className: 'bookName'
   },
   {
-    name: "author",
-    type: "text",
-    placeholder: "author",
-    id: "author",
-    width: "100%",
-    margin: "0px",
-    padding: "8px 5px",
-    borderradius: "5px",
-    border: "1px solid #ccc",
-    bgColor: "",
-    color: "#5b5a5a",
-    fontsize: "16px",
-    lable: "author",
-    className: 'author-book'
-  },
-  {
     name: "publisher",
     type: "text",
     placeholder: "Publisher",
@@ -80,3 +64,32 @@ export const BooksData = [
     className: 'prices',
   },
 ];
+
+export const bookLanguage = [
+  {
+    language : 'Arabic'
+  },
+  {
+    language : 'English'
+  },
+  {
+    language : 'French'
+  },
+  {
+    language : 'Turki'
+  },
+]
+export const bookGenre = [
+  {
+    genre : 'Stories'
+  },
+  {
+    genre : 'War'
+  },
+  {
+    genre : 'Romantic'
+  },
+  {
+    genre : 'Love'
+  },
+]

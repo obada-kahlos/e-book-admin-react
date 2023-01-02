@@ -28,11 +28,15 @@ import * as yup from "yup";
 import { toastStatus } from "../../utils/Toastify/toastify";
 import Alert from "../../component/alert/ui/alert";
 
+
 const Author = () => {
+
+
   const { data: getAuther, isLoading } = useGetAuterQuery({});
   const [addAuthor, { isSuccess, isError, reset: resetAdd }] =
     useAddAuthorMutation();
 
+ 
   const personSchema = yup.object().shape({
     authorName: yup
       .string()
@@ -45,7 +49,7 @@ const Author = () => {
   const [popup, setPopup] = useState(false);
   const handleOpenPopup = () => {
     setPopup((prev) => !prev);
-    setGetAuthorInfo(null)
+    setGetAuthorInfo(null);
   };
 
   //// get author by id and update it
@@ -71,9 +75,10 @@ const Author = () => {
     useDeleteAuthorMutation();
   const handleDeleteAuthor = () => {
     deleteAuthor(authorId);
-    setOpenAlert(false)
+    setOpenAlert(false);
   };
-
+  console.log(authorId);
+  
   useEffect(() => {
     if (isSuccess) {
       toastStatus("isSuccess", "Added successfully");
@@ -105,8 +110,14 @@ const Author = () => {
       ) : (
         <div className="my-[30px] sm:p-4 px-2">
           <div className="flex justify-between items-end gap-4">
-            <Alert isOpen={openAlert} onClose={() => {setOpenAlert(false)}} 
-              onAction={() => {handleDeleteAuthor()}}
+            <Alert
+              isOpen={openAlert}
+              onClose={() => {
+                setOpenAlert(false);
+              }}
+              onAction={() => {
+                handleDeleteAuthor();
+              }}
             />
             <div className="w-8/12">
               <Input
@@ -215,13 +226,13 @@ const Author = () => {
                         textAlign={""}
                       >
                         <>
-                          {item.books?.length > 0 ? (
+                          {item.bookTitle?.length > 0 ? (
                             <select className="w-full h-full p-[10px] border border-[#ccc]">
                               <option disabled selected>
                                 {" "}
                                 See The Books{" "}
                               </option>
-                              {item.books?.map((book: any, key: any) => (
+                              {item.bookTitle?.map((book: any, key: any) => (
                                 <option key={key}> {book.title} </option>
                               ))}
                             </select>

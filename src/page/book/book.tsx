@@ -12,7 +12,7 @@ import Popup from "../../component/popup/ui/popup";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { BooksData } from "./book-data";
+import { bookGenre, bookLanguage, BooksData } from "./book-data";
 import { Pagination } from "@mui/material";
 
 import * as yup from "yup";
@@ -28,6 +28,9 @@ import { IconButton } from "@mui/material";
 import testIamge from "../../assets/testing-image.jpg";
 import ActionButton from "../../component/action-buttom/ui/action-button";
 import { useGetBooksQuery } from "../../api/books/books";
+import Select from "../../component/shared/select/ui/select";
+import MuiSelect from "../../component/mui-select/mui-select";
+import MenuItem from "@mui/material/MenuItem";
 
 const Books = () => {
   // open popup
@@ -48,17 +51,13 @@ const Books = () => {
       .matches(/^[a-zA-Z ]*$/, "Must be character")
       .max(20, "Must be less than 20")
       .required("This field is required"),
-    author: yup
-      .string()
-      .max(20, "max length is 20")
-      .required("This field is required"),
     publisher: yup
       .string()
       .max(20, "max length is 20")
       .required("This field is required"),
     numberofpages: yup
       .string()
-      .matches(/[1-9]/ , 'Just Number')
+      .matches(/[1-9]/, "Just Number")
       .required("This field is required"),
     description: yup
       .string()
@@ -66,8 +65,10 @@ const Books = () => {
       .required("This field is required"),
     price: yup
       .string()
-      .matches(/[1-9]/ , 'Just Number')
+      .matches(/[1-9]/, "Just Number")
       .required("This field is required"),
+    language: yup.string().required("This field is required"),
+    genre: yup.string().required("This field is required"),
   });
 
   const [uploadedImage, setUploadedImage] = useState<any>(undefined);
@@ -82,13 +83,15 @@ const Books = () => {
     }
   };
 
-  const handleClick = () => {
-  };
+  const handleClick = () => {};
+  const { data: getBooks } = useGetBooksQuery({});
 
-  const {data : getBooks} = useGetBooksQuery({})
-  console.log({getBooks});
+
   
 
+  const handleConsole = (values: any) => {
+    console.log({ ...values, uploadedImage });
+  };
 
   return (
     <div className="my-[30px] sm:p-4 px-2">
@@ -254,140 +257,140 @@ const Books = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {
-              getBooks?.map((item : any , key : any)=>(
-                <Tr>
-                  <Td
-                    color={""}
-                    fontSize={""}
-                    fontWeight={""}
-                    padding={""}
-                    margin={""}
-                    textAlign={""}
-                  >
-                    <div className="flex items-center justify-center">
-                      <Image
-                        className={""}
-                        src={testIamge}
-                        alt={""}
-                        width={"80px"}
-                        height={"80px"}
-                        borderRaduis={""}
-                      />
-                    </div>
-                  </Td>
-                  <Td
-                    color={"#333"}
-                    fontSize={"16px"}
-                    fontWeight={""}
-                    padding={""}
-                    margin={""}
-                    textAlign={"left"}
-                  >
-                    <span> {item?.title} </span>
-                  </Td>
-                  <Td
-                    color={"#333"}
-                    fontSize={"16px"}
-                    fontWeight={""}
-                    padding={""}
-                    margin={""}
-                    textAlign={"left"}
-                  >
-                    <span> {item.title} </span>
-                  </Td>
-                  <Td
-                    color={"#333"}
-                    fontSize={"16px"}
-                    fontWeight={""}
-                    padding={""}
-                    margin={""}
-                    textAlign={"left"}
-                  >
-                    <span> {item.genres.name}</span>
-                  </Td>
-                  <Td
-                    color={"#333"}
-                    fontSize={"16px"}
-                    fontWeight={""}
-                    padding={""}
-                    margin={""}
-                    textAlign={"left"}
-                  >
-                    <span> {item.publishers} </span>
-                  </Td>
-                  <Td
-                    color={"#333"}
-                    fontSize={"16px"}
-                    fontWeight={""}
-                    padding={""}
-                    margin={""}
-                    textAlign={"left"}
-                  >
-                    <span> {item.languages} </span>
-                  </Td>
-                  <Td
-                    color={"#333"}
-                    fontSize={"16px"}
-                    fontWeight={""}
-                    padding={""}
-                    margin={""}
-                    textAlign={"left"}
-                  >
-                    <span> {item.price} </span>
-                  </Td>
-                  <Td
-                    color={"#333"}
-                    fontSize={"16px"}
-                    fontWeight={""}
-                    padding={""}
-                    margin={""}
-                    textAlign={"left"}
-                  >
-                    <span> {item.numberPages} </span>
-                  </Td>
-                  <Td
-                    color={"#333"}
-                    fontSize={"16px"}
-                    fontWeight={""}
-                    padding={""}
-                    margin={""}
-                    textAlign={"left"}
-                  >
-                    <span> {item.publicationDate.slice(0,10)} </span>
-                  </Td>
-                  <Td
-                    color={"#333"}
-                    fontSize={"16px"}
-                    fontWeight={""}
-                    padding={""}
-                    margin={""}
-                    textAlign={"left"}
-                  >
-                    <span> {item.description.slice(0,60)} </span>
-                  </Td>
-                  <Td
-                    color={"#333"}
-                    fontSize={"15px"}
-                    fontWeight={"500"}
-                    padding={"10px 15px"}
-                    margin={"0px"}
-                    textAlign={"left"}
-                  >
-                    <ActionButton
-                      deleteIcon={{
-                        icon: <DeleteOutlineOutlinedIcon sx={{ color: "#333" }} />,
-                        onClick: handleClick,
-                      }}
-                      editIcon={{
-                        icon: <ModeEditOutlinedIcon sx={{ color: "#333" }} />,
-                        onClick: handleClick,
-                      }}
+            {getBooks?.map((item: any, key: any) => (
+              <Tr>
+                <Td
+                  color={""}
+                  fontSize={""}
+                  fontWeight={""}
+                  padding={""}
+                  margin={""}
+                  textAlign={""}
+                >
+                  <div className="flex items-center justify-center">
+                    <Image
+                      className={""}
+                      src={testIamge}
+                      alt={""}
+                      width={"80px"}
+                      height={"80px"}
+                      borderRaduis={""}
                     />
-                  </Td>
-                </Tr>
-              ))
-            }
+                  </div>
+                </Td>
+                <Td
+                  color={"#333"}
+                  fontSize={"16px"}
+                  fontWeight={""}
+                  padding={""}
+                  margin={""}
+                  textAlign={"left"}
+                >
+                  <span> {item?.title} </span>
+                </Td>
+                <Td
+                  color={"#333"}
+                  fontSize={"16px"}
+                  fontWeight={""}
+                  padding={""}
+                  margin={""}
+                  textAlign={"left"}
+                >
+                  <span> {item.title} </span>
+                </Td>
+                <Td
+                  color={"#333"}
+                  fontSize={"16px"}
+                  fontWeight={""}
+                  padding={""}
+                  margin={""}
+                  textAlign={"left"}
+                >
+                  <span> {item.genres.name}</span>
+                </Td>
+                <Td
+                  color={"#333"}
+                  fontSize={"16px"}
+                  fontWeight={""}
+                  padding={""}
+                  margin={""}
+                  textAlign={"left"}
+                >
+                  <span> {item.publishers} </span>
+                </Td>
+                <Td
+                  color={"#333"}
+                  fontSize={"16px"}
+                  fontWeight={""}
+                  padding={""}
+                  margin={""}
+                  textAlign={"left"}
+                >
+                  <span> {item.languages} </span>
+                </Td>
+                <Td
+                  color={"#333"}
+                  fontSize={"16px"}
+                  fontWeight={""}
+                  padding={""}
+                  margin={""}
+                  textAlign={"left"}
+                >
+                  <span> {item.price} </span>
+                </Td>
+                <Td
+                  color={"#333"}
+                  fontSize={"16px"}
+                  fontWeight={""}
+                  padding={""}
+                  margin={""}
+                  textAlign={"left"}
+                >
+                  <span> {item.numberPages} </span>
+                </Td>
+                <Td
+                  color={"#333"}
+                  fontSize={"16px"}
+                  fontWeight={""}
+                  padding={""}
+                  margin={""}
+                  textAlign={"left"}
+                >
+                  <span> {item.publicationDate.slice(0, 10)} </span>
+                </Td>
+                <Td
+                  color={"#333"}
+                  fontSize={"16px"}
+                  fontWeight={""}
+                  padding={""}
+                  margin={""}
+                  textAlign={"left"}
+                >
+                  <span> {item.description.slice(0, 60)} </span>
+                </Td>
+                <Td
+                  color={"#333"}
+                  fontSize={"15px"}
+                  fontWeight={"500"}
+                  padding={"10px 15px"}
+                  margin={"0px"}
+                  textAlign={"left"}
+                >
+                  <ActionButton
+                    deleteIcon={{
+                      icon: (
+                        <DeleteOutlineOutlinedIcon sx={{ color: "#333" }} />
+                      ),
+                      onClick: handleClick,
+                    }}
+                    editIcon={{
+                      icon: <ModeEditOutlinedIcon sx={{ color: "#333" }} />,
+                      onClick: handleClick,
+                    }}
+                  />
+                </Td>
+              </Tr>
+            ))}
           </Tbody>
         </Table>
       </div>
@@ -421,14 +424,18 @@ const Books = () => {
             enableReinitialize
             initialValues={{
               bookname: "",
-              author: "",
               publisher: "",
               numberofpages: "",
               description: "",
-              price : "",
-              image: uploadedImage,
+              price: "",
+              language: "",
+              genre: "",
+              country : [],
+              // autor: selected,
+              // image: uploadedImage,
             }}
             onSubmit={(values) => {
+              handleConsole(values);
             }}
             validationSchema={personSchema}
           >
@@ -465,7 +472,80 @@ const Books = () => {
                           />
                         </div>
                       ))}
+                      <div className="md:col-span-6 col-span-12">
+                        <Field
+                          as={Select}
+                          className="select-Language"
+                          lable="Language"
+                          name="language"
+                          id={"language"}
+                          width={"100%"}
+                          margin={""}
+                          padding={"8px 5px"}
+                          borderradius={"4px"}
+                          border={"1px solid #ccc"}
+                          bgcolor={"#fff"}
+                          color={"#5b5a5a"}
+                          fontSize={"16px"}
+                        >
+                          <option>Choise Language</option>
+                          {bookLanguage.map((item, key) => (
+                            <option key={key} value={key}>
+                              {" "}
+                              {item.language}{" "}
+                            </option>
+                          ))}
+                        </Field>
+                        <ErrorMessage
+                          name={"language"}
+                          render={(msg) => (
+                            <p className="text-[red] text-[14px]">{msg}</p>
+                          )}
+                        />
+                      </div>
+                      <div className="md:col-span-6 col-span-12">
+                        <Field
+                          as={Select}
+                          className="select-genre"
+                          lable="Genre"
+                          name="genre"
+                          id={"genre"}
+                          width={"100%"}
+                          margin={""}
+                          padding={"8px 5px"}
+                          borderradius={"4px"}
+                          border={"1px solid #ccc"}
+                          bgcolor={"#fff"}
+                          color={"#5b5a5a"}
+                          fontSize={"16px"}
+                        >
+                          <option>Choise genre</option>
+                          {bookGenre.map((item, key) => (
+                            <option key={key} value={key}>
+                              {" "}
+                              {item.genre}{" "}
+                            </option>
+                          ))}
+                        </Field>
+                        <ErrorMessage
+                          name={"genre"}
+                          render={(msg) => (
+                            <p className="text-[red] text-[14px]">{msg}</p>
+                          )}
+                        />
+                      </div>
                       <div className="md:col-span-12 col-span-12">
+                        <label className="text-[#5b5a5a]"> publisher </label>
+                        <Field
+                          name="country"
+                          type="text"
+                          component={MuiSelect}
+                          label="Country"
+                          margin="normal"
+                          variant="outlined"
+                        />
+                      </div>
+                      <div className="md:col-span-12 col-span-12 ">
                         <Input
                           className={"add-image"}
                           placeholder={"Add Image"}

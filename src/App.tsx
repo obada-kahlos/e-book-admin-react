@@ -12,6 +12,10 @@ import Auth from "./page/auth/auth";
 import { ToastContainer } from "react-toastify";
 
 import 'react-toastify/dist/ReactToastify.css';
+
+
+
+import Test from "./page/test";
 function App() {
   return (
     <div className="App">
@@ -20,6 +24,7 @@ function App() {
           <Route path="/" element={<Auth />} />
           <Route path="dashbord" element={<Layout />}>
             <Route path="info" element={<Dashbord />} />
+            <Route path="test" element={<Test />} />
             <Route path="books" element={<Books />} />
             <Route path="auther" element={<Author />} />
             <Route path="Profile" element={<Profile />} />
