@@ -8,4 +8,5 @@ export interface ThProps {
   padding: string;
   margin: string;
   textAlign: string;
+  minWidth?:string;
 }

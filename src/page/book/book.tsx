@@ -27,10 +27,13 @@ import { IconButton } from "@mui/material";
 
 import testIamge from "../../assets/testing-image.jpg";
 import ActionButton from "../../component/action-buttom/ui/action-button";
-import { useGetBooksQuery } from "../../api/books/books";
+import { useAddBooksMutation, useGetBooksQuery } from "../../api/books/books";
 import Select from "../../component/shared/select/ui/select";
 import MuiSelect from "../../component/mui-select/mui-select";
 import MenuItem from "@mui/material/MenuItem";
+
+import { SelectChangeEvent } from "@mui/material/Select";
+import { useGetAuterQuery } from "../../api/author/author";
 
 const Books = () => {
   // open popup
@@ -85,12 +88,36 @@ const Books = () => {
 
   const handleClick = () => {};
   const { data: getBooks } = useGetBooksQuery({});
+  console.log({ getBooks });
 
+  const names = [
+    "Oliver Hansen",
+    "Van Henry",
+    "April Tucker",
+    "Ralph Hubbard",
+    "Omar Alexander",
+    "Carlos Abbott",
+    "Miriam Wagner",
+    "Bradley Wilkerson",
+    "Virginia Andrews",
+    "Kelly Snyder",
+  ];
 
-  
+  const [authors, setAuthors] = React.useState<string[]>([]);
+  const handleChangeSelect = (event: SelectChangeEvent<typeof authors>) => {
+    const {
+      target: { value },
+    } = event;
+    setAuthors(typeof value === "string" ? value.split(",") : value);
+  };
 
-  const handleConsole = (values: any) => {
-    console.log({ ...values, uploadedImage });
+  const { data: getAuther } = useGetAuterQuery({});
+  console.log(getAuther);
+
+  const [addBook] = useAddBooksMutation();
+  const handleAddBook = (values: any) => {
+    addBook({ ...values, uploadedImage, authors });
+    console.log({ ...values, uploadedImage, authors });
   };
 
   return (
@@ -133,6 +160,18 @@ const Books = () => {
         <Table width="100%">
           <Thead>
             <Tr>
+              <Th
+                text={"Id"}
+                color={"#fff"}
+                fontSize={"15px"}
+                fontWeight={"600"}
+                padding={"10px 15px"}
+                margin={"0px"}
+                textAlign={"center"}
+                bgColor={"bg-main-color"}
+                className={"book-id"}
+                minWidth={"0px"}
+              />
               <Th
                 text={"Book Image"}
                 color={"#fff"}
@@ -253,12 +292,23 @@ const Books = () => {
                 textAlign={"center"}
                 bgColor={"bg-main-color"}
                 className={"Actions"}
+                minWidth={"0px"}
               />
             </Tr>
           </Thead>
           <Tbody>
             {getBooks?.map((item: any, key: any) => (
               <Tr>
+                <Td
+                  color={"#333"}
+                  fontSize={"16px"}
+                  fontWeight={""}
+                  padding={""}
+                  margin={""}
+                  textAlign={"left"}
+                >
+                  <span> {item?.id} </span>
+                </Td>
                 <Td
                   color={""}
                   fontSize={""}
@@ -296,7 +346,18 @@ const Books = () => {
                   margin={""}
                   textAlign={"left"}
                 >
-                  <span> {item.title} </span>
+                  <>
+                    {
+                      item?.authors.length > 0 ?
+                        <div>
+                            {
+                              item?.authors.map((item : any , key : any)=>(
+                                <span> {item.name} </span>
+                              ))
+                            }
+                        </div> : 'Aunknow Author'
+                    }
+                  </>
                 </Td>
                 <Td
                   color={"#333"}
@@ -430,12 +491,12 @@ const Books = () => {
               price: "",
               language: "",
               genre: "",
-              country : [],
+              // autor : authors,
               // autor: selected,
               // image: uploadedImage,
             }}
             onSubmit={(values) => {
-              handleConsole(values);
+              handleAddBook(values);
             }}
             validationSchema={personSchema}
           >
@@ -536,13 +597,10 @@ const Books = () => {
                       </div>
                       <div className="md:col-span-12 col-span-12">
                         <label className="text-[#5b5a5a]"> publisher </label>
-                        <Field
-                          name="country"
-                          type="text"
-                          component={MuiSelect}
-                          label="Country"
-                          margin="normal"
-                          variant="outlined"
+                        <MuiSelect
+                          handleChange={handleChangeSelect}
+                          option={getAuther}
+                          state={authors}
                         />
                       </div>
                       <div className="md:col-span-12 col-span-12 ">

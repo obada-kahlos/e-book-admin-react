@@ -157,6 +157,18 @@ const Author = () => {
             <Thead>
               <Tr>
                 <Th
+                  text={"Id"}
+                  color={"#fff"}
+                  fontSize={"15px"}
+                  fontWeight={"600"}
+                  padding={"10px 15px"}
+                  margin={"0px"}
+                  textAlign={"center"}
+                  bgColor={"bg-main-color"}
+                  className={"auther-id"}
+                  minWidth={'0px'}
+                />
+                <Th
                   text={"Author"}
                   color={"#fff"}
                   fontSize={"15px"}
@@ -188,6 +200,7 @@ const Author = () => {
                   textAlign={"center"}
                   bgColor={"bg-main-color"}
                   className={"icons"}
+                  minWidth={'0px'}
                 />
               </Tr>
             </Thead>
@@ -207,6 +220,16 @@ const Author = () => {
                 .map((item: any, key: any) => (
                   <Tr key={key}>
                     <>
+                      <Td
+                        color={"#333"}
+                        fontSize={"15px"}
+                        fontWeight={"500"}
+                        padding={"10px 15px"}
+                        margin={"0px"}
+                        textAlign={"left"}
+                      >
+                        {item?.id}
+                      </Td>
                       <Td
                         color={"#333"}
                         fontSize={"15px"}

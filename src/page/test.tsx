@@ -1,10 +1,9 @@
-import MuiSelect from "../component/mui-select/mui-select";
+import React from 'react'
 
 const Test = () => {
- 
   return (
-    <MuiSelect />
-  );
-};
+    <div>test</div>
+  )
+}
 
-export default Test;
+export default Test
