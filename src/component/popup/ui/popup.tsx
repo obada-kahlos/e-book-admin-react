@@ -77,12 +77,7 @@ const Popup: React.FC<PopupProps> = ({ ...props }) => {
                     height : ${props.height};
                     padding-bottom : ${props.paddingBodyBottom};
                 }
-                @media(max-width : 840px){
-                  .${props.className}-popup-container{
-                      width : 90%;
-                  }
-              }
-                @media(max-width : 600px){
+                @media(max-width : 660px){
                   .${props.className}-popup-container{
                       width : 100%;
                       height : 100%;

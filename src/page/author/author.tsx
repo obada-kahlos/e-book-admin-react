@@ -7,37 +7,42 @@ import Td from "../../component/shared/table/ui/td";
 import Th from "../../component/shared/table/ui/th";
 import Thead from "../../component/shared/table/ui/thead";
 import Tr from "../../component/shared/table/ui/tr";
+import Loader from "../../component/loader/loader";
+import ActionButton from "../../component/action-buttom/ui/action-button";
+import Popup from "../../component/popup/ui/popup";
+
 
 import SearchIcon from "@mui/icons-material/Search";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
+
+
 import {
   useAddAuthorMutation,
   useDeleteAuthorMutation,
   useGetAuterQuery,
   useUpdateAuthorMutation,
 } from "../../api/author/author";
-import Loader from "../../component/loader/loader";
 
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
-import ActionButton from "../../component/action-buttom/ui/action-button";
+
 import { ErrorMessage, Field, Form, Formik } from "formik";
 
-import Popup from "../../component/popup/ui/popup";
 
 import * as yup from "yup";
-import { toastStatus } from "../../utils/Toastify/toastify";
 import Alert from "../../component/alert/ui/alert";
-
+import { toastStatus } from "../../utils/Toastify/toastify";
 
 const Author = () => {
 
-
+  /// get api for author
   const { data: getAuther, isLoading } = useGetAuterQuery({});
+
+  /// add author
   const [addAuthor, { isSuccess, isError, reset: resetAdd }] =
     useAddAuthorMutation();
 
- 
-  const personSchema = yup.object().shape({
+  /// Schema for Input add author
+  const schema = yup.object().shape({
     authorName: yup
       .string()
       .matches(/^[a-zA-Z ]*$/, "Must be character")
@@ -52,7 +57,7 @@ const Author = () => {
     setGetAuthorInfo(null);
   };
 
-  //// get author by id and update it
+  //// get author by id and update it 
   const [getAuthorInfo, setGetAuthorInfo] = useState<any>();
   const getAuthorById = (id: number) => {
     const selectAuthor = getAuther.find((item: any) => item.id === id);
@@ -60,7 +65,6 @@ const Author = () => {
       return { ...prev, ...selectAuthor };
     });
   };
-
   const updateHandler = (id: number) => {
     getAuthorById(id);
     setPopup(true);
@@ -68,7 +72,7 @@ const Author = () => {
   const [updateAuthor, { isSuccess: isUpdated, reset: resetUpdate }] =
     useUpdateAuthorMutation();
 
-  //// delete author
+  //// delete author + popup for delete author + state to get author's id
   const [openAlert, setOpenAlert] = useState(false);
   const [authorId, setAuthorId] = useState(null);
   const [deleteAuthor, { isSuccess: isDeleted, reset: resetDelete }] =
@@ -77,8 +81,8 @@ const Author = () => {
     deleteAuthor(authorId);
     setOpenAlert(false);
   };
-  console.log(authorId);
   
+  /// alert on action add + update + delete + error 
   useEffect(() => {
     if (isSuccess) {
       toastStatus("isSuccess", "Added successfully");
@@ -109,7 +113,6 @@ const Author = () => {
         <Loader />
       ) : (
         <div className="my-[30px] sm:p-4 px-2">
-          <div className="flex justify-between items-end gap-4">
             <Alert
               isOpen={openAlert}
               onClose={() => {
@@ -119,6 +122,7 @@ const Author = () => {
                 handleDeleteAuthor();
               }}
             />
+          <div className="flex justify-between items-end gap-4">
             <div className="w-8/12">
               <Input
                 className="search"
@@ -318,7 +322,7 @@ const Author = () => {
           >
             <div className="p-2">
               <Formik
-                validationSchema={personSchema}
+                validationSchema={schema}
                 initialValues={
                   getAuthorInfo
                     ? {

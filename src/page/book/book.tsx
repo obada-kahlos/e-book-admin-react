@@ -12,7 +12,7 @@ import Popup from "../../component/popup/ui/popup";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { bookGenre, bookLanguage, BooksData } from "./book-data";
+import { selectData, BooksData } from "./book-data";
 import { Pagination } from "@mui/material";
 
 import * as yup from "yup";
@@ -40,25 +40,21 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import { useGetAuterQuery } from "../../api/author/author";
 import Alert from "../../component/alert/ui/alert";
 
-
-
-
 const Books = () => {
-
-
   // open popup
   const [popup, setPopup] = useState(false);
   const handleOpenPopup = () => {
     setPopup((prev) => !prev);
   };
 
-  // pagination
+  // pagination from Mui with handle change
   const [page, setPage] = React.useState(1);
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
-  const personSchema = yup.object().shape({
+  /// schema for add books
+  const schema = yup.object().shape({
     bookname: yup
       .string()
       .matches(/^[a-zA-Z ]*$/, "Must be character")
@@ -84,6 +80,7 @@ const Books = () => {
     genre: yup.string().required("This field is required"),
   });
 
+  /// state for image + handle change for get image from input and transform it to Base64  
   const [uploadedImage, setUploadedImage] = useState<any>(undefined);
   const onUploadFile = (event: any) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -97,22 +94,11 @@ const Books = () => {
   };
 
   const handleClick = () => {};
+
+  /// get books data api 
   const { data: getBooks } = useGetBooksQuery({});
-  console.log({ getBooks });
 
-  const names = [
-    "Oliver Hansen",
-    "Van Henry",
-    "April Tucker",
-    "Ralph Hubbard",
-    "Omar Alexander",
-    "Carlos Abbott",
-    "Miriam Wagner",
-    "Bradley Wilkerson",
-    "Virginia Andrews",
-    "Kelly Snyder",
-  ];
-
+  /// handle change from mui for multi Select + state 
   const [authors, setAuthors] = React.useState<string[]>([]);
   const handleChangeSelect = (event: SelectChangeEvent<typeof authors>) => {
     const {
@@ -121,15 +107,17 @@ const Books = () => {
     setAuthors(typeof value === "string" ? value.split(",") : value);
   };
 
+  /// get author data api and passing to multi select component 
   const { data: getAuther } = useGetAuterQuery({});
-  console.log(getAuther);
 
+  /// add book fun (pass values and authors and image to useAddBooksMutation)
   const [addBook] = useAddBooksMutation();
   const handleAddBook = (values: any) => {
     addBook({ ...values, uploadedImage, authors });
     console.log({ ...values, uploadedImage, authors });
   };
 
+  /// delete author + popup for delete author + state to get book's id
   const [deleteBook] = useDeleteBooksMutation();
   const [openAlert, setOpenAlert] = useState(false);
   const [authorId, setAuthorId] = useState(null);
@@ -497,7 +485,7 @@ const Books = () => {
           headerTitle="Add Book"
           translate={"translate(-50% , -50%)"}
           onClick={handleOpenPopup}
-          width={"800px"}
+          width={"650px"}
           height={"500px"}
           bgClor={"#fff"}
           borderRadius={"10px"}
@@ -521,179 +509,146 @@ const Books = () => {
                 price: "",
                 language: "",
                 genre: "",
-                // autor : authors,
-                // autor: selected,
-                // image: uploadedImage,
               }}
               onSubmit={(values) => {
                 handleAddBook(values);
               }}
-              validationSchema={personSchema}
+              validationSchema={schema}
             >
-              {(values) => (
-                <Form>
-                  <div className="grid grid-span-12">
-                    <div className="grid grid-cols-12 gap-4">
-                      <>
-                        {BooksData.map((item, key) => (
-                          <div className="md:col-span-6 col-span-12" key={key}>
-                            <Field
-                              key={key}
-                              as={Input}
-                              className={item.className}
-                              name={item.name}
-                              placeholder={item.placeholder}
-                              id={item.id}
-                              width={item.width}
-                              margin={item.margin}
-                              padding={item.padding}
-                              borderradius={item.borderradius}
-                              border={item.border}
-                              bgcolor={item.bgcolor}
-                              color={item.color}
-                              fontSize={item.fontSize}
-                              lable={item.lable}
-                              type={item.type}
-                            />
-                            <ErrorMessage
-                              name={item.name}
-                              render={(msg) => (
-                                <p className="text-[red] text-[14px]">{msg}</p>
-                              )}
-                            />
-                          </div>
-                        ))}
+              <Form>
+                <div className="grid grid-span-12">
+                  <div className="grid grid-cols-12 gap-4">
+                    <>
+                      {BooksData.map((item, key) => (
+                        <div className="md:col-span-6 col-span-12" key={key}>
+                          <Field
+                            key={key}
+                            as={Input}
+                            className={item.className}
+                            name={item.name}
+                            placeholder={item.placeholder}
+                            id={item.id}
+                            width={item.width}
+                            margin={item.margin}
+                            padding={item.padding}
+                            borderradius={item.borderradius}
+                            border={item.border}
+                            bgcolor={item.bgcolor}
+                            color={item.color}
+                            fontSize={item.fontSize}
+                            lable={item.lable}
+                            type={item.type}
+                          />
+                          <ErrorMessage
+                            name={item.name}
+                            render={(msg) => (
+                              <p className="text-[red] text-[14px]">{msg}</p>
+                            )}
+                          />
+                        </div>
+                      ))}
+                      {selectData.map((item, key) => {
                         <div className="md:col-span-6 col-span-12">
                           <Field
                             as={Select}
-                            className="select-Language"
-                            lable="Language"
-                            name="language"
-                            id={"language"}
-                            width={"100%"}
-                            margin={""}
-                            padding={"8px 5px"}
-                            borderradius={"4px"}
-                            border={"1px solid #ccc"}
-                            bgcolor={"#fff"}
-                            color={"#5b5a5a"}
-                            fontSize={"16px"}
+                            className={item.className}
+                            lable={item.lable}
+                            name={item.name}
+                            id={item.id}
+                            width={item.width}
+                            margin={item.margin}
+                            padding={item.padding}
+                            borderradius={item.borderradius}
+                            border={item.border}
+                            bgcolor={item.bgcolor}
+                            color={item.color}
+                            fontSize={item.fontSize}
                           >
                             <option>Choise Language</option>
-                            {bookLanguage.map((item, key) => (
-                              <option key={key} value={key}>
-                                {" "}
-                                {item.language}{" "}
-                              </option>
-                            ))}
+                            {
+                              item.options.map((option , key)=>(
+                                <option key={key} value={key}> {option.value} </option>
+                              ))
+                            }
                           </Field>
                           <ErrorMessage
-                            name={"language"}
+                            name={item.name}
                             render={(msg) => (
                               <p className="text-[red] text-[14px]">{msg}</p>
                             )}
                           />
-                        </div>
-                        <div className="md:col-span-6 col-span-12">
-                          <Field
-                            as={Select}
-                            className="select-genre"
-                            lable="Genre"
-                            name="genre"
-                            id={"genre"}
-                            width={"100%"}
-                            margin={""}
-                            padding={"8px 5px"}
-                            borderradius={"4px"}
-                            border={"1px solid #ccc"}
-                            bgcolor={"#fff"}
-                            color={"#5b5a5a"}
-                            fontSize={"16px"}
-                          >
-                            <option>Choise genre</option>
-                            {bookGenre.map((item, key) => (
-                              <option key={key} value={key}>
-                                {" "}
-                                {item.genre}{" "}
-                              </option>
-                            ))}
-                          </Field>
-                          <ErrorMessage
-                            name={"genre"}
-                            render={(msg) => (
-                              <p className="text-[red] text-[14px]">{msg}</p>
-                            )}
-                          />
-                        </div>
-                        <div className="md:col-span-12 col-span-12">
-                          <label className="text-[#5b5a5a] block"> publisher </label>
-                          <MuiSelect
-                            handleChange={handleChangeSelect}
-                            option={getAuther}
-                            state={authors}
-                          />
-                        </div>
-                        <div className="md:col-span-12 col-span-12 ">
-                          <Input
-                            className={"add-image"}
-                            placeholder={"Add Image"}
-                            id={""}
-                            width={"100%"}
-                            margin={""}
-                            padding={"8px 5px"}
-                            borderradius={"4px"}
-                            border={"1px solid #ccc"}
-                            bgcolor={""}
-                            color={"#5b5a5a"}
-                            fontSize={""}
-                            lable={"Image"}
-                            type={"file"}
-                            onChange={onUploadFile}
-                          />
-                        </div>
-                        <div className="md:col-span-12 col-span-12">
-                          <Field
-                            as={TextArea}
-                            className={"description"}
-                            name={"description"}
-                            placeholder={"description here..."}
-                            id={""}
-                            width={"100%"}
-                            height={"120px"}
-                            margin={"0px"}
-                            padding={"10px"}
-                            borderradius={"5px"}
-                            border={"1px solid #ccc"}
-                            bgcolor={"#fff"}
-                            color={"#5b5a5a"}
-                            fontSize={"16px"}
-                          />
-                          <ErrorMessage
-                            name={"description"}
-                            render={(msg) => (
-                              <p className="text-[red] text-[14px]">{msg}</p>
-                            )}
-                          />
-                        </div>
-                      </>
-                    </div>
-                    <div className="flex justify-center items-center mt-[10px] mb-[30px]">
-                      <Button
-                        className={"add-book"}
-                        buttonText={"Submit"}
-                        padding={"8px 30px"}
-                        margin={"0px"}
-                        borderRadius={"30px"}
-                        bgColor={"bg-main-color"}
-                        bgHover={"bg-hover-color"}
-                        color={"#fff"}
-                        fontSize={"16px"}
-                        width={"40%"}
-                      />
-                    </div>
+                        </div>;
+                      })}
+                      <div className="md:col-span-12 col-span-12">
+                        <label className="text-[#5b5a5a] block">Authors</label>
+                        <MuiSelect
+                          handleChange={handleChangeSelect}
+                          option={getAuther}
+                          state={authors}
+                          label={'Authors'}
+                          placeholder={'Authors...'}
+                        />
+                      </div>
+                      <div className="md:col-span-12 col-span-12 ">
+                        <Input
+                          className={"add-image"}
+                          placeholder={"Add Image"}
+                          id={""}
+                          width={"100%"}
+                          margin={""}
+                          padding={"8px 5px"}
+                          borderradius={"4px"}
+                          border={"1px solid #ccc"}
+                          bgcolor={""}
+                          color={"#5b5a5a"}
+                          fontSize={""}
+                          lable={"Image"}
+                          type={"file"}
+                          onChange={onUploadFile}
+                        />
+                      </div>
+                      <div className="md:col-span-12 col-span-12">
+                        <Field
+                          as={TextArea}
+                          className={"description"}
+                          name={"description"}
+                          placeholder={"description here..."}
+                          id={""}
+                          width={"100%"}
+                          height={"120px"}
+                          margin={"0px"}
+                          padding={"10px"}
+                          borderradius={"5px"}
+                          border={"1px solid #ccc"}
+                          bgcolor={"#fff"}
+                          color={"#5b5a5a"}
+                          fontSize={"16px"}
+                        />
+                        <ErrorMessage
+                          name={"description"}
+                          render={(msg) => (
+                            <p className="text-[red] text-[14px]">{msg}</p>
+                          )}
+                        />
+                      </div>
+                    </>
                   </div>
-                </Form>
-              )}
+                  <div className="flex justify-center items-center mt-[10px] mb-[30px]">
+                    <Button
+                      className={"add-book"}
+                      buttonText={"Submit"}
+                      padding={"8px 30px"}
+                      margin={"0px"}
+                      borderRadius={"30px"}
+                      bgColor={"bg-main-color"}
+                      bgHover={"bg-hover-color"}
+                      color={"#fff"}
+                      fontSize={"16px"}
+                      width={"40%"}
+                    />
+                  </div>
+                </div>
+              </Form>
             </Formik>
           </div>
         </Popup>
