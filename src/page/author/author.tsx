@@ -283,9 +283,6 @@ const Author = () => {
                               setOpenAlert(true);
                               setAuthorId(item.id);
                             },
-                            // onClick: () => {
-                            //   deleteAuthor(item.id);
-                            // },
                           }}
                           editIcon={{
                             icon: (

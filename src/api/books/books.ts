@@ -19,12 +19,19 @@ const extendedApi = apiSlice.injectEndpoints({
     addBooks: builder.mutation({
       query: (body) => ({
         url : '/api/AdminBooks/AddBook',
-        method : 'Post',
+        method : 'POST',
         body : body
+      }),
+      invalidatesTags: ['Book'],
+    }),
+    deleteBooks: builder.mutation({
+      query: (id) => ({
+        url : `/api/AdminBooks/DeleteBook/${id}`,
+        method : 'DELETE',
       }),
       invalidatesTags: ['Book'],
     }),
   }),
 })
 
-export const { useGetDashbordInfoQuery , useGetBooksQuery , useAddBooksMutation} = extendedApi
+export const { useGetDashbordInfoQuery , useGetBooksQuery , useAddBooksMutation , useDeleteBooksMutation } = extendedApi
