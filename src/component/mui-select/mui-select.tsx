@@ -33,7 +33,6 @@ const MuiSelect : React.FC<selectProps> = ({...props}) => {
   }));
 
 
-  console.log(props.option);
   
   return (
     <>

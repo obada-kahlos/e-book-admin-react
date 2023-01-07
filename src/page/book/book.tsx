@@ -1,4 +1,4 @@
-import React, { ReactEventHandler, useState } from "react";
+import React, { ReactEventHandler, useEffect, useState } from "react";
 import Button from "../../component/shared/button/ui/button";
 import Input from "../../component/shared/input/ui/input";
 import Table from "../../component/shared/table/ui/table";
@@ -31,6 +31,9 @@ import {
   useAddBooksMutation,
   useDeleteBooksMutation,
   useGetBooksQuery,
+  useGetGenresQuery,
+  useGetLanguagesQuery,
+  useGetPublishersQuery,
 } from "../../api/books/books";
 import Select from "../../component/shared/select/ui/select";
 import MuiSelect from "../../component/mui-select/mui-select";
@@ -39,6 +42,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { useGetAuterQuery } from "../../api/author/author";
 import Alert from "../../component/alert/ui/alert";
+import { toastStatus } from "../../utils/Toastify/toastify";
 
 const Books = () => {
   // open popup
@@ -55,20 +59,16 @@ const Books = () => {
 
   /// schema for add books
   const schema = yup.object().shape({
-    bookname: yup
+    title: yup
       .string()
       .matches(/^[a-zA-Z ]*$/, "Must be character")
       .max(20, "Must be less than 20")
       .required("This field is required"),
-    publisher: yup
-      .string()
-      .max(20, "max length is 20")
-      .required("This field is required"),
-    numberofpages: yup
+      numberPages: yup
       .string()
       .matches(/[1-9]/, "Just Number")
       .required("This field is required"),
-    description: yup
+      description: yup
       .string()
       .max(250, "Must be less than 250")
       .required("This field is required"),
@@ -76,11 +76,12 @@ const Books = () => {
       .string()
       .matches(/[1-9]/, "Just Number")
       .required("This field is required"),
-    language: yup.string().required("This field is required"),
-    genre: yup.string().required("This field is required"),
+    publishers: yup.string().required("This field is required"),
+    languages: yup.string().required("This field is required"),
+    genres: yup.string().required("This field is required"),
   });
 
-  /// state for image + handle change for get image from input and transform it to Base64  
+  /// state for image + handle change for get image from input and transform it to Base64
   const [uploadedImage, setUploadedImage] = useState<any>(undefined);
   const onUploadFile = (event: any) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -92,14 +93,15 @@ const Books = () => {
       reader.readAsDataURL(event.target.files[0]);
     }
   };
-
+  console.log(uploadedImage);
+  
   const handleClick = () => {};
 
-  /// get books data api 
+  /// get books data api
   const { data: getBooks } = useGetBooksQuery({});
 
-  /// handle change from mui for multi Select + state 
-  const [authors, setAuthors] = React.useState<string[]>([]);
+  /// handle change from mui for multi Select + state
+  const [authors, setAuthors] = React.useState<any>([]);
   const handleChangeSelect = (event: SelectChangeEvent<typeof authors>) => {
     const {
       target: { value },
@@ -107,18 +109,28 @@ const Books = () => {
     setAuthors(typeof value === "string" ? value.split(",") : value);
   };
 
-  /// get author data api and passing to multi select component 
+  /// get author data api and passing to multi select component
   const { data: getAuther } = useGetAuterQuery({});
 
   /// add book fun (pass values and authors and image to useAddBooksMutation)
-  const [addBook] = useAddBooksMutation();
+  const [addBook , {isSuccess , reset : resetAdd}] = useAddBooksMutation();
   const handleAddBook = (values: any) => {
-    addBook({ ...values, uploadedImage, authors });
-    console.log({ ...values, uploadedImage, authors });
-  };
+    let formData = new FormData();
+    const file = new File([uploadedImage], "filename.jpg");
+    formData.append('Title' , values.title);
+    formData.append('NumberPages' , values.numberPages);
+    formData.append('Price' , values.price);
+    formData.append('Image' , file);
+    formData.append('Authors' , authors);
+    formData.append('PublisherId' , values.publishers);
+    formData.append('LanguagesId' , values.languages);
+    formData.append('GenreId' , values.genres);
+    formData.append('Description' , values.description);
+    addBook(formData);
+  };  
 
   /// delete author + popup for delete author + state to get book's id
-  const [deleteBook] = useDeleteBooksMutation();
+  const [deleteBook , {isSuccess : isDeleted , reset : resetDelete}] = useDeleteBooksMutation();
   const [openAlert, setOpenAlert] = useState(false);
   const [authorId, setAuthorId] = useState(null);
   const handleDeleteAuthor = () => {
@@ -126,6 +138,21 @@ const Books = () => {
     setOpenAlert(false);
   };
 
+  /// alert on action add + update + delete + error 
+  useEffect(() => {
+    if (isSuccess) {
+      toastStatus("isSuccess", "Added successfully");
+    }
+    if (isDeleted) {
+      toastStatus("isDeleted", "Deleted successfully");
+    }
+    resetDelete();
+    resetAdd();
+  }, [isSuccess, isDeleted]);
+  
+  const { data: getGenres } = useGetGenresQuery({});
+  const { data: getLanguages } = useGetLanguagesQuery({});
+  const { data: getPublishers } = useGetPublishersQuery({});
   return (
     <>
       <Alert
@@ -336,7 +363,7 @@ const Books = () => {
                     <div className="flex items-center justify-center">
                       <Image
                         className={""}
-                        src={testIamge}
+                        src={item?.image}
                         alt={""}
                         width={"80px"}
                         height={"80px"}
@@ -502,9 +529,9 @@ const Books = () => {
             <Formik
               enableReinitialize
               initialValues={{
-                bookname: "",
-                publisher: "",
-                numberofpages: "",
+                title: "",
+                publishers: "",
+                numberPages: "",
                 description: "",
                 price: "",
                 language: "",
@@ -512,6 +539,7 @@ const Books = () => {
               }}
               onSubmit={(values) => {
                 handleAddBook(values);
+                setPopup(false)
               }}
               validationSchema={schema}
             >
@@ -547,46 +575,105 @@ const Books = () => {
                           />
                         </div>
                       ))}
-                      {selectData.map((item, key) => {
-                        <div className="md:col-span-6 col-span-12">
-                          <Field
-                            as={Select}
-                            className={item.className}
-                            lable={item.lable}
-                            name={item.name}
-                            id={item.id}
-                            width={item.width}
-                            margin={item.margin}
-                            padding={item.padding}
-                            borderradius={item.borderradius}
-                            border={item.border}
-                            bgcolor={item.bgcolor}
-                            color={item.color}
-                            fontSize={item.fontSize}
-                          >
-                            <option>Choise Language</option>
-                            {
-                              item.options.map((option , key)=>(
-                                <option key={key} value={key}> {option.value} </option>
+                      <div className="md:col-span-6 col-span-12">
+                        <Field
+                          as={Select}
+                          className={"get-genres"}
+                          lable={"Genres"}
+                          name={"genres"}
+                          id={""}
+                          width={"100%"}
+                          margin={"0px"}
+                          padding={"8px 5px"}
+                          borderradius={"4px"}
+                          border={"1px solid #ccc"}
+                          bgcolor={"#fff"}
+                          color={"#5b5a5a"}
+                          fontSize={"16px"}
+                        >
+                          <option>Choise Genres</option>
+                          {getGenres
+                            ? getGenres?.map((option: any, key: any) => (
+                                <option key={key} value={option.id}>
+                                  {option.name}
+                                </option>
                               ))
-                            }
-                          </Field>
-                          <ErrorMessage
-                            name={item.name}
-                            render={(msg) => (
-                              <p className="text-[red] text-[14px]">{msg}</p>
-                            )}
-                          />
-                        </div>;
-                      })}
+                            : null}
+                        </Field>
+                        <ErrorMessage
+                          name={"genres"}
+                          render={(msg) => (
+                            <p className="text-[red] text-[14px]">{msg}</p>
+                          )}
+                        />
+                      </div>
+                      <div className="md:col-span-6 col-span-12">
+                        <Field
+                          as={Select}
+                          className={"get-languages"}
+                          lable={"Languages"}
+                          name={"languages"}
+                          id={""}
+                          width={"100%"}
+                          margin={"0px"}
+                          padding={"8px 5px"}
+                          borderradius={"4px"}
+                          border={"1px solid #ccc"}
+                          bgcolor={"#fff"}
+                          color={"#5b5a5a"}
+                          fontSize={"16px"}
+                        >
+                          <option>Choise Language</option>
+                          {getLanguages?.map((option: any, key: any) => (
+                            <option key={key} value={option.id}>
+                              {option.languageName}
+                            </option>
+                          ))}
+                        </Field>
+                        <ErrorMessage
+                          name={"languages"}
+                          render={(msg) => (
+                            <p className="text-[red] text-[14px]">{msg}</p>
+                          )}
+                        />
+                      </div>
+                      <div className="md:col-span-6 col-span-12">
+                        <Field
+                          as={Select}
+                          className={"get-publishers"}
+                          lable={"publishers"}
+                          name={"publishers"}
+                          id={""}
+                          width={"100%"}
+                          margin={"0px"}
+                          padding={"8px 5px"}
+                          borderradius={"4px"}
+                          border={"1px solid #ccc"}
+                          bgcolor={"#fff"}
+                          color={"#5b5a5a"}
+                          fontSize={"16px"}
+                        >
+                          <option>Choise Publishers</option>
+                          {getPublishers?.map((option: any, key: any) => (
+                            <option key={key} value={option.id}>
+                              {option.name}
+                            </option>
+                          ))}
+                        </Field>
+                        <ErrorMessage
+                          name={"PublisherId"}
+                          render={(msg) => (
+                            <p className="text-[red] text-[14px]">{msg}</p>
+                          )}
+                        />
+                      </div>
                       <div className="md:col-span-12 col-span-12">
-                        <label className="text-[#5b5a5a] block">Authors</label>
                         <MuiSelect
                           handleChange={handleChangeSelect}
                           option={getAuther}
                           state={authors}
-                          label={'Authors'}
-                          placeholder={'Authors...'}
+                          label={"Authors"}
+                          placeholder={"Authors..."}
                         />
                       </div>
                       <div className="md:col-span-12 col-span-12 ">

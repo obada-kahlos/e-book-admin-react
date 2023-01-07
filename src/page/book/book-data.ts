@@ -1,6 +1,6 @@
 export const BooksData = [
   {
-    name: "bookname",
+    name: "title",
     type: "text",
     placeholder: "Book name",
     id: "Book",
@@ -16,23 +16,7 @@ export const BooksData = [
     className: 'bookName'
   },
   {
-    name: "publisher",
-    type: "text",
-    placeholder: "Publisher",
-    id: "publisher",
-    width: "100%",
-    margin: "0px",
-    padding: "8px 5px",
-    borderradius: "5px",
-    border: "1px solid #ccc",
-    bgcolor: "",
-    color: "#5b5a5a",
-    fontSize: "16px",
-    lable: "Publisher",
-    className: 'publisher',
-  },
-  {
-    name: "numberofpages",
+    name: "numberPages",
     type: "text",
     placeholder: "Number of pages",
     id: "number",
