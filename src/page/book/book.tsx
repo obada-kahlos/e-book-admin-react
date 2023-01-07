@@ -64,11 +64,11 @@ const Books = () => {
       .matches(/^[a-zA-Z ]*$/, "Must be character")
       .max(20, "Must be less than 20")
       .required("This field is required"),
-      numberPages: yup
+    numberPages: yup
       .string()
       .matches(/[1-9]/, "Just Number")
       .required("This field is required"),
-      description: yup
+    description: yup
       .string()
       .max(250, "Must be less than 250")
       .required("This field is required"),
@@ -94,7 +94,7 @@ const Books = () => {
     }
   };
   console.log(uploadedImage);
-  
+
   const handleClick = () => {};
 
   /// get books data api
@@ -113,24 +113,33 @@ const Books = () => {
   const { data: getAuther } = useGetAuterQuery({});
 
   /// add book fun (pass values and authors and image to useAddBooksMutation)
-  const [addBook , {isSuccess , reset : resetAdd}] = useAddBooksMutation();
-  const handleAddBook = (values: any) => {
+  const [addBook, { isSuccess, reset: resetAdd }] = useAddBooksMutation();
+  const handleAddBook = (values: {
+    title: string;
+    publishers: string;
+    numberPages: string;
+    description: string;
+    price: string;
+    languages: string;
+    genres: string;
+  }) => {
     let formData = new FormData();
     const file = new File([uploadedImage], "filename.jpg");
-    formData.append('Title' , values.title);
-    formData.append('NumberPages' , values.numberPages);
-    formData.append('Price' , values.price);
-    formData.append('Image' , file);
-    formData.append('Authors' , authors);
-    formData.append('PublisherId' , values.publishers);
-    formData.append('LanguagesId' , values.languages);
-    formData.append('GenreId' , values.genres);
-    formData.append('Description' , values.description);
+    formData.append("Title", values.title);
+    formData.append("NumberPages", values.numberPages);
+    formData.append("Price", values.price);
+    formData.append("Image", file);
+    formData.append("Authors", authors);
+    formData.append("PublisherId", values.publishers);
+    formData.append("LanguagesId", values.languages);
+    formData.append("GenreId", values.genres);
+    formData.append("Description", values.description);
     addBook(formData);
-  };  
+  };
 
   /// delete author + popup for delete author + state to get book's id
-  const [deleteBook , {isSuccess : isDeleted , reset : resetDelete}] = useDeleteBooksMutation();
+  const [deleteBook, { isSuccess: isDeleted, reset: resetDelete }] =
+    useDeleteBooksMutation();
   const [openAlert, setOpenAlert] = useState(false);
   const [authorId, setAuthorId] = useState(null);
   const handleDeleteAuthor = () => {
@@ -138,7 +147,7 @@ const Books = () => {
     setOpenAlert(false);
   };
 
-  /// alert on action add + update + delete + error 
+  /// alert on action add + update + delete + error
   useEffect(() => {
     if (isSuccess) {
       toastStatus("isSuccess", "Added successfully");
@@ -149,7 +158,7 @@ const Books = () => {
     resetDelete();
     resetAdd();
   }, [isSuccess, isDeleted]);
-  
+  // data foor add books
   const { data: getGenres } = useGetGenresQuery({});
   const { data: getLanguages } = useGetLanguagesQuery({});
   const { data: getPublishers } = useGetPublishersQuery({});
@@ -534,12 +543,12 @@ const Books = () => {
                 numberPages: "",
                 description: "",
                 price: "",
-                language: "",
-                genre: "",
+                languages: "",
+                genres: "",
               }}
               onSubmit={(values) => {
                 handleAddBook(values);
-                setPopup(false)
+                setPopup(false);
               }}
               validationSchema={schema}
             >

@@ -5,8 +5,8 @@ export const toastStatus = (status: string, message: string) => {
     case "isSuccess":
       return toast.success(message, {
         position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
+        autoClose: 1500,
+        hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
@@ -16,8 +16,8 @@ export const toastStatus = (status: string, message: string) => {
     case "isError":
       return toast.error(message, {
         position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
+        autoClose: 1500,
+        hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
@@ -27,8 +27,8 @@ export const toastStatus = (status: string, message: string) => {
     case "isDeleted":
       return toast.warn(message, {
         position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
+        autoClose: 1500,
+        hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
