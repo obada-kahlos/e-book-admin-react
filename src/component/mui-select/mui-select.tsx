@@ -55,7 +55,7 @@ const MuiSelect : React.FC<selectProps> = ({...props}) => {
           <MenuItem disabled value="">
             <em>Placeholder</em>
           </MenuItem>
-          {props.option.map((item : any , key : any) => (
+          {props.option?.map((item : any , key : any) => (
             <MenuItem key={key} value={item.id}>
               {item.name}
             </MenuItem>
