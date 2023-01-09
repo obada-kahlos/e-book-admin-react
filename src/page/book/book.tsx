@@ -202,7 +202,7 @@ const Books = () => {
                   bgcolor={""}
                   color={"#5b5a5a"}
                   fontSize={"16px"}
-                  lable={"search"}
+                  lable={""}
                 />
               </div>
               <Button

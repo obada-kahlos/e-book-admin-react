@@ -25,6 +25,7 @@ import SegmentIcon from "@mui/icons-material/Segment";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
+import CopyRight from "../../component/copy-right/copy-right";
 const Layout = () => {
   const navigate = useNavigate();
 
@@ -300,8 +301,9 @@ const Layout = () => {
               </>
             ) : null}
           </div>
-          <div className="h-[calc(100vh-70px)] overflow-y-auto">
+          <div className="h-[calc(100vh-70px)] overflow-y-auto relative">
             <Outlet />
+            <CopyRight />
           </div>
         </div>
         <div className="lg:hidden block">

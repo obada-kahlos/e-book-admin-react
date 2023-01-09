@@ -6,13 +6,12 @@ const Input: React.FC<InputProps> = ({ ...props }) => {
 
   return (
     <>
+        <label className="lable" htmlFor={props.id}>
+        {props.lable}
+        </label>
         <div className={`input-container-${props.className} relative`}>
-            <label className="lable " htmlFor={props.id}>
-            {props.lable}
-            </label>
           <input className={props.className}  type={props.type} {...props} placeholder={props.placeholder} onChange={props.onChange}/>
           <span className="input-icon"> <Icon icon={props.icon} /> </span>
-            
           {
             props.name === 'password' ? <span className="password-icon"> <Icon  icon={props.passwordIcon?.icon} onClick={props.passwordIcon?.onClick}/></span>: ''
           }
@@ -39,12 +38,13 @@ const Input: React.FC<InputProps> = ({ ...props }) => {
               position: absolute;
               top: 50%;
               left: 10px;
+              transform : translateY(-50%);
             }
             .password-icon{
               position: absolute;
               top: 50%;
-              right: 0px;
-              transform : translateX(-50%);
+              right: 10px;
+              transform : translateY(-50%);
               cursor : pointer;
             }
             .input-container-${props.className}{

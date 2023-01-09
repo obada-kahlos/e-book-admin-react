@@ -30,7 +30,7 @@ const Users = () => {
             bgcolor={""}
             color={"#5b5a5a"}
             fontSize={"16px"}
-            lable={"search"}
+            lable={""}
           />
         </div>
       </div>
@@ -46,7 +46,7 @@ const Users = () => {
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"center"}
-                bgColor={"#0d6289"}
+                bgColor={"bg-main-color"}
                 className={"firstName"}
               />
               <Th
@@ -57,7 +57,7 @@ const Users = () => {
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"center"}
-                bgColor={"#0d6289"}
+                bgColor={"bg-main-color"}
                 className={"lastName"}
               />
               <Th
@@ -68,7 +68,7 @@ const Users = () => {
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"center"}
-                bgColor={"#0d6289"}
+                bgColor={"bg-main-color"}
                 className={"email"}
               />
               <Th
@@ -79,18 +79,18 @@ const Users = () => {
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"center"}
-                bgColor={"#0d6289"}
+                bgColor={"bg-main-color"}
                 className={"gender"}
               />
               <Th
                 text={"Actions"}
-                color={"#333"}
+                color={"#fff"}
                 fontSize={"15px"}
                 fontWeight={"600"}
                 padding={"10px 15px"}
                 margin={"0px"}
                 textAlign={"center"}
-                bgColor={"#fff"}
+                bgColor={"bg-main-color"}
                 className={"icon"}
               />
             </Tr>
