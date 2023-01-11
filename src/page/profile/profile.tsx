@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar } from "@mui/material";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import Icon from "../../component/shared/icon/ui/icon";
@@ -7,6 +7,7 @@ import Image from "../../component/shared/image/ui/image";
 import Button from "../../component/shared/button/ui/button";
 const Profile = () => {
   const [uploadedImage, setUploadedImage] = useState<any>(undefined);
+  
   const onUploadFile = (event: any) => {
     if (event.target.files && event.target.files.length > 0) {
       const reader = new FileReader();
@@ -29,7 +30,7 @@ const Profile = () => {
             width={"250px"}
             height={"250px"}
             borderRaduis={"50%"}
-            border={'border-[5px] border-main-color'}
+            border={"border-[5px] border-main-color"}
           />
         ) : (
           <Avatar
@@ -38,8 +39,11 @@ const Profile = () => {
           />
         )}
 
-        <label htmlFor="add" className="absolute bottom-[25px] right-[25px] w-[25px] h-[25px] rounded-full cursor-pointer">
-              <Icon icon={<CameraAltIcon sx={{color : '#333'}}/>} />
+        <label
+          htmlFor="add"
+          className="absolute bottom-[25px] right-[25px] w-[25px] h-[25px] rounded-full cursor-pointer"
+        >
+          <Icon icon={<CameraAltIcon sx={{ color: "#333" }} />} />
         </label>
       </div>
 
