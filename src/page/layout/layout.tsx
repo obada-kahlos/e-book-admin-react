@@ -62,8 +62,10 @@ const Layout = () => {
     },
   };
 
-  const getToken = localStorage.getItem("login");
+  const getToken = JSON.parse(localStorage.getItem("login") as any);
   const [token, setToken] = useState(getToken);
+  console.log({ token });
+
   const logOut = () => {
     localStorage.removeItem("login");
     setToken(null);
@@ -247,7 +249,7 @@ const Layout = () => {
                   >
                     <Ul margin={""} padding={""} className={""}>
                       <div className="py-[10px] px-[15px] text-[#333] flex items-center w-full">
-                        <span>Obada Kahlous</span>
+                        <span>{token?.first_name}_{token?.last_name}</span>
                       </div>
                       <Divider
                         className="dropDownDevider"

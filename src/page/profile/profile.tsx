@@ -7,7 +7,7 @@ import Image from "../../component/shared/image/ui/image";
 import Button from "../../component/shared/button/ui/button";
 const Profile = () => {
   const [uploadedImage, setUploadedImage] = useState<any>(undefined);
-  
+
   const onUploadFile = (event: any) => {
     if (event.target.files && event.target.files.length > 0) {
       const reader = new FileReader();
@@ -20,7 +20,7 @@ const Profile = () => {
   };
 
   console.log({ uploadedImage });
-  
+  const getToken = JSON.parse(localStorage.getItem("login") as any);
 
   return (
     <div className="my-[30px] sm:p-4 px-2">
@@ -51,8 +51,18 @@ const Profile = () => {
       </div>
 
       <div className="mt-[10px] w-fit">
-        <h4 className="text-[28px] text-[#333] font-[500]"> Obada Kahlous </h4>
-        <h5 className="text-[20px] text-[#666]"> Obada.Kahlous </h5>
+        <div className="flex items-center gap-5">
+          <h4 className="text-[28px] text-[#333] font-[500] mb-[-8px]">
+            {getToken?.first_name}_{getToken?.last_name}
+          </h4>
+          <h4 className="text-[28px] text-[#333] font-[500] mb-[-8px]">
+            {getToken?.email}
+          </h4>
+        </div>
+        <p> </p>
+        <h5 className="text-[20px] text-[#666]">
+          {getToken?.first_name} {getToken?.last_name}
+        </h5>
         <Button
           className={"edit-profile"}
           buttonText={"Edit Profile"}
