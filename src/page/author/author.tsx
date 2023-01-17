@@ -11,11 +11,9 @@ import Loader from "../../component/loader/loader";
 import ActionButton from "../../component/action-buttom/ui/action-button";
 import Popup from "../../component/popup/ui/popup";
 
-
 import SearchIcon from "@mui/icons-material/Search";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
-
 
 import {
   useAddAuthorMutation,
@@ -24,18 +22,16 @@ import {
   useUpdateAuthorMutation,
 } from "../../api/author/author";
 
-
 import { ErrorMessage, Field, Form, Formik } from "formik";
-
 
 import * as yup from "yup";
 import Alert from "../../component/alert/ui/alert";
 import { toastStatus } from "../../utils/Toastify/toastify";
 
 const Author = () => {
-
   /// get api for author
   const { data: getAuther, isLoading } = useGetAuterQuery({});
+  console.log({ getAuther: getAuther?.length });
 
   /// add author
   const [addAuthor, { isSuccess, isError, reset: resetAdd }] =
@@ -57,7 +53,7 @@ const Author = () => {
     setGetAuthorInfo(null);
   };
 
-  //// get author by id and update it 
+  //// get author by id and update it
   const [getAuthorInfo, setGetAuthorInfo] = useState<any>();
   const getAuthorById = (id: number) => {
     const selectAuthor = getAuther.find((item: any) => item.id === id);
@@ -81,8 +77,8 @@ const Author = () => {
     deleteAuthor(authorId);
     setOpenAlert(false);
   };
-  
-  /// alert on action add + update + delete + error 
+
+  /// alert on action add + update + delete + error
   useEffect(() => {
     if (isSuccess) {
       toastStatus("isSuccess", "Added successfully");
@@ -113,15 +109,15 @@ const Author = () => {
         <Loader />
       ) : (
         <div className="my-[30px] sm:p-4 px-2">
-            <Alert
-              isOpen={openAlert}
-              onClose={() => {
-                setOpenAlert(false);
-              }}
-              onAction={() => {
-                handleDeleteAuthor();
-              }}
-            />
+          <Alert
+            isOpen={openAlert}
+            onClose={() => {
+              setOpenAlert(false);
+            }}
+            onAction={() => {
+              handleDeleteAuthor();
+            }}
+          />
           <div className="flex justify-between items-end gap-4">
             <div className="w-8/12">
               <Input
@@ -157,152 +153,166 @@ const Author = () => {
               onClick={handleOpenPopup}
             />
           </div>
-          <Table width="100%">
-            <Thead>
-              <Tr>
-                <Th
-                  text={"Id"}
-                  color={"#fff"}
-                  fontSize={"15px"}
-                  fontWeight={"600"}
-                  padding={"10px 15px"}
-                  margin={"0px"}
-                  textAlign={"center"}
-                  bgColor={"bg-main-color"}
-                  className={"auther-id"}
-                  minWidth={'0px'}
-                />
-                <Th
-                  text={"Author"}
-                  color={"#fff"}
-                  fontSize={"15px"}
-                  fontWeight={"600"}
-                  padding={"10px 15px"}
-                  margin={"0px"}
-                  textAlign={"center"}
-                  bgColor={"bg-main-color"}
-                  className={"auther-th"}
-                />
-                <Th
-                  text={"Author's Books"}
-                  color={"#fff"}
-                  fontSize={"15px"}
-                  fontWeight={"600"}
-                  padding={"10px 15px"}
-                  margin={"0px"}
-                  textAlign={"center"}
-                  bgColor={"bg-main-color"}
-                  className={"autherBook"}
-                />
-                <Th
-                  text={"Actions"}
-                  color={"#fff"}
-                  fontSize={"15px"}
-                  fontWeight={"600"}
-                  padding={"10px 15px"}
-                  margin={"0px"}
-                  textAlign={"center"}
-                  bgColor={"bg-main-color"}
-                  className={"icons"}
-                  minWidth={'0px'}
-                />
-              </Tr>
-            </Thead>
-            <Tbody>
-              {getAuther
-                ?.filter((value: any) => {
-                  if (search === "") {
-                    return value;
-                  } else if (
-                    value.name
-                      .toLowerCase()
-                      .includes(search.toLocaleLowerCase())
-                  ) {
-                    return value;
-                  }
-                })
-                .map((item: any, key: any) => (
-                  <Tr key={key}>
-                    <>
-                      <Td
-                        color={"#333"}
-                        fontSize={"15px"}
-                        fontWeight={"500"}
-                        padding={"10px 15px"}
-                        margin={"0px"}
-                        textAlign={"left"}
-                      >
-                        {item?.id}
-                      </Td>
-                      <Td
-                        color={"#333"}
-                        fontSize={"15px"}
-                        fontWeight={"500"}
-                        padding={"10px 15px"}
-                        margin={"0px"}
-                        textAlign={"left"}
-                      >
-                        {item?.name}
-                      </Td>
-                      <Td
-                        color={""}
-                        fontSize={""}
-                        fontWeight={""}
-                        padding={""}
-                        margin={""}
-                        textAlign={""}
-                      >
-                        <>
-                          {item.bookTitle?.length > 0 ? (
-                            <select className="w-full h-full p-[10px] border border-[#ccc]">
-                              <option disabled selected>
-                                {" "}
-                                See The Books{" "}
-                              </option>
-                              {item.bookTitle?.map((book: any, key: any) => (
-                                <option key={key}> {book.title} </option>
-                              ))}
-                            </select>
-                          ) : (
-                            "There is no books"
-                          )}
-                        </>
-                      </Td>
-                      <Td
-                        color={"#333"}
-                        fontSize={"15px"}
-                        fontWeight={"500"}
-                        padding={"10px 15px"}
-                        margin={"0px"}
-                        textAlign={"left"}
-                      >
-                        <ActionButton
-                          deleteIcon={{
-                            icon: (
-                              <DeleteOutlineOutlinedIcon
-                                sx={{ color: "#333" }}
-                              />
-                            ),
-                            onClick: () => {
-                              setOpenAlert(true);
-                              setAuthorId(item.id);
-                            },
-                          }}
-                          editIcon={{
-                            icon: (
-                              <ModeEditOutlinedIcon sx={{ color: "#333" }} />
-                            ),
-                            onClick: () => {
-                              updateHandler(item.id);
-                            },
-                          }}
-                        />
-                      </Td>
-                    </>
-                  </Tr>
-                ))}
-            </Tbody>
-          </Table>
+          {getAuther?.length > 0 ? (
+            <Table width="100%">
+              <Thead>
+                <Tr>
+                  <Th
+                    text={"Id"}
+                    color={"#fff"}
+                    fontSize={"15px"}
+                    fontWeight={"600"}
+                    padding={"10px 15px"}
+                    margin={"0px"}
+                    textAlign={"center"}
+                    bgColor={"bg-main-color"}
+                    className={"auther-id"}
+                    minWidth={"0px"}
+                  />
+                  <Th
+                    text={"Author"}
+                    color={"#fff"}
+                    fontSize={"15px"}
+                    fontWeight={"600"}
+                    padding={"10px 15px"}
+                    margin={"0px"}
+                    textAlign={"center"}
+                    bgColor={"bg-main-color"}
+                    className={"auther-th"}
+                  />
+                  <Th
+                    text={"Author's Books"}
+                    color={"#fff"}
+                    fontSize={"15px"}
+                    fontWeight={"600"}
+                    padding={"10px 15px"}
+                    margin={"0px"}
+                    textAlign={"center"}
+                    bgColor={"bg-main-color"}
+                    className={"autherBook"}
+                  />
+                  <Th
+                    text={"Actions"}
+                    color={"#fff"}
+                    fontSize={"15px"}
+                    fontWeight={"600"}
+                    padding={"10px 15px"}
+                    margin={"0px"}
+                    textAlign={"center"}
+                    bgColor={"bg-main-color"}
+                    className={"icons"}
+                    minWidth={"0px"}
+                  />
+                </Tr>
+              </Thead>
+              <Tbody>
+                {getAuther
+                  ?.filter((value: any) => {
+                    if (search === "") {
+                      return value;
+                    } else if (
+                      value.name
+                        .toLowerCase()
+                        .includes(search.toLocaleLowerCase())
+                    ) {
+                      return value;
+                    }
+                  })
+                  .map((item: any, key: any) => (
+                    <Tr key={key}>
+                      <>
+                        <Td
+                          color={"#333"}
+                          fontSize={"15px"}
+                          fontWeight={"500"}
+                          padding={"10px 15px"}
+                          margin={"0px"}
+                          textAlign={"left"}
+                        >
+                          {item?.id}
+                        </Td>
+                        <Td
+                          color={"#333"}
+                          fontSize={"15px"}
+                          fontWeight={"500"}
+                          padding={"10px 15px"}
+                          margin={"0px"}
+                          textAlign={"left"}
+                        >
+                          {item?.name}
+                        </Td>
+                        <Td
+                          color={""}
+                          fontSize={""}
+                          fontWeight={""}
+                          padding={""}
+                          margin={""}
+                          textAlign={""}
+                        >
+                          <>
+                            {item.bookTitle?.length > 0 ? (
+                              <select className="w-full h-full p-[10px] border border-[#ccc]">
+                                <option disabled selected>
+                                  {" "}
+                                  See The Books{" "}
+                                </option>
+                                {item.bookTitle?.map((book: any, key: any) => (
+                                  <option key={key}> {book.title} </option>
+                                ))}
+                              </select>
+                            ) : (
+                              "There is no books"
+                            )}
+                          </>
+                        </Td>
+                        <Td
+                          color={"#333"}
+                          fontSize={"15px"}
+                          fontWeight={"500"}
+                          padding={"10px 15px"}
+                          margin={"0px"}
+                          textAlign={"left"}
+                        >
+                          <ActionButton
+                            deleteIcon={{
+                              icon: (
+                                <DeleteOutlineOutlinedIcon
+                                  sx={{ color: "#333" }}
+                                />
+                              ),
+                              onClick: () => {
+                                setOpenAlert(true);
+                                setAuthorId(item.id);
+                              },
+                            }}
+                            editIcon={{
+                              icon: (
+                                <ModeEditOutlinedIcon sx={{ color: "#333" }} />
+                              ),
+                              onClick: () => {
+                                updateHandler(item.id);
+                              },
+                            }}
+                          />
+                        </Td>
+                      </>
+                    </Tr>
+                  ))}
+              </Tbody>
+            </Table>
+          ) : (
+            <div className="flex justify-center items-center flex-col mt-[40px]">
+              <p className="text-[#555] text-[30px] mb-[10px] block">
+                There is no authors!
+              </p>
+              <p
+                onClick={handleOpenPopup}
+                className="text-main-color font-bold text-[18px] cursor-pointer"
+              >
+                Add One?
+              </p>
+            </div>
+          )}
           <Popup
             headerTitle={"Add-Author"}
             translate={"translate(-50% , -50%)"}

@@ -46,7 +46,10 @@ const Alert: React.FC<AlertProps> = ({ ...props }) => {
               />
             </div>
           </div>
-          <div className="fixed top-0 left-0 w-full h-full z-[999] bg-[rgba(255,255,255,0.1)]" onClick={props.onClose}></div>
+          <div
+            className="fixed top-0 left-0 w-full h-full z-[999] bg-[rgba(255,255,255,0.1)]"
+            onClick={props.onClose}
+          ></div>
           <style>
             {`
                   .alert{
@@ -57,13 +60,14 @@ const Alert: React.FC<AlertProps> = ({ ...props }) => {
                       background : #fff;
                       box-shadow : 0px 3px 20px 0px rgba(115,115,115,0.3),0px 3px 20px 0px rgba(115,115,115,0.3);
                       border-radius : 5px;
-                      padding : 20px 10px;
+                      padding : 40px 10px;
                       display : flex;
                       justify-content : center;
                       align-items: center;
                       width : 500px;
                       height :auto;
                       z-index : 1000;
+                      gap : 10px;
                       flex-direction: column;
                   }
                   @media(max-width : 600px){

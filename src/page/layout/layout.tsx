@@ -63,12 +63,12 @@ const Layout = () => {
   };
 
   const getToken = localStorage.getItem("login");
-  const [token , setToken] = useState(getToken)
+  const [token, setToken] = useState(getToken);
   const logOut = () => {
-    localStorage.removeItem('login');
-    setToken(null)
+    localStorage.removeItem("login");
+    setToken(null);
   };
-  
+
   useEffect(() => {
     if (!token) {
       navigate("/");
@@ -170,7 +170,9 @@ const Layout = () => {
                           margin={item.margin}
                           icon={<item.icon fontSize="medium" />}
                           borderRadius={"4px"}
-                          onClick={handlerShowNav}
+                          onClick={() => {
+                            setShowNav(false);
+                          }}
                           className={item.className}
                         />
                       ))}
@@ -303,7 +305,7 @@ const Layout = () => {
           </div>
           <div className="h-[calc(100vh-70px)] overflow-y-auto relative">
             <Outlet />
-            <CopyRight />
+            {/* <CopyRight /> */}
           </div>
         </div>
         <div className="lg:hidden block">
