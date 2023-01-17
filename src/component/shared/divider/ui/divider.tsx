@@ -2,21 +2,23 @@ import React from "react";
 import { DividerProps } from "../data-access/divider";
 
 const Divider: React.FC<DividerProps> = ({ ...props }) => {
-  return <>
-    <div className="divider"></div>
-    <style>
+  return (
+    <>
+      <div className={props.className}></div>
+      <style>
         {`
-            .divider{
+            .${props.className}{
                 dispaly : block;
-                margin : 10px auto;
+                margin : 0px auto;
                 background-color : ${props.bgColor};
                 height : ${props.height};
                 width : ${props.width};
                 
             }
         `}
-    </style>
-  </>;
+      </style>
+    </>
+  );
 };
 
 export default Divider;

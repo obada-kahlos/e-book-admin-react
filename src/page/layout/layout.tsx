@@ -105,6 +105,7 @@ const Layout = () => {
                 </div>
               </Link>
               <Divider
+                className="sideDevider"
                 height={"1px"}
                 width={"80%"}
                 bgColor={"rgba(255,255,255,0.6)"}
@@ -198,6 +199,7 @@ const Layout = () => {
                 </>
               </Ul>
               <Divider
+                className="sideDevider"
                 height={"1px"}
                 width={"80%"}
                 bgColor={"rgba(255,255,255,0.6)"}
@@ -216,19 +218,20 @@ const Layout = () => {
               SmWidth={"80px"}
               className={"logo"}
             />
-            <div onClick={handleDropDown} className="cursor-pointer">
+            <div>
               <div className="flex gap-2 items-center relative">
                 <Icon
                   icon={
                     <NotificationsNoneIcon
-                      sx={{ fontSize: "24px", cursor: "pointer" }}
+                      sx={{ fontSize: "32px", cursor: "pointer" }}
                     />
                   }
                 />
-                <Avatar src="./not-found.png" />
-                <span className="text-slate-300 md:text-[18px] text-[14px]">
-                  obada Kahlous
-                </span>
+                <Avatar
+                  onClick={handleDropDown}
+                  src="./not-found.png"
+                  sx={{ width: "35px", height: "35px", cursor: "pointer" }}
+                />
               </div>
             </div>
             {dropDown ? (
@@ -243,6 +246,15 @@ const Layout = () => {
                     bgColor=""
                   >
                     <Ul margin={""} padding={""} className={""}>
+                      <div className="py-[10px] px-[15px] text-[#333] flex items-center w-full">
+                        <span>Obada Kahlous</span>
+                      </div>
+                      <Divider
+                        className="dropDownDevider"
+                        width="100%"
+                        height="1px"
+                        bgColor="rgba(0,0,0,0.6)"
+                      />
                       <Li
                         href={"Profile"}
                         text={"Profile"}
@@ -281,18 +293,6 @@ const Layout = () => {
                         <Icon icon={<LogoutIcon />} />
                         <span> LogOut </span>
                       </div>
-                      {/* <Li
-                        text={"Logout"}
-                        fontSize={""}
-                        color={"#333"}
-                        padding={"15px 15px"}
-                        margin={"0px"}
-                        className="logout"
-                        borderRadius="0px"
-                        onClick={() => {console.log('s');
-                        }}
-                        icon={<LogoutIcon />}
-                      ></Li> */}
                     </Ul>
                   </Nav>
                 </div>
