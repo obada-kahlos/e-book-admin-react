@@ -62,5 +62,5 @@ export const {
   useDeleteBooksMutation,
   useGetGenresQuery,
   useGetLanguagesQuery,
-  useGetPublishersQuery
+  useGetPublishersQuery,
 } = extendedApi;

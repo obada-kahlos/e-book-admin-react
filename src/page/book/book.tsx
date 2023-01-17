@@ -12,7 +12,7 @@ import Popup from "../../component/popup/ui/popup";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { selectData, BooksData } from "./book-data";
+import { BooksData } from "./book-data";
 import { Pagination } from "@mui/material";
 
 import * as yup from "yup";
@@ -74,7 +74,7 @@ const Books = () => {
       .required("This field is required"),
     publishers: yup.string().required("This field is required"),
     languages: yup.string().required("This field is required"),
-    genres: yup.string().required("This field is required"),
+    genreType: yup.string().required("This field is required"),
   });
 
   /// state for image + handle change for get image from input and transform it to Base64
@@ -89,13 +89,13 @@ const Books = () => {
       reader.readAsDataURL(event.target.files[0]);
     }
   };
-  console.log(uploadedImage);
 
   const handleClick = () => {};
 
   /// get books data api
   const { data: getBooks, isLoading: isLoadingBook } = useGetBooksQuery({});
-  
+  console.log({ getBooks });
+
   /// handle change from mui for multi Select + state
   const [authors, setAuthors] = React.useState<any>([]);
   const handleChangeSelect = (event: SelectChangeEvent<typeof authors>) => {
@@ -110,27 +110,9 @@ const Books = () => {
 
   /// add book fun (pass values and authors and image to useAddBooksMutation)
   const [addBook, { isSuccess, reset: resetAdd }] = useAddBooksMutation();
-  const handleAddBook = (values: {
-    title: string;
-    publishers: string;
-    numberPages: string;
-    description: string;
-    price: string;
-    languages: string;
-    genres: string;
-  }) => {
-    let formData = new FormData();
-    const file = new File([uploadedImage], "filename.jpg");
-    formData.append("Title", values.title);
-    formData.append("NumberPages", values.numberPages);
-    formData.append("Price", values.price);
-    formData.append("Image", file);
-    formData.append("Authors", authors);
-    formData.append("PublisherId", values.publishers);
-    formData.append("LanguagesId", values.languages);
-    formData.append("GenreId", values.genres);
-    formData.append("Description", values.description);
-    addBook(formData);
+  const handleAddBook = (values: any) => {
+    console.log({ values, image: uploadedImage, authors: authors });
+    addBook({ values, image: uploadedImage, authors: authors });
   };
 
   /// delete author + popup for delete author + state to get book's id
@@ -162,7 +144,6 @@ const Books = () => {
   const [publishers, setPublishers] = useState<any>();
 
   const result = useGetPublishersQuery({});
-
   // open popup
   const [popup, setPopup] = useState(false);
   const handleOpenPopup = () => {
@@ -185,353 +166,368 @@ const Books = () => {
             }}
           />
           <div className="my-[30px] sm:p-4 px-2">
-            <div className="flex justify-between items-end gap-4">
-              <div className="w-8/12">
-                <Input
-                  className="search"
-                  icon={<SearchIcon sx={{ color: "#5b5a5a" }} />}
-                  name={"search"}
-                  type={"text"}
-                  placeholder={"What are you looking for..."}
-                  id={"search"}
-                  width={"80%"}
-                  margin={"0px"}
-                  padding={"8px 16px 8px 40px"}
-                  borderradius={"20px"}
-                  border={"1px solid #ccc"}
-                  bgcolor={""}
-                  color={"#5b5a5a"}
-                  fontSize={"16px"}
-                  lable={""}
-                />
-              </div>
-              <Button
-                className={"add"}
-                buttonText={"Add Book"}
-                width={"fit-content"}
-                padding={"8px 30px"}
-                margin={"0px"}
-                borderRadius={"30px"}
-                bgColor={"bg-main-color"}
-                bgHover={"bg-hover-color"}
-                color={"#fff"}
-                fontSize={"16px"}
-                onClick={handleOpenPopup}
-              />
-            </div>
-            <div className="md:w-[100%] my-[20px] overflow-x-auto">
-              <Table width="100%">
-                <Thead>
-                  <Tr>
-                    <Th
-                      text={"Id"}
-                      color={"#fff"}
-                      fontSize={"15px"}
-                      fontWeight={"600"}
-                      padding={"10px 15px"}
+            {getBooks?.length > 0 ? (
+              <>
+                <div className="flex justify-between items-end gap-4">
+                  <div className="w-8/12">
+                    <Input
+                      className="search"
+                      icon={<SearchIcon sx={{ color: "#5b5a5a" }} />}
+                      name={"search"}
+                      type={"text"}
+                      placeholder={"Find Book"}
+                      id={"search"}
+                      width={"80%"}
                       margin={"0px"}
-                      textAlign={"center"}
-                      bgColor={"bg-main-color"}
-                      className={"book-id"}
-                      minWidth={"0px"}
+                      padding={"8px 16px 8px 40px"}
+                      borderradius={"20px"}
+                      border={"1px solid #ccc"}
+                      bgcolor={""}
+                      color={"#5b5a5a"}
+                      fontSize={"16px"}
+                      lable={""}
                     />
-                    <Th
-                      text={"Book Image"}
-                      color={"#fff"}
-                      fontSize={"15px"}
-                      fontWeight={"600"}
-                      padding={"10px 15px"}
-                      margin={"0px"}
-                      textAlign={"center"}
-                      bgColor={"bg-main-color"}
-                      className={"booksName"}
-                    />
-                    <Th
-                      text={"Book Name"}
-                      color={"#fff"}
-                      fontSize={"15px"}
-                      fontWeight={"600"}
-                      padding={"10px 15px"}
-                      margin={"0px"}
-                      textAlign={"center"}
-                      bgColor={"bg-main-color"}
-                      className={"booksName"}
-                    />
-                    <Th
-                      text={"Auther Name"}
-                      color={"#fff"}
-                      fontSize={"15px"}
-                      fontWeight={"600"}
-                      padding={"10px 15px"}
-                      margin={"0px"}
-                      textAlign={"center"}
-                      bgColor={"bg-main-color"}
-                      className={"autherName"}
-                    />
-                    <Th
-                      text={"Genre"}
-                      color={"#fff"}
-                      fontSize={"15px"}
-                      fontWeight={"600"}
-                      padding={"10px 15px"}
-                      margin={"0px"}
-                      textAlign={"center"}
-                      bgColor={"bg-main-color"}
-                      className={"bla"}
-                    />
-                    <Th
-                      text={"Puplisher"}
-                      color={"#fff"}
-                      fontSize={"15px"}
-                      fontWeight={"600"}
-                      padding={"10px 15px"}
-                      margin={"0px"}
-                      textAlign={"center"}
-                      bgColor={"bg-main-color"}
-                      className={"puplisher"}
-                    />
-                    <Th
-                      text={"Languages"}
-                      color={"#fff"}
-                      fontSize={"15px"}
-                      fontWeight={"600"}
-                      padding={"10px 15px"}
-                      margin={"0px"}
-                      textAlign={"center"}
-                      bgColor={"bg-main-color"}
-                      className={"languages"}
-                    />
-                    <Th
-                      text={"Price"}
-                      color={"#fff"}
-                      fontSize={"15px"}
-                      fontWeight={"600"}
-                      padding={"10px 15px"}
-                      margin={"0px"}
-                      textAlign={"center"}
-                      bgColor={"bg-main-color"}
-                      className={"price"}
-                    />
-                    <Th
-                      text={"Number Of pages"}
-                      color={"#fff"}
-                      fontSize={"15px"}
-                      fontWeight={"600"}
-                      padding={"10px 15px"}
-                      margin={"0px"}
-                      textAlign={"center"}
-                      bgColor={"bg-main-color"}
-                      className={"Number-Of-Pages"}
-                    />
-                    <Th
-                      text={"Publication date"}
-                      color={"#fff"}
-                      fontSize={"15px"}
-                      fontWeight={"600"}
-                      padding={"10px 15px"}
-                      margin={"0px"}
-                      textAlign={"center"}
-                      bgColor={"bg-main-color"}
-                      className={"publication-date"}
-                    />
-                    <Th
-                      text={"Description"}
-                      color={"#fff"}
-                      fontSize={"15px"}
-                      fontWeight={"600"}
-                      padding={"10px 15px"}
-                      margin={"0px"}
-                      textAlign={"center"}
-                      bgColor={"bg-main-color"}
-                      className={"description"}
-                    />
-                    <Th
-                      text={"Actions"}
-                      color={"#fff"}
-                      fontSize={"15px"}
-                      fontWeight={"600"}
-                      padding={"10px 15px"}
-                      margin={"0px"}
-                      textAlign={"center"}
-                      bgColor={"bg-main-color"}
-                      className={"Actions"}
-                      minWidth={"0px"}
-                    />
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {getBooks?.map((item: any, key: any) => (
+                  </div>
+                  <Button
+                    className={"add"}
+                    buttonText={"Add Book"}
+                    width={"180px"}
+                    padding={"8px 30px"}
+                    margin={"0px"}
+                    borderRadius={"30px"}
+                    bgColor={"bg-main-color"}
+                    bgHover={"bg-hover-color"}
+                    color={"#fff"}
+                    fontSize={"16px"}
+                    onClick={handleOpenPopup}
+                  />
+                </div>
+                <Table width="100%">
+                  <Thead>
                     <Tr>
-                      <Td
-                        color={"#333"}
-                        fontSize={"16px"}
-                        fontWeight={""}
-                        padding={""}
-                        margin={""}
-                        textAlign={"left"}
-                      >
-                        <span> {item?.id} </span>
-                      </Td>
-                      <Td
-                        color={""}
-                        fontSize={""}
-                        fontWeight={""}
-                        padding={""}
-                        margin={""}
-                        textAlign={""}
-                      >
-                        <div className="flex items-center justify-center">
-                          <Image
-                            className={""}
-                            src={`data:image/jpg;base64,/9j/${item?.image}`}
-                            alt={item.title}
-                            width={"80px"}
-                            height={"80px"}
-                            borderRaduis={""}
-                          />
-                        </div>
-                      </Td>
-                      <Td
-                        color={"#333"}
-                        fontSize={"16px"}
-                        fontWeight={""}
-                        padding={""}
-                        margin={""}
-                        textAlign={"left"}
-                      >
-                        <span> {item?.title} </span>
-                      </Td>
-                      <Td
-                        color={"#333"}
-                        fontSize={"16px"}
-                        fontWeight={""}
-                        padding={""}
-                        margin={""}
-                        textAlign={"left"}
-                      >
-                        <>
-                          {item?.authors.length > 0 ? (
-                            <div>
-                              {item?.authors.map((item: any, key: any) => (
-                                <span> {item.name} </span>
-                              ))}
-                            </div>
-                          ) : (
-                            "Aunknow Author"
-                          )}
-                        </>
-                      </Td>
-                      <Td
-                        color={"#333"}
-                        fontSize={"16px"}
-                        fontWeight={""}
-                        padding={""}
-                        margin={""}
-                        textAlign={"left"}
-                      >
-                        <span> {item.genres.name}</span>
-                      </Td>
-                      <Td
-                        color={"#333"}
-                        fontSize={"16px"}
-                        fontWeight={""}
-                        padding={""}
-                        margin={""}
-                        textAlign={"left"}
-                      >
-                        <span> {item.publishers} </span>
-                      </Td>
-                      <Td
-                        color={"#333"}
-                        fontSize={"16px"}
-                        fontWeight={""}
-                        padding={""}
-                        margin={""}
-                        textAlign={"left"}
-                      >
-                        <span> {item.languages} </span>
-                      </Td>
-                      <Td
-                        color={"#333"}
-                        fontSize={"16px"}
-                        fontWeight={""}
-                        padding={""}
-                        margin={""}
-                        textAlign={"left"}
-                      >
-                        <span> {item.price} </span>
-                      </Td>
-                      <Td
-                        color={"#333"}
-                        fontSize={"16px"}
-                        fontWeight={""}
-                        padding={""}
-                        margin={""}
-                        textAlign={"left"}
-                      >
-                        <span> {item.numberPages} </span>
-                      </Td>
-                      <Td
-                        color={"#333"}
-                        fontSize={"16px"}
-                        fontWeight={""}
-                        padding={""}
-                        margin={""}
-                        textAlign={"left"}
-                      >
-                        <span> {item.publicationDate.slice(0, 10)} </span>
-                      </Td>
-                      <Td
-                        color={"#333"}
-                        fontSize={"16px"}
-                        fontWeight={""}
-                        padding={""}
-                        margin={""}
-                        textAlign={"left"}
-                      >
-                        <span> {item.description.slice(0, 60)} </span>
-                      </Td>
-                      <Td
-                        color={"#333"}
+                      <Th
+                        text={"Id"}
+                        color={"#fff"}
                         fontSize={"15px"}
-                        fontWeight={"500"}
+                        fontWeight={"600"}
                         padding={"10px 15px"}
                         margin={"0px"}
-                        textAlign={"left"}
-                      >
-                        <ActionButton
-                          deleteIcon={{
-                            icon: (
-                              <DeleteOutlineOutlinedIcon
-                                sx={{ color: "#333" }}
-                              />
-                            ),
-                            onClick: () => {
-                              setOpenAlert(true);
-                              setAuthorId(item.id);
-                            },
-                          }}
-                          editIcon={{
-                            icon: (
-                              <ModeEditOutlinedIcon sx={{ color: "#333" }} />
-                            ),
-                            onClick: handleClick,
-                          }}
-                        />
-                      </Td>
+                        textAlign={"center"}
+                        bgColor={"bg-main-color"}
+                        className={"book-id"}
+                        minWidth={"0px"}
+                      />
+                      <Th
+                        text={"Book Image"}
+                        color={"#fff"}
+                        fontSize={"15px"}
+                        fontWeight={"600"}
+                        padding={"10px 15px"}
+                        margin={"0px"}
+                        textAlign={"center"}
+                        bgColor={"bg-main-color"}
+                        className={"booksName"}
+                      />
+                      <Th
+                        text={"Book Name"}
+                        color={"#fff"}
+                        fontSize={"15px"}
+                        fontWeight={"600"}
+                        padding={"10px 15px"}
+                        margin={"0px"}
+                        textAlign={"center"}
+                        bgColor={"bg-main-color"}
+                        className={"booksName"}
+                      />
+                      <Th
+                        text={"Auther Name"}
+                        color={"#fff"}
+                        fontSize={"15px"}
+                        fontWeight={"600"}
+                        padding={"10px 15px"}
+                        margin={"0px"}
+                        textAlign={"center"}
+                        bgColor={"bg-main-color"}
+                        className={"autherName"}
+                      />
+                      <Th
+                        text={"Genre"}
+                        color={"#fff"}
+                        fontSize={"15px"}
+                        fontWeight={"600"}
+                        padding={"10px 15px"}
+                        margin={"0px"}
+                        textAlign={"center"}
+                        bgColor={"bg-main-color"}
+                        className={"bla"}
+                      />
+                      <Th
+                        text={"Puplisher"}
+                        color={"#fff"}
+                        fontSize={"15px"}
+                        fontWeight={"600"}
+                        padding={"10px 15px"}
+                        margin={"0px"}
+                        textAlign={"center"}
+                        bgColor={"bg-main-color"}
+                        className={"puplisher"}
+                      />
+                      <Th
+                        text={"Languages"}
+                        color={"#fff"}
+                        fontSize={"15px"}
+                        fontWeight={"600"}
+                        padding={"10px 15px"}
+                        margin={"0px"}
+                        textAlign={"center"}
+                        bgColor={"bg-main-color"}
+                        className={"languages"}
+                      />
+                      <Th
+                        text={"Price"}
+                        color={"#fff"}
+                        fontSize={"15px"}
+                        fontWeight={"600"}
+                        padding={"10px 15px"}
+                        margin={"0px"}
+                        textAlign={"center"}
+                        bgColor={"bg-main-color"}
+                        className={"price"}
+                      />
+                      <Th
+                        text={"Number Of pages"}
+                        color={"#fff"}
+                        fontSize={"15px"}
+                        fontWeight={"600"}
+                        padding={"10px 15px"}
+                        margin={"0px"}
+                        textAlign={"center"}
+                        bgColor={"bg-main-color"}
+                        className={"Number-Of-Pages"}
+                      />
+                      <Th
+                        text={"Publication date"}
+                        color={"#fff"}
+                        fontSize={"15px"}
+                        fontWeight={"600"}
+                        padding={"10px 15px"}
+                        margin={"0px"}
+                        textAlign={"center"}
+                        bgColor={"bg-main-color"}
+                        className={"publication-date"}
+                      />
+                      <Th
+                        text={"Description"}
+                        color={"#fff"}
+                        fontSize={"15px"}
+                        fontWeight={"600"}
+                        padding={"10px 15px"}
+                        margin={"0px"}
+                        textAlign={"center"}
+                        bgColor={"bg-main-color"}
+                        className={"description"}
+                      />
+                      <Th
+                        text={"Actions"}
+                        color={"#fff"}
+                        fontSize={"15px"}
+                        fontWeight={"600"}
+                        padding={"10px 15px"}
+                        margin={"0px"}
+                        textAlign={"center"}
+                        bgColor={"bg-main-color"}
+                        className={"Actions"}
+                        minWidth={"0px"}
+                      />
                     </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </div>
-            <div className="flex justify-center items-center">
-              <Pagination
-                count={10}
-                page={page}
-                onChange={handleChange}
-                size="small"
-              />
-            </div>
+                  </Thead>
+                  <Tbody>
+                    {getBooks?.map((item: any, key: any) => (
+                      <Tr>
+                        <Td
+                          color={"#333"}
+                          fontSize={"16px"}
+                          fontWeight={""}
+                          padding={""}
+                          margin={""}
+                          textAlign={"left"}
+                        >
+                          <span> {item?.id} </span>
+                        </Td>
+                        <Td
+                          color={""}
+                          fontSize={""}
+                          fontWeight={""}
+                          padding={""}
+                          margin={""}
+                          textAlign={""}
+                        >
+                          <div className="flex items-center justify-center">
+                            <Image
+                              className={""}
+                              src={item?.image}
+                              alt={item?.title}
+                              width={"80px"}
+                              height={"80px"}
+                              borderRaduis={""}
+                            />
+                          </div>
+                        </Td>
+                        <Td
+                          color={"#333"}
+                          fontSize={"16px"}
+                          fontWeight={""}
+                          padding={""}
+                          margin={""}
+                          textAlign={"left"}
+                        >
+                          <span> {item?.title} </span>
+                        </Td>
+                        <Td
+                          color={"#333"}
+                          fontSize={"16px"}
+                          fontWeight={""}
+                          padding={""}
+                          margin={""}
+                          textAlign={"left"}
+                        >
+                          <>
+                            {item?.authors?.length > 0 ? (
+                              <div>
+                                {item?.authors?.map((item: any, key: any) => (
+                                  <span> {item} </span>
+                                ))}
+                              </div>
+                            ) : (
+                              "Aunknow Author"
+                            )}
+                          </>
+                        </Td>
+                        <Td
+                          color={"#333"}
+                          fontSize={"16px"}
+                          fontWeight={""}
+                          padding={""}
+                          margin={""}
+                          textAlign={"left"}
+                        >
+                          <span> {item?.genreType}</span>
+                        </Td>
+                        <Td
+                          color={"#333"}
+                          fontSize={"16px"}
+                          fontWeight={""}
+                          padding={""}
+                          margin={""}
+                          textAlign={"left"}
+                        >
+                          <span> {item.publishers} </span>
+                        </Td>
+                        <Td
+                          color={"#333"}
+                          fontSize={"16px"}
+                          fontWeight={""}
+                          padding={""}
+                          margin={""}
+                          textAlign={"left"}
+                        >
+                          <span> {item?.language} </span>
+                        </Td>
+                        <Td
+                          color={"#333"}
+                          fontSize={"16px"}
+                          fontWeight={""}
+                          padding={""}
+                          margin={""}
+                          textAlign={"left"}
+                        >
+                          <span> {item?.price} </span>
+                        </Td>
+                        <Td
+                          color={"#333"}
+                          fontSize={"16px"}
+                          fontWeight={""}
+                          padding={""}
+                          margin={""}
+                          textAlign={"left"}
+                        >
+                          <span> {item?.numberPages} </span>
+                        </Td>
+                        <Td
+                          color={"#333"}
+                          fontSize={"16px"}
+                          fontWeight={""}
+                          padding={""}
+                          margin={""}
+                          textAlign={"left"}
+                        >
+                          <span> {item?.publicationDate?.slice(0, 10)} </span>
+                        </Td>
+                        <Td
+                          color={"#333"}
+                          fontSize={"16px"}
+                          fontWeight={""}
+                          padding={""}
+                          margin={""}
+                          textAlign={"left"}
+                        >
+                          <span> {item?.description.slice(0, 60)} </span>
+                        </Td>
+                        <Td
+                          color={"#333"}
+                          fontSize={"15px"}
+                          fontWeight={"500"}
+                          padding={"10px 15px"}
+                          margin={"0px"}
+                          textAlign={"left"}
+                        >
+                          <ActionButton
+                            deleteIcon={{
+                              icon: (
+                                <DeleteOutlineOutlinedIcon
+                                  sx={{ color: "#333" }}
+                                />
+                              ),
+                              onClick: () => {
+                                setOpenAlert(true);
+                                setAuthorId(item.id);
+                              },
+                            }}
+                            editIcon={{
+                              icon: (
+                                <ModeEditOutlinedIcon sx={{ color: "#333" }} />
+                              ),
+                              onClick: handleClick,
+                            }}
+                          />
+                        </Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+                <div className="flex justify-center items-center">
+                  <Pagination
+                    count={10}
+                    page={page}
+                    onChange={handleChange}
+                    size="small"
+                  />
+                </div>
+              </>
+            ) : (
+              <div className="flex justify-center items-center flex-col mt-[20px]">
+                <p className="text-[#555] text-[30px] mb-[10px] block">
+                  There is no book!
+                </p>
+                <p
+                  onClick={handleOpenPopup}
+                  className="text-main-color font-bold text-[18px] cursor-pointer"
+                >
+                  Add One?
+                </p>
+              </div>
+            )}
+
             <Popup
               headerTitle="Add Book"
               translate={"translate(-50% , -50%)"}
@@ -564,10 +560,20 @@ const Books = () => {
                       description: "",
                       price: "",
                       languages: "",
-                      genres: "",
+                      genreType: "",
                     }}
                     onSubmit={(values) => {
-                      handleAddBook(values);
+                      addBook({
+                        title: values.title,
+                        description: values.description,
+                        publisherId: values.publishers,
+                        numberPages: values.numberPages,
+                        price: values.price,
+                        languagesId: values.languages,
+                        genreId: values.genreType,
+                        authors: authors,
+                        image: uploadedImage,
+                      });
                       setPopup(false);
                       setUploadedImage(undefined);
                     }}
@@ -615,7 +621,7 @@ const Books = () => {
                                 as={Select}
                                 className={"get-genres"}
                                 lable={"Genres"}
-                                name={"genres"}
+                                name={"genreType"}
                                 id={""}
                                 width={"100%"}
                                 margin={"0px"}
@@ -636,7 +642,7 @@ const Books = () => {
                                   : null}
                               </Field>
                               <ErrorMessage
-                                name={"genres"}
+                                name={"genreType"}
                                 render={(msg) => (
                                   <p className="text-[red] text-[14px]">
                                     {msg}

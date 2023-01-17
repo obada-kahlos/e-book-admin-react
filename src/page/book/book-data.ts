@@ -13,7 +13,7 @@ export const BooksData = [
     color: "#5b5a5a",
     fontSize: "16px",
     lable: "Book name",
-    className: 'bookName'
+    className: "bookName",
   },
   {
     name: "numberPages",
@@ -29,7 +29,7 @@ export const BooksData = [
     color: "#5b5a5a",
     fontSize: "16px",
     lable: "Number of pages",
-    className: 'number-of-pages',
+    className: "number-of-pages",
   },
   {
     name: "price",
@@ -45,68 +45,68 @@ export const BooksData = [
     color: "#5b5a5a",
     fontSize: "16px",
     lable: "Price",
-    className: 'prices',
+    className: "prices",
   },
 ];
 
-export const selectData = [
-  {
-    className:"select-Language",
-    lable:"Language",
-    name:"language",
-    id:"language",
-    width:"100%",
-    margin:"",
-    padding:"8px 5px",
-    borderradius:"4px",
-    border:"1px solid #ccc",
-    bgcolor:"#fff",
-    color:"#5b5a5a",
-    fontSize:"16px",
-    options : [
-      {
-        value : 'Arabic'
-      },
-      {
-        value : 'English'
-      },
-      {
-        value : 'French'
-      },
-      {
-        value : 'Turki'
-      },
-    ]
-  },
-  {
-    className:"select-genre",
-    lable:"Genre",
-    name:"genre",
-    id:"genre",
-    width:"100%",
-    margin:"",
-    padding:"8px 5px",
-    borderradius:"4px",
-    border:"1px solid #ccc",
-    bgcolor:"#fff",
-    color:"#5b5a5a",
-    fontSize:"16px",
-    options : [
-      {
-        value : 'Stories'
-      },
-      {
-        value : 'War'
-      },
-      {
-        value : 'Romantic'
-      },
-      {
-        value : 'Love'
-      },
-    ]
-  },
-]
+// export const selectData = [
+//   {
+//     className:"select-Language",
+//     lable:"Language",
+//     name:"language",
+//     id:"language",
+//     width:"100%",
+//     margin:"",
+//     padding:"8px 5px",
+//     borderradius:"4px",
+//     border:"1px solid #ccc",
+//     bgcolor:"#fff",
+//     color:"#5b5a5a",
+//     fontSize:"16px",
+//     options : [
+//       {
+//         value : 'Arabic'
+//       },
+//       {
+//         value : 'English'
+//       },
+//       {
+//         value : 'French'
+//       },
+//       {
+//         value : 'Turki'
+//       },
+//     ]
+//   },
+//   {
+//     className:"select-genre",
+//     lable:"Genre",
+//     name:"genre",
+//     id:"genre",
+//     width:"100%",
+//     margin:"",
+//     padding:"8px 5px",
+//     borderradius:"4px",
+//     border:"1px solid #ccc",
+//     bgcolor:"#fff",
+//     color:"#5b5a5a",
+//     fontSize:"16px",
+//     options : [
+//       {
+//         value : 'Stories'
+//       },
+//       {
+//         value : 'War'
+//       },
+//       {
+//         value : 'Romantic'
+//       },
+//       {
+//         value : 'Love'
+//       },
+//     ]
+//   },
+// ]
 
 
 
