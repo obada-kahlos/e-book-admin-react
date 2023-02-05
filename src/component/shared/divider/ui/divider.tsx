@@ -9,11 +9,10 @@ const Divider: React.FC<DividerProps> = ({ ...props }) => {
         {`
             .${props.className}{
                 dispaly : block;
-                margin : 0px auto;
+                margin : ${props.margin};
                 background-color : ${props.bgColor};
                 height : ${props.height};
                 width : ${props.width};
-                
             }
         `}
       </style>

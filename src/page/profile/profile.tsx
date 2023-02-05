@@ -19,7 +19,6 @@ const Profile = () => {
     }
   };
 
-  console.log({ uploadedImage });
   const getToken = JSON.parse(localStorage.getItem("login") as any);
 
   return (

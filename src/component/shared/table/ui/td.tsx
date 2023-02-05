@@ -17,6 +17,7 @@ const Td: React.FC<TdProps> = ({ ...props }) => {
                 max-width : 300px;
                 min-width : 140px;
                 vertical-align: top;
+                word-break: break-all;
             }
         `}
       </style>

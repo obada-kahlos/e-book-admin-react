@@ -10,8 +10,8 @@ const extendedApi = apiSlice.injectEndpoints({
       providesTags: ["Book"],
     }),
     getBooks: builder.query({
-      query: () => ({
-        url: "/api/AdminBooks/GetAllBook?PageNumber=1",
+      query: (page) => ({
+        url: `/api/AdminBooks/GetAllBook?PageNumber=${page}`,
         method: "GET",
       }),
       providesTags: ["Book"],
@@ -45,6 +45,14 @@ const extendedApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Book"],
     }),
+    updateBooks: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `/api/AdminBooks/UpdateBook/${id}`,
+        method: "PUT",
+        body: body,
+      }),
+      invalidatesTags: ["Book"],
+    }),
     deleteBooks: builder.mutation({
       query: (id) => ({
         url: `/api/AdminBooks/DeleteBook/${id}`,
@@ -59,6 +67,7 @@ export const {
   useGetDashbordInfoQuery,
   useGetBooksQuery,
   useAddBooksMutation,
+  useUpdateBooksMutation,
   useDeleteBooksMutation,
   useGetGenresQuery,
   useGetLanguagesQuery,

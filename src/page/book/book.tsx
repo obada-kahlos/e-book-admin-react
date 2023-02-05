@@ -12,7 +12,7 @@ import Popup from "../../component/popup/ui/popup";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { BooksData } from "./book-data";
+import { BooksData, TheadDate } from "./book-data";
 import { Pagination } from "@mui/material";
 
 import * as yup from "yup";
@@ -34,6 +34,7 @@ import {
   useGetGenresQuery,
   useGetLanguagesQuery,
   useGetPublishersQuery,
+  useUpdateBooksMutation,
 } from "../../api/books/books";
 import Select from "../../component/shared/select/ui/select";
 import MuiSelect from "../../component/mui-select/mui-select";
@@ -47,12 +48,6 @@ import SectionLoading from "../../component/loader/section-loading";
 import Loader from "../../component/loader/loader";
 
 const Books = () => {
-  // pagination from Mui with handle change
-  const [page, setPage] = React.useState(1);
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-  };
-
   /// schema for add books
   const schema = yup.object().shape({
     title: yup
@@ -90,11 +85,13 @@ const Books = () => {
     }
   };
 
-  const handleClick = () => {};
-
   /// get books data api
-  const { data: getBooks, isLoading: isLoadingBook } = useGetBooksQuery({});
-  console.log({ getBooks });
+  const [page, setPage] = React.useState(1);
+  const { data: getBooks, isLoading: isLoadingBook } = useGetBooksQuery(page);
+  // pagination from Mui with handle change
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
 
   /// handle change from mui for multi Select + state
   const [authors, setAuthors] = React.useState<any>([]);
@@ -108,14 +105,66 @@ const Books = () => {
   /// get author data api and passing to multi select component
   const { data: getAuther } = useGetAuterQuery({});
 
-  /// add book fun (pass values and authors and image to useAddBooksMutation)
-  const [addBook, { isSuccess, reset: resetAdd }] = useAddBooksMutation();
+  /// add book
+  const [
+    addBook,
+    { isSuccess, reset: resetAdd, error: addBookError, isError },
+  ]: any = useAddBooksMutation();
   const handleAddBook = (values: any) => {
-    console.log({ values, image: uploadedImage, authors: authors });
-    addBook({ values, image: uploadedImage, authors: authors });
+    addBook({
+      title: values.title,
+      description: values.description,
+      publisherId: values.publishers,
+      numberPages: values.numberPages,
+      price: values.price,
+      languagesId: values.languages,
+      genreId: values.genreType,
+      authors: authors,
+      image: uploadedImage,
+    });
+    isError ? setPopup(true) : setPopup(false);
+    isError ? setUploadedImage(uploadedImage) : setUploadedImage(undefined);
+    isError ? setAuthors(authors) : setAuthors([]);
   };
 
-  /// delete author + popup for delete author + state to get book's id
+  /// update book
+  const [
+    updateBook,
+    { isSuccess: isUpdated, reset: resetUpdate, isError: isErrorUpdateBook },
+  ] = useUpdateBooksMutation();
+
+  const [getBookById, setGetBookById] = useState<any>(null);
+  const getBookId = (id: number) => {
+    const selectedBook = getBooks?.response?.find(
+      (item: any) => item.id === id
+    );
+    setGetBookById((prev: any) => {
+      return { ...prev, ...selectedBook };
+    });
+  };
+
+  const handleUpdateBook = (values: any) => {
+    updateBook({
+      title: values.title,
+      description: values.description,
+      publisherId: values.publishers,
+      numberPages: values.numberPages,
+      price: values.price,
+      languagesId: values.languages,
+      genreId: values.genreType,
+      id: getBookById?.id,
+      authors: authors,
+      image: uploadedImage ? uploadedImage : getBookById?.image,
+    });
+    isErrorUpdateBook ? setPopup(true) : setPopup(false);
+    isErrorUpdateBook
+      ? setUploadedImage(uploadedImage)
+      : setUploadedImage(undefined);
+    isErrorUpdateBook ? setAuthors(authors) : setAuthors([]);
+    setGetBookById(null);
+  };
+
+  /// delete book + popup for book author + state to get book's id
   const [deleteBook, { isSuccess: isDeleted, reset: resetDelete }] =
     useDeleteBooksMutation();
   const [openAlert, setOpenAlert] = useState(false);
@@ -133,23 +182,36 @@ const Books = () => {
     if (isDeleted) {
       toastStatus("isDeleted", "Deleted successfully");
     }
+    if (isUpdated) {
+      toastStatus("isSuccess", "Updated successfully");
+    }
     resetDelete();
+    resetUpdate();
     resetAdd();
-  }, [isSuccess, isDeleted]);
+  }, [isSuccess, isDeleted, isUpdated]);
   // data foor add books
 
   const { data: getGenres } = useGetGenresQuery({});
   const { data: getLanguages } = useGetLanguagesQuery({});
-  const { isLoading: isLoadingPublishers } = useGetPublishersQuery({});
-  const [publishers, setPublishers] = useState<any>();
+  const { data: publishers, isLoading: isLoadingPublishers } =
+    useGetPublishersQuery({});
 
   const result = useGetPublishersQuery({});
   // open popup
   const [popup, setPopup] = useState(false);
   const handleOpenPopup = () => {
     setPopup((prev) => !prev);
-    setPublishers(result);
+    setGetBookById(null);
+    setUploadedImage(undefined);
+    setAuthors([]);
   };
+
+  /// search
+  const [searchBook, setSearchBook] = useState("");
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchBook(event.target.value);
+  };
+
   return (
     <>
       {isLoadingBook ? (
@@ -166,7 +228,7 @@ const Books = () => {
             }}
           />
           <div className="my-[30px] sm:p-4 px-2">
-            {getBooks?.length > 0 ? (
+            {getBooks?.response?.length > 0 ? (
               <>
                 <div className="flex justify-between items-end gap-4">
                   <div className="w-8/12">
@@ -186,6 +248,7 @@ const Books = () => {
                       color={"#5b5a5a"}
                       fontSize={"16px"}
                       lable={""}
+                      onChange={handleSearch}
                     />
                   </div>
                   <Button
@@ -205,309 +268,206 @@ const Books = () => {
                 <Table width="100%">
                   <Thead>
                     <Tr>
-                      <Th
-                        text={"Id"}
-                        color={"#fff"}
-                        fontSize={"15px"}
-                        fontWeight={"600"}
-                        padding={"10px 15px"}
-                        margin={"0px"}
-                        textAlign={"center"}
-                        bgColor={"bg-main-color"}
-                        className={"book-id"}
-                        minWidth={"0px"}
-                      />
-                      <Th
-                        text={"Book Image"}
-                        color={"#fff"}
-                        fontSize={"15px"}
-                        fontWeight={"600"}
-                        padding={"10px 15px"}
-                        margin={"0px"}
-                        textAlign={"center"}
-                        bgColor={"bg-main-color"}
-                        className={"booksName"}
-                      />
-                      <Th
-                        text={"Book Name"}
-                        color={"#fff"}
-                        fontSize={"15px"}
-                        fontWeight={"600"}
-                        padding={"10px 15px"}
-                        margin={"0px"}
-                        textAlign={"center"}
-                        bgColor={"bg-main-color"}
-                        className={"booksName"}
-                      />
-                      <Th
-                        text={"Auther Name"}
-                        color={"#fff"}
-                        fontSize={"15px"}
-                        fontWeight={"600"}
-                        padding={"10px 15px"}
-                        margin={"0px"}
-                        textAlign={"center"}
-                        bgColor={"bg-main-color"}
-                        className={"autherName"}
-                      />
-                      <Th
-                        text={"Genre"}
-                        color={"#fff"}
-                        fontSize={"15px"}
-                        fontWeight={"600"}
-                        padding={"10px 15px"}
-                        margin={"0px"}
-                        textAlign={"center"}
-                        bgColor={"bg-main-color"}
-                        className={"bla"}
-                      />
-                      <Th
-                        text={"Puplisher"}
-                        color={"#fff"}
-                        fontSize={"15px"}
-                        fontWeight={"600"}
-                        padding={"10px 15px"}
-                        margin={"0px"}
-                        textAlign={"center"}
-                        bgColor={"bg-main-color"}
-                        className={"puplisher"}
-                      />
-                      <Th
-                        text={"Languages"}
-                        color={"#fff"}
-                        fontSize={"15px"}
-                        fontWeight={"600"}
-                        padding={"10px 15px"}
-                        margin={"0px"}
-                        textAlign={"center"}
-                        bgColor={"bg-main-color"}
-                        className={"languages"}
-                      />
-                      <Th
-                        text={"Price"}
-                        color={"#fff"}
-                        fontSize={"15px"}
-                        fontWeight={"600"}
-                        padding={"10px 15px"}
-                        margin={"0px"}
-                        textAlign={"center"}
-                        bgColor={"bg-main-color"}
-                        className={"price"}
-                      />
-                      <Th
-                        text={"Number Of pages"}
-                        color={"#fff"}
-                        fontSize={"15px"}
-                        fontWeight={"600"}
-                        padding={"10px 15px"}
-                        margin={"0px"}
-                        textAlign={"center"}
-                        bgColor={"bg-main-color"}
-                        className={"Number-Of-Pages"}
-                      />
-                      <Th
-                        text={"Publication date"}
-                        color={"#fff"}
-                        fontSize={"15px"}
-                        fontWeight={"600"}
-                        padding={"10px 15px"}
-                        margin={"0px"}
-                        textAlign={"center"}
-                        bgColor={"bg-main-color"}
-                        className={"publication-date"}
-                      />
-                      <Th
-                        text={"Description"}
-                        color={"#fff"}
-                        fontSize={"15px"}
-                        fontWeight={"600"}
-                        padding={"10px 15px"}
-                        margin={"0px"}
-                        textAlign={"center"}
-                        bgColor={"bg-main-color"}
-                        className={"description"}
-                      />
-                      <Th
-                        text={"Actions"}
-                        color={"#fff"}
-                        fontSize={"15px"}
-                        fontWeight={"600"}
-                        padding={"10px 15px"}
-                        margin={"0px"}
-                        textAlign={"center"}
-                        bgColor={"bg-main-color"}
-                        className={"Actions"}
-                        minWidth={"0px"}
-                      />
+                      {TheadDate.map((item, key) => (
+                        <Th
+                          key={key}
+                          text={item}
+                          color={"#fff"}
+                          fontSize={"15px"}
+                          fontWeight={"600"}
+                          padding={"10px 15px"}
+                          margin={"0px"}
+                          textAlign={"center"}
+                          bgColor={"bg-main-color"}
+                          className={"book-id"}
+                        />
+                      ))}
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {getBooks?.map((item: any, key: any) => (
-                      <Tr>
-                        <Td
-                          color={"#333"}
-                          fontSize={"16px"}
-                          fontWeight={""}
-                          padding={""}
-                          margin={""}
-                          textAlign={"left"}
-                        >
-                          <span> {item?.id} </span>
-                        </Td>
-                        <Td
-                          color={""}
-                          fontSize={""}
-                          fontWeight={""}
-                          padding={""}
-                          margin={""}
-                          textAlign={""}
-                        >
-                          <div className="flex items-center justify-center">
-                            <Image
-                              className={""}
-                              src={item?.image}
-                              alt={item?.title}
-                              width={"80px"}
-                              height={"80px"}
-                              borderRaduis={""}
+                    {getBooks?.response
+                      ?.filter((value: any) => {
+                        if (searchBook === "") {
+                          return value;
+                        } else if (
+                          value.title
+                            .toLowerCase()
+                            .includes(searchBook.toLocaleLowerCase())
+                        ) {
+                          return value;
+                        }
+                      })
+                      .map((item: any, key: any) => (
+                        <Tr key={key}>
+                          <Td
+                            color={"#333"}
+                            fontSize={"16px"}
+                            fontWeight={""}
+                            padding={""}
+                            margin={""}
+                            textAlign={"left"}
+                          >
+                            <span> {item?.id} </span>
+                          </Td>
+                          <Td
+                            color={""}
+                            fontSize={""}
+                            fontWeight={""}
+                            padding={""}
+                            margin={""}
+                            textAlign={""}
+                          >
+                            <div className="flex items-center justify-center">
+                              <Image
+                                className={""}
+                                src={item?.image}
+                                alt={item?.title}
+                                width={"80px"}
+                                height={"80px"}
+                                borderRaduis={""}
+                              />
+                            </div>
+                          </Td>
+                          <Td
+                            color={"#333"}
+                            fontSize={"16px"}
+                            fontWeight={""}
+                            padding={""}
+                            margin={""}
+                            textAlign={"left"}
+                          >
+                            <span> {item?.title} </span>
+                          </Td>
+                          <Td
+                            color={"#333"}
+                            fontSize={"16px"}
+                            fontWeight={""}
+                            padding={""}
+                            margin={""}
+                            textAlign={"left"}
+                          >
+                            <>
+                              {item?.authors?.length > 0 ? (
+                                <div>
+                                  {item?.authors?.map((item: any, key: any) => (
+                                    <span key={key}> {item} </span>
+                                  ))}
+                                </div>
+                              ) : (
+                                "Aunknow Author"
+                              )}
+                            </>
+                          </Td>
+                          <Td
+                            color={"#333"}
+                            fontSize={"16px"}
+                            fontWeight={""}
+                            padding={""}
+                            margin={""}
+                            textAlign={"left"}
+                          >
+                            <span> {item?.genreType}</span>
+                          </Td>
+                          <Td
+                            color={"#333"}
+                            fontSize={"16px"}
+                            fontWeight={""}
+                            padding={""}
+                            margin={""}
+                            textAlign={"left"}
+                          >
+                            <span> {item.publishers} </span>
+                          </Td>
+                          <Td
+                            color={"#333"}
+                            fontSize={"16px"}
+                            fontWeight={""}
+                            padding={""}
+                            margin={""}
+                            textAlign={"left"}
+                          >
+                            <span> {item?.language} </span>
+                          </Td>
+                          <Td
+                            color={"#333"}
+                            fontSize={"16px"}
+                            fontWeight={""}
+                            padding={""}
+                            margin={""}
+                            textAlign={"left"}
+                          >
+                            <span> {item?.price} </span>
+                          </Td>
+                          <Td
+                            color={"#333"}
+                            fontSize={"16px"}
+                            fontWeight={""}
+                            padding={""}
+                            margin={""}
+                            textAlign={"left"}
+                          >
+                            <span> {item?.numberPages} </span>
+                          </Td>
+                          <Td
+                            color={"#333"}
+                            fontSize={"16px"}
+                            fontWeight={""}
+                            padding={""}
+                            margin={""}
+                            textAlign={"left"}
+                          >
+                            <span> {item?.publicationDate?.slice(0, 10)} </span>
+                          </Td>
+                          <Td
+                            color={"#333"}
+                            fontSize={"16px"}
+                            fontWeight={""}
+                            padding={""}
+                            margin={""}
+                            textAlign={"left"}
+                          >
+                            <span> {item?.description.slice(0, 60)} </span>
+                          </Td>
+                          <Td
+                            color={"#333"}
+                            fontSize={"15px"}
+                            fontWeight={"500"}
+                            padding={"10px 15px"}
+                            margin={"0px"}
+                            textAlign={"left"}
+                          >
+                            <ActionButton
+                              deleteIcon={{
+                                icon: (
+                                  <DeleteOutlineOutlinedIcon
+                                    sx={{ color: "#333" }}
+                                  />
+                                ),
+                                onClick: () => {
+                                  setOpenAlert(true);
+                                  setAuthorId(item.id);
+                                },
+                              }}
+                              editIcon={{
+                                icon: (
+                                  <ModeEditOutlinedIcon
+                                    sx={{ color: "#333" }}
+                                  />
+                                ),
+                                onClick: () => {
+                                  setPopup(true);
+                                  getBookId(item?.id);
+                                },
+                              }}
                             />
-                          </div>
-                        </Td>
-                        <Td
-                          color={"#333"}
-                          fontSize={"16px"}
-                          fontWeight={""}
-                          padding={""}
-                          margin={""}
-                          textAlign={"left"}
-                        >
-                          <span> {item?.title} </span>
-                        </Td>
-                        <Td
-                          color={"#333"}
-                          fontSize={"16px"}
-                          fontWeight={""}
-                          padding={""}
-                          margin={""}
-                          textAlign={"left"}
-                        >
-                          <>
-                            {item?.authors?.length > 0 ? (
-                              <div>
-                                {item?.authors?.map((item: any, key: any) => (
-                                  <span> {item} </span>
-                                ))}
-                              </div>
-                            ) : (
-                              "Aunknow Author"
-                            )}
-                          </>
-                        </Td>
-                        <Td
-                          color={"#333"}
-                          fontSize={"16px"}
-                          fontWeight={""}
-                          padding={""}
-                          margin={""}
-                          textAlign={"left"}
-                        >
-                          <span> {item?.genreType}</span>
-                        </Td>
-                        <Td
-                          color={"#333"}
-                          fontSize={"16px"}
-                          fontWeight={""}
-                          padding={""}
-                          margin={""}
-                          textAlign={"left"}
-                        >
-                          <span> {item.publishers} </span>
-                        </Td>
-                        <Td
-                          color={"#333"}
-                          fontSize={"16px"}
-                          fontWeight={""}
-                          padding={""}
-                          margin={""}
-                          textAlign={"left"}
-                        >
-                          <span> {item?.language} </span>
-                        </Td>
-                        <Td
-                          color={"#333"}
-                          fontSize={"16px"}
-                          fontWeight={""}
-                          padding={""}
-                          margin={""}
-                          textAlign={"left"}
-                        >
-                          <span> {item?.price} </span>
-                        </Td>
-                        <Td
-                          color={"#333"}
-                          fontSize={"16px"}
-                          fontWeight={""}
-                          padding={""}
-                          margin={""}
-                          textAlign={"left"}
-                        >
-                          <span> {item?.numberPages} </span>
-                        </Td>
-                        <Td
-                          color={"#333"}
-                          fontSize={"16px"}
-                          fontWeight={""}
-                          padding={""}
-                          margin={""}
-                          textAlign={"left"}
-                        >
-                          <span> {item?.publicationDate?.slice(0, 10)} </span>
-                        </Td>
-                        <Td
-                          color={"#333"}
-                          fontSize={"16px"}
-                          fontWeight={""}
-                          padding={""}
-                          margin={""}
-                          textAlign={"left"}
-                        >
-                          <span> {item?.description.slice(0, 60)} </span>
-                        </Td>
-                        <Td
-                          color={"#333"}
-                          fontSize={"15px"}
-                          fontWeight={"500"}
-                          padding={"10px 15px"}
-                          margin={"0px"}
-                          textAlign={"left"}
-                        >
-                          <ActionButton
-                            deleteIcon={{
-                              icon: (
-                                <DeleteOutlineOutlinedIcon
-                                  sx={{ color: "#333" }}
-                                />
-                              ),
-                              onClick: () => {
-                                setOpenAlert(true);
-                                setAuthorId(item.id);
-                              },
-                            }}
-                            editIcon={{
-                              icon: (
-                                <ModeEditOutlinedIcon sx={{ color: "#333" }} />
-                              ),
-                              onClick: handleClick,
-                            }}
-                          />
-                        </Td>
-                      </Tr>
-                    ))}
+                          </Td>
+                        </Tr>
+                      ))}
                   </Tbody>
                 </Table>
                 <div className="flex justify-center items-center">
                   <Pagination
-                    count={10}
+                    count={getBooks?.pageNumber}
                     page={page}
                     onChange={handleChange}
                     size="small"
@@ -529,7 +489,7 @@ const Books = () => {
             )}
 
             <Popup
-              headerTitle="Add Book"
+              headerTitle={getBookById ? "Update Book" : "Add Book"}
               translate={"translate(-50% , -50%)"}
               onClick={handleOpenPopup}
               width={"750px"}
@@ -553,29 +513,31 @@ const Books = () => {
                 <div className="p-2">
                   <Formik
                     enableReinitialize
-                    initialValues={{
-                      title: "",
-                      publishers: "",
-                      numberPages: "",
-                      description: "",
-                      price: "",
-                      languages: "",
-                      genreType: "",
-                    }}
+                    initialValues={
+                      getBookById
+                        ? {
+                            title: getBookById?.title,
+                            publishers: getBookById?.publishers,
+                            numberPages: getBookById?.numberPages,
+                            description: getBookById?.description,
+                            price: getBookById?.price,
+                            languages: getBookById?.language,
+                            genreType: getBookById?.genreType,
+                          }
+                        : {
+                            title: "",
+                            publishers: "",
+                            numberPages: "",
+                            description: "",
+                            price: "",
+                            languages: "",
+                            genreType: "",
+                          }
+                    }
                     onSubmit={(values) => {
-                      addBook({
-                        title: values.title,
-                        description: values.description,
-                        publisherId: values.publishers,
-                        numberPages: values.numberPages,
-                        price: values.price,
-                        languagesId: values.languages,
-                        genreId: values.genreType,
-                        authors: authors,
-                        image: uploadedImage,
-                      });
-                      setPopup(false);
-                      setUploadedImage(undefined);
+                      getBookById
+                        ? handleUpdateBook(values)
+                        : handleAddBook(values);
                     }}
                     validationSchema={schema}
                   >
@@ -699,13 +661,11 @@ const Books = () => {
                                 fontSize={"16px"}
                               >
                                 <option>Choise Publishers</option>
-                                {publishers?.data?.map(
-                                  (option: any, key: any) => (
-                                    <option key={key} value={option.id}>
-                                      {option.name}
-                                    </option>
-                                  )
-                                )}
+                                {publishers?.map((option: any, key: any) => (
+                                  <option key={key} value={option.id}>
+                                    {option.name}
+                                  </option>
+                                ))}
                               </Field>
                               <ErrorMessage
                                 name={"publishers"}
@@ -742,6 +702,20 @@ const Books = () => {
                                 type={"file"}
                                 onChange={onUploadFile}
                               />
+                              <>
+                                {addBookError
+                                  ? addBookError?.data?.errors?.Image?.map(
+                                      (item: any, key: any) => (
+                                        <p
+                                          className="text-[red] text-[14px]"
+                                          key={key}
+                                        >
+                                          {item}
+                                        </p>
+                                      )
+                                    )
+                                  : null}
+                              </>
                             </div>
                             <div className="md:col-span-12 col-span-12">
                               <Field
@@ -792,36 +766,27 @@ const Books = () => {
               )}
             </Popup>
 
-            {uploadedImage && (
-              <Popup
-                headerTitle=""
-                translate={""}
-                width={"335px"}
-                height={"200px"}
-                bgClor={"#fff"}
-                borderRadius={"0px"}
-                top={"0px"}
-                left={""}
-                right={"0px"}
-                bottom={""}
-                isOpen={popup}
-                padding="10px"
-                paddingBodyBottom="20px"
-                className="showImage"
-                zIndex="1001"
-              >
+            {uploadedImage || getBookById ? (
+              <div className="z-[1002] bg-[white] w-[300px] h-[200px] fixed top-0 right-0 p-[10px] shadow-xl">
+                {!getBookById?.image && (
+                  <div className="fixed right-[15px] top-[15px] rounded-full bg-[rgba(255,255,255,0.4)] cursor-pointer">
+                    <IconButton onClick={() => setUploadedImage(undefined)}>
+                      <Icon className="" icon={<CloseIcon />} />
+                    </IconButton>
+                  </div>
+                )}
                 <div className="">
                   <Image
-                    src={uploadedImage}
+                    src={uploadedImage ? uploadedImage : getBookById?.image}
                     alt={"image"}
                     width={"100%"}
-                    height={"100%"}
+                    height={"180px"}
                     borderRaduis={""}
-                    className={"add-image"}
+                    className={"add-image-popup"}
                   />
                 </div>
-              </Popup>
-            )}
+              </div>
+            ) : null}
           </div>
         </>
       )}

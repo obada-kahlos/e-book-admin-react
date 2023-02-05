@@ -31,7 +31,6 @@ import { toastStatus } from "../../utils/Toastify/toastify";
 const Author = () => {
   /// get api for author
   const { data: getAuther, isLoading } = useGetAuterQuery({});
-  console.log({ getAuther: getAuther?.length });
 
   /// add author
   const [addAuthor, { isSuccess, isError, reset: resetAdd }] =

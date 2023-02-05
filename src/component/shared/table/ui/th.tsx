@@ -4,7 +4,7 @@ import { ThProps } from "../data-access/th";
 const Th: React.FC<ThProps> = ({ ...props }) => {
   return (
     <>
-      <th className={`${props.className } ${props.bgColor}`}> {props.text} </th>
+      <th className={`${props.className} ${props.bgColor}`}> {props.text} </th>
       <style>
         {`
             th.${props.className}{
@@ -14,7 +14,8 @@ const Th: React.FC<ThProps> = ({ ...props }) => {
                 padding: ${props.padding};
                 margin: ${props.margin};
                 text-align: ${props.textAlign};
-                min-width : ${props.minWidth ? props.minWidth : '250px'};
+                min-width : ${props.minWidth ? props.minWidth : "250px"};
+                word-break: break-all;
             }
         `}
       </style>

@@ -1,6 +1,6 @@
-import { Formik, Form, Field } from "formik";
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../../component/shared/button/ui/button";
 import Input from "../../component/shared/input/ui/input";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
@@ -12,6 +12,8 @@ import registerTow from "../../assets/register-tow.jpg";
 import { useLoginMutation } from "../../api/auth/auth";
 import Loader from "../../component/loader/loader";
 
+import * as yup from "yup";
+
 const Auth = () => {
   const navigate = useNavigate();
 
@@ -20,13 +22,13 @@ const Auth = () => {
     setIsPassWord((prev) => !prev);
   };
 
-  const [login, { isLoading, data, isError, isSuccess }] = useLoginMutation();
+  const [login, { isLoading, data, isSuccess, error }]: any =
+    useLoginMutation();
+
   const handleLogin = (values: {}) => {
     login(values);
   };
   if (isSuccess) localStorage.setItem("login", JSON.stringify(data));
-
-  console.log(data);
 
   useEffect(() => {
     const getToken = JSON.parse(localStorage.getItem("login") as any);
@@ -35,6 +37,16 @@ const Auth = () => {
     }
   }, [handleLogin]);
 
+  /// Schema
+  const schema = yup.object().shape({
+    email: yup.string().required("This field is required"),
+    password: yup
+      .string()
+      .min(8, "Password should be biger than 8")
+      .max(30, "Password should be smaller than 30")
+      .required("This field is required"),
+  });
+
   return (
     <>
       {isLoading ? (
@@ -42,7 +54,7 @@ const Auth = () => {
       ) : (
         <div className="grid grid-cols-12">
           <div className="xl:col-span-6 lg:col-span-8 col-span-12 h-screen min-h-[600px] w-[100%] lg:px-20 sm:px-12 px-1 flex justify-center items-center flex-col bg-[#F6F7FC]">
-            <div className="md:w-[70%] w-[100%]">
+            <div className="md:w-[70%] w-[95%]">
               <div className="mb-4">
                 <p className="text-[#333] sm:text-[26px] text-[22px] font-[400]">
                   Login to <strong> Books </strong>
@@ -59,6 +71,7 @@ const Auth = () => {
                 onSubmit={(values) => {
                   handleLogin(values);
                 }}
+                validationSchema={schema}
               >
                 <Form>
                   <Field
@@ -66,7 +79,7 @@ const Auth = () => {
                     placeholder={"email"}
                     id={"email"}
                     width={"100%"}
-                    margin={"20px 0px"}
+                    margin={"0px 0px"}
                     padding={"10px 10px 10px 40px"}
                     borderradius={"6px"}
                     border={"1px solid #ccc"}
@@ -79,12 +92,18 @@ const Auth = () => {
                     type={"text"}
                     icon={<PersonOutlineOutlinedIcon sx={{ color: "#333" }} />}
                   />
+                  <ErrorMessage
+                    name="email"
+                    render={(msg) => (
+                      <p className="text-[red] text-[16px]">{msg}</p>
+                    )}
+                  />
                   <Field
                     as={Input}
                     placeholder={"Password"}
                     id={"password"}
                     width={"100%"}
-                    margin={"20px 0px"}
+                    margin={"0px 0px"}
                     padding={"10px 10px 10px 40px"}
                     borderradius={"6px"}
                     border={"1px solid #ccc"}
@@ -105,36 +124,41 @@ const Auth = () => {
                       onClick: handleShowPasswWord,
                     }}
                   />
-                  <Button
-                    className={"login-button"}
-                    buttonText={"Log In"}
-                    width={"100%"}
-                    padding={"10px 15px"}
-                    margin={"30px 0px 10px 0px"}
-                    borderRadius={"6px"}
-                    bgColor={"bg-main-color"}
-                    color={"#fff"}
-                    fontSize={"18px"}
-                    bgHover={"bg-hover-color"}
+                  <ErrorMessage
+                    name="password"
+                    render={(msg) => (
+                      <p className="text-[red] text-[16px]">{msg}</p>
+                    )}
                   />
+                  <p className="text-[red] text-[16px]">
+                    {error ? error?.data : ""}
+                  </p>
+                  {isLoading ? (
+                    "isLoading "
+                  ) : (
+                    <Button
+                      className={"login-button"}
+                      buttonText={"Log In"}
+                      width={"100%"}
+                      padding={"10px 15px"}
+                      margin={"30px 0px 10px 0px"}
+                      borderRadius={"6px"}
+                      bgColor={"bg-main-color"}
+                      color={"#fff"}
+                      fontSize={"18px"}
+                      bgHover={"bg-hover-color"}
+                    />
+                  )}
                   <div className="flex justify-between items-center">
                     <p className="text-secondary-colour cursor-pointer font-bold">
-                      {" "}
-                      Forgot Password{" "}
-                    </p>
-                    <p className="text-secondary-colour cursor-pointer font-bold">
-                      {" "}
-                      Do't have an account!1
-                      <Link to="/dashbord/info">
-                        <span className="text-main-color"> Create One</span>
-                      </Link>
+                      Forgot Password
                     </p>
                   </div>
                 </Form>
               </Formik>
             </div>
           </div>
-          <div className="xl:col-span-6 lg:col-span-4 col-span-12 min-h-[600px] h-screen bg-[blue] bg-image relative">
+          <div className="xl:col-span-6 lg:col-span-4 col-span-12 lg:block hidden min-h-[600px] h-screen bg-[blue] bg-image relative">
             <div className="absolute top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.6)]"></div>
           </div>
         </div>

@@ -9,7 +9,7 @@ const Thead: React.FC<TheadProps> = ({ ...props }) => {
         {`
         thead{
           position: sticky;
-          top: 0;
+          top: -5px;
           z-index: 10;
           width: 100%;
           border : 1px solid #ccc;

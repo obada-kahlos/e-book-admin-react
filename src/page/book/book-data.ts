@@ -1,3 +1,18 @@
+export const TheadDate = [
+  "Id",
+  "Book Image",
+  "Book Name",
+  "Auther Name",
+  "Genre",
+  "Puplisher",
+  "Languages",
+  "Price",
+  "Number Of pages",
+  "Publication date",
+  "Description",
+  "Actions",
+];
+
 export const BooksData = [
   {
     name: "title",
@@ -107,8 +122,6 @@ export const BooksData = [
 //     ]
 //   },
 // ]
-
-
 
 // export const bookLanguage = [
 //   {

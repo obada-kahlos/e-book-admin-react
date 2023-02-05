@@ -12,7 +12,6 @@ import FloatingButton from "../../component/shared/floating-button/ui/floating-b
 import logo from "../../assets/Logo.png";
 
 /// icon from MUI
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import MenuIcon from "@mui/icons-material/Menu";
 import SpeedIcon from "@mui/icons-material/Speed";
 import CloseIcon from "@mui/icons-material/Close";
@@ -25,7 +24,6 @@ import SegmentIcon from "@mui/icons-material/Segment";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
-import CopyRight from "../../component/copy-right/copy-right";
 const Layout = () => {
   const navigate = useNavigate();
 
@@ -64,7 +62,6 @@ const Layout = () => {
 
   const getToken = JSON.parse(localStorage.getItem("login") as any);
   const [token, setToken] = useState(getToken);
-  console.log({ token });
 
   const logOut = () => {
     localStorage.removeItem("login");
@@ -107,6 +104,7 @@ const Layout = () => {
                 </div>
               </Link>
               <Divider
+                margin="10px auto"
                 className="sideDevider"
                 height={"1px"}
                 width={"80%"}
@@ -201,6 +199,7 @@ const Layout = () => {
                 </>
               </Ul>
               <Divider
+                margin="10px auto"
                 className="sideDevider"
                 height={"1px"}
                 width={"80%"}
@@ -222,13 +221,13 @@ const Layout = () => {
             />
             <div>
               <div className="flex gap-2 items-center relative">
-                <Icon
+                {/* <Icon
                   icon={
                     <NotificationsNoneIcon
                       sx={{ fontSize: "32px", cursor: "pointer" }}
                     />
                   }
-                />
+                /> */}
                 <Avatar
                   onClick={handleDropDown}
                   src="./not-found.png"
@@ -249,9 +248,12 @@ const Layout = () => {
                   >
                     <Ul margin={""} padding={""} className={""}>
                       <div className="py-[10px] px-[15px] text-[#333] flex items-center w-full">
-                        <span>{token?.first_name}_{token?.last_name}</span>
+                        <span>
+                          {token?.first_name}_{token?.last_name}
+                        </span>
                       </div>
                       <Divider
+                        margin="0px 0px"
                         className="dropDownDevider"
                         width="100%"
                         height="1px"
