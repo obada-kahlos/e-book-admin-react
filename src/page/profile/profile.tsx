@@ -5,6 +5,10 @@ import Icon from "../../component/shared/icon/ui/icon";
 import { IconButton } from "@mui/material";
 import Image from "../../component/shared/image/ui/image";
 import Button from "../../component/shared/button/ui/button";
+import {
+  useAdminGetProfileImageQuery,
+  useAdminProfileImageMutation,
+} from "../../api/admin/admin-profile";
 const Profile = () => {
   const [uploadedImage, setUploadedImage] = useState<any>(undefined);
 
@@ -18,9 +22,10 @@ const Profile = () => {
       reader.readAsDataURL(event.target.files[0]);
     }
   };
-
   const getToken = JSON.parse(localStorage.getItem("login") as any);
-
+  const { data } = useAdminGetProfileImageQuery({});
+  const [addAdminImage] = useAdminProfileImageMutation({});
+  console.log({ data });
   return (
     <div className="my-[30px] sm:p-4 px-2">
       <div className="relative w-fit">
@@ -73,6 +78,7 @@ const Profile = () => {
           color={"#fff"}
           fontSize={"16px"}
           bgHover={"bg-hover-color"}
+          onClick={() => addAdminImage({ profilePhoto: uploadedImage })}
         />
       </div>
       <input hidden type={"file"} id="add" onChange={onUploadFile} />

@@ -240,7 +240,7 @@ const Author = () => {
                             margin={"0px"}
                             textAlign={"left"}
                           >
-                            {item?.name}
+                            {item?.label}
                           </Td>
                           <Td
                             color={""}

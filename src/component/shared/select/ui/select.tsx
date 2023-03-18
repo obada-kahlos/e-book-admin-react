@@ -1,23 +1,33 @@
-import React , {useState} from "react";
+import React, { useState } from "react";
 import Icon from "../../icon/ui/icon";
 import { selectProps } from "../data-access/select";
 
 const Select: React.FC<selectProps> = ({ ...props }) => {
-
   return (
     <>
-        <div className={`input-container-${props.className} relative`}>
-            <label className="lable " htmlFor={props.id}>
-            {props.lable}
-            </label>
-          <select className={props.className}  type={props.type} {...props} onChange={props.onChange}>
-            {props.children}
-          </select>
-          <span className="input-icon"> <Icon icon={props.icon} /> </span> 
-          {
-            props.name === 'password' ? <span className="password-icon"> <Icon  icon={props.passwordIcon?.icon} onClick={props.passwordIcon?.onClick}/></span>: ''
-          }
-        </div>
+      <div className={`input-container-${props.className} relative`}>
+        <label className="lable" htmlFor={props.id}>
+          {props.lable}
+        </label>
+        <select className={props.className} {...props}>
+          {props.children}
+        </select>
+        <span className="input-icon">
+          {" "}
+          <Icon icon={props.icon} />{" "}
+        </span>
+        {props.name === "password" ? (
+          <span className="password-icon">
+            {" "}
+            <Icon
+              icon={props.passwordIcon?.icon}
+              onClick={props.passwordIcon?.onClick}
+            />
+          </span>
+        ) : (
+          ""
+        )}
+      </div>
       <style>
         {`
             .lable{

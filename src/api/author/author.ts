@@ -1,38 +1,56 @@
-import { apiSlice } from '../api-slice'
+import { apiSlice } from "../api-slice";
 
 const extendedApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAuter: builder.query({
       query: () => ({
-        url : '/api/AdminAuthors/GetAllAuthors/get-all-authors',
-        method : 'GET'
+        url: "/api/AdminAuthors/GetAllAuthors/get-all-authors",
+        method: "GET",
       }),
-      providesTags: ['Author'],
+      transformResponse: (
+        response: unknown | Array<{ id: string; name: string }> | any
+      ) => {
+        console.log("transform", response);
+        const renamedArr = response?.map((obj: any) => {
+          return {
+            label: obj.name,
+            value: obj.name,
+            id: obj.id,
+          };
+        });
+        return renamedArr;
+      },
+      providesTags: ["Author"],
     }),
     addAuthor: builder.mutation({
       query: (body) => ({
         url: `/api/AdminAuthors/AddAuthor/add-author`,
-        method: 'POST',
+        method: "POST",
         body,
       }),
-      invalidatesTags: ['Author'],
+      invalidatesTags: ["Author"],
     }),
     updateAuthor: builder.mutation({
       query: (body) => ({
         url: `/api/AdminAuthors/UpdateAuthor/update-author/${body.id}`,
-        method: 'PUT',
+        method: "PUT",
         body,
       }),
-      invalidatesTags: ['Author'],
+      invalidatesTags: ["Author"],
     }),
     deleteAuthor: builder.mutation({
       query: (id) => ({
         url: `/api/AdminAuthors/DeleteAuthor/delete-author/${id}`,
-        method: 'DELETE',
+        method: "DELETE",
       }),
-      invalidatesTags: ['Author'],
+      invalidatesTags: ["Author"],
     }),
   }),
-})
+});
 
-export const { useGetAuterQuery , useAddAuthorMutation , useDeleteAuthorMutation , useUpdateAuthorMutation} = extendedApi
+export const {
+  useGetAuterQuery,
+  useAddAuthorMutation,
+  useDeleteAuthorMutation,
+  useUpdateAuthorMutation,
+} = extendedApi;

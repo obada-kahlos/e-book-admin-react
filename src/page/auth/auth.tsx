@@ -1,4 +1,3 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../component/shared/button/ui/button";
@@ -13,6 +12,7 @@ import { useLoginMutation } from "../../api/auth/auth";
 import Loader from "../../component/loader/loader";
 
 import * as yup from "yup";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
 const Auth = () => {
   const navigate = useNavigate();

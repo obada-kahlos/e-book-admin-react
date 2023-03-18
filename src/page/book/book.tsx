@@ -37,7 +37,6 @@ import {
   useUpdateBooksMutation,
 } from "../../api/books/books";
 import Select from "../../component/shared/select/ui/select";
-import MuiSelect from "../../component/mui-select/mui-select";
 import MenuItem from "@mui/material/MenuItem";
 
 import { SelectChangeEvent } from "@mui/material/Select";
@@ -46,6 +45,7 @@ import Alert from "../../component/alert/ui/alert";
 import { toastStatus } from "../../utils/Toastify/toastify";
 import SectionLoading from "../../component/loader/section-loading";
 import Loader from "../../component/loader/loader";
+import MultiSelect from "../../component/react-select/react-select";
 
 const Books = () => {
   /// schema for add books
@@ -95,15 +95,43 @@ const Books = () => {
 
   /// handle change from mui for multi Select + state
   const [authors, setAuthors] = React.useState<any>([]);
-  const handleChangeSelect = (event: SelectChangeEvent<typeof authors>) => {
-    const {
-      target: { value },
-    } = event;
-    setAuthors(typeof value === "string" ? value.split(",") : value);
-  };
 
   /// get author data api and passing to multi select component
-  const { data: getAuther } = useGetAuterQuery({});
+
+  // author box, create new author + add post of author
+  const { data: getAutherData, isLoading: isLoadingGetAuthor } =
+    useGetAuterQuery({});
+  const createOption = (label: string) => ({
+    label,
+    value: label.toLowerCase().replace(/\W/g, ""),
+  });
+  const authorTestData = [
+    {
+      label: "obada",
+      value: "obada",
+    },
+  ];
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [options, setOptions] = useState<any>([]);
+  const [tagValue, setTagValue] = useState<any>([]);
+  const handleCreate = (inputValue: string) => {
+    setIsLoading(true);
+    setTimeout(() => {
+      const newOption = createOption(inputValue);
+      setIsLoading(false);
+      // addTag({ tagName: newOption.value });
+      setOptions((prev: any) => {
+        console.log({ newOption });
+        return [...prev, newOption];
+      });
+      setTagValue((prev: any) => {
+        // console.log(prev);
+        return [...prev, newOption];
+      });
+    }, 1500);
+  };
+  const authorToBook = tagValue.map((item: any) => item.id);
+  console.log({ authorToBook });
 
   /// add book
   const [
@@ -119,7 +147,7 @@ const Books = () => {
       price: values.price,
       languagesId: values.languages,
       genreId: values.genreType,
-      authors: authors,
+      authors: authorToBook,
       image: uploadedImage,
     });
     isError ? setPopup(true) : setPopup(false);
@@ -153,7 +181,7 @@ const Books = () => {
       languagesId: values.languages,
       genreId: values.genreType,
       id: getBookById?.id,
-      authors: authors,
+      authors: authorToBook,
       image: uploadedImage ? uploadedImage : getBookById?.image,
     });
     isErrorUpdateBook ? setPopup(true) : setPopup(false);
@@ -305,8 +333,7 @@ const Books = () => {
                             fontWeight={""}
                             padding={""}
                             margin={""}
-                            textAlign={"left"}
-                          >
+                            textAlign={"left"}>
                             <span> {item?.id} </span>
                           </Td>
                           <Td
@@ -315,8 +342,7 @@ const Books = () => {
                             fontWeight={""}
                             padding={""}
                             margin={""}
-                            textAlign={""}
-                          >
+                            textAlign={""}>
                             <div className="flex items-center justify-center">
                               <Image
                                 className={""}
@@ -334,8 +360,7 @@ const Books = () => {
                             fontWeight={""}
                             padding={""}
                             margin={""}
-                            textAlign={"left"}
-                          >
+                            textAlign={"left"}>
                             <span> {item?.title} </span>
                           </Td>
                           <Td
@@ -344,8 +369,7 @@ const Books = () => {
                             fontWeight={""}
                             padding={""}
                             margin={""}
-                            textAlign={"left"}
-                          >
+                            textAlign={"left"}>
                             <>
                               {item?.authors?.length > 0 ? (
                                 <div>
@@ -364,8 +388,7 @@ const Books = () => {
                             fontWeight={""}
                             padding={""}
                             margin={""}
-                            textAlign={"left"}
-                          >
+                            textAlign={"left"}>
                             <span> {item?.genreType}</span>
                           </Td>
                           <Td
@@ -374,8 +397,7 @@ const Books = () => {
                             fontWeight={""}
                             padding={""}
                             margin={""}
-                            textAlign={"left"}
-                          >
+                            textAlign={"left"}>
                             <span> {item.publishers} </span>
                           </Td>
                           <Td
@@ -384,8 +406,7 @@ const Books = () => {
                             fontWeight={""}
                             padding={""}
                             margin={""}
-                            textAlign={"left"}
-                          >
+                            textAlign={"left"}>
                             <span> {item?.language} </span>
                           </Td>
                           <Td
@@ -394,8 +415,7 @@ const Books = () => {
                             fontWeight={""}
                             padding={""}
                             margin={""}
-                            textAlign={"left"}
-                          >
+                            textAlign={"left"}>
                             <span> {item?.price} </span>
                           </Td>
                           <Td
@@ -404,8 +424,7 @@ const Books = () => {
                             fontWeight={""}
                             padding={""}
                             margin={""}
-                            textAlign={"left"}
-                          >
+                            textAlign={"left"}>
                             <span> {item?.numberPages} </span>
                           </Td>
                           <Td
@@ -414,8 +433,7 @@ const Books = () => {
                             fontWeight={""}
                             padding={""}
                             margin={""}
-                            textAlign={"left"}
-                          >
+                            textAlign={"left"}>
                             <span> {item?.publicationDate?.slice(0, 10)} </span>
                           </Td>
                           <Td
@@ -424,8 +442,7 @@ const Books = () => {
                             fontWeight={""}
                             padding={""}
                             margin={""}
-                            textAlign={"left"}
-                          >
+                            textAlign={"left"}>
                             <span> {item?.description.slice(0, 60)} </span>
                           </Td>
                           <Td
@@ -434,8 +451,7 @@ const Books = () => {
                             fontWeight={"500"}
                             padding={"10px 15px"}
                             margin={"0px"}
-                            textAlign={"left"}
-                          >
+                            textAlign={"left"}>
                             <ActionButton
                               deleteIcon={{
                                 icon: (
@@ -481,8 +497,7 @@ const Books = () => {
                 </p>
                 <p
                   onClick={handleOpenPopup}
-                  className="text-main-color font-bold text-[18px] cursor-pointer"
-                >
+                  className="text-main-color font-bold text-[18px] cursor-pointer">
                   Add One?
                 </p>
               </div>
@@ -503,8 +518,7 @@ const Books = () => {
               isOpen={popup}
               paddingBodyBottom={"60px"}
               className="add-book"
-              zIndex="1002"
-            >
+              zIndex="1002">
               {isLoadingPublishers ? (
                 <div className="absolute top-[50%] left-[50%] -translate-x-2/4 -translate-y-2/4">
                   <SectionLoading />
@@ -539,8 +553,7 @@ const Books = () => {
                         ? handleUpdateBook(values)
                         : handleAddBook(values);
                     }}
-                    validationSchema={schema}
-                  >
+                    validationSchema={schema}>
                     <Form>
                       <div className="grid grid-span-12">
                         <div className="grid grid-cols-12 gap-4">
@@ -548,8 +561,7 @@ const Books = () => {
                             {BooksData.map((item, key) => (
                               <div
                                 className="md:col-span-6 col-span-12"
-                                key={key}
-                              >
+                                key={key}>
                                 <Field
                                   key={key}
                                   as={Input}
@@ -592,8 +604,7 @@ const Books = () => {
                                 border={"1px solid #ccc"}
                                 bgcolor={"#fff"}
                                 color={"#5b5a5a"}
-                                fontSize={"16px"}
-                              >
+                                fontSize={"16px"}>
                                 <option>Choise Genres</option>
                                 {getGenres
                                   ? getGenres?.map((option: any, key: any) => (
@@ -626,8 +637,7 @@ const Books = () => {
                                 border={"1px solid #ccc"}
                                 bgcolor={"#fff"}
                                 color={"#5b5a5a"}
-                                fontSize={"16px"}
-                              >
+                                fontSize={"16px"}>
                                 <option>Choise Language</option>
                                 {getLanguages?.map((option: any, key: any) => (
                                   <option key={key} value={option.id}>
@@ -658,8 +668,7 @@ const Books = () => {
                                 border={"1px solid #ccc"}
                                 bgcolor={"#fff"}
                                 color={"#5b5a5a"}
-                                fontSize={"16px"}
-                              >
+                                fontSize={"16px"}>
                                 <option>Choise Publishers</option>
                                 {publishers?.map((option: any, key: any) => (
                                   <option key={key} value={option.id}>
@@ -677,12 +686,20 @@ const Books = () => {
                               />
                             </div>
                             <div className="md:col-span-12 col-span-12">
-                              <MuiSelect
-                                handleChange={handleChangeSelect}
-                                option={getAuther}
-                                state={authors}
-                                label={"Authors"}
-                                placeholder={"Authors..."}
+                              <label className="text-[#5b5a5a] ">
+                                Select Author
+                              </label>
+                              <MultiSelect
+                                isClearable={true}
+                                isLoading={isLoading}
+                                isDisabled={isLoading}
+                                isMulti={true}
+                                isSearchable={true}
+                                onCreateOption={handleCreate}
+                                onChange={(newValue) => setTagValue(newValue)}
+                                options={authorTestData}
+                                // options={tagData}
+                                value={tagValue}
                               />
                             </div>
                             <div className="md:col-span-12 col-span-12 ">
@@ -708,8 +725,7 @@ const Books = () => {
                                       (item: any, key: any) => (
                                         <p
                                           className="text-[red] text-[14px]"
-                                          key={key}
-                                        >
+                                          key={key}>
                                           {item}
                                         </p>
                                       )

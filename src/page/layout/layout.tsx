@@ -68,11 +68,11 @@ const Layout = () => {
     setToken(null);
   };
 
-  useEffect(() => {
-    if (!token) {
-      navigate("/");
-    }
-  }, [logOut, token]);
+  // useEffect(() => {
+  //   if (!token) {
+  //     navigate("/");
+  //   }
+  // }, [logOut, token]);
 
   return (
     <>
@@ -80,8 +80,7 @@ const Layout = () => {
         <div
           className={`transition-[0.5s] xl:col-span-2 col-span-3 ${
             showNav ? "show-aside" : "hide-aside"
-          } `}
-        >
+          } `}>
           <Nav
             width={asideData.Nav.width}
             height={asideData.Nav.height}
@@ -91,14 +90,12 @@ const Layout = () => {
             borderRightStyle={asideData.Nav.borderRightStyle}
             borderRightWidth={asideData.Nav.borderRightWidth}
             borderRightColor={asideData.Nav.borderRightColor}
-            bgColor="bg-main-color"
-          >
+            bgColor="bg-main-color">
             <>
               <Link to="/dashbord/info">
                 <div
                   className="flex gap-2 justify-start items-center px-4 py-4"
-                  onClick={handlerShowNav}
-                >
+                  onClick={handlerShowNav}>
                   <Icon icon={<SpeedIcon sx={{ color: "#fff" }} />} />
                   <li className="text-[#fff] "> Dashboard </li>
                 </div>
@@ -113,12 +110,10 @@ const Layout = () => {
               <Ul
                 margin={asideData.Ul.margin}
                 padding={asideData.Ul.padding}
-                className={asideData.Ul.className}
-              >
+                className={asideData.Ul.className}>
                 <div
                   onClick={handleOpenBookDropDown}
-                  className="transition-[0.4s] rounded-[4px] hover:bg-hover-color w-full flex justify-between items-center cursor-pointer px-[15px] py-[10px]"
-                >
+                  className="transition-[0.4s] rounded-[4px] hover:bg-hover-color w-full flex justify-between items-center cursor-pointer px-[15px] py-[10px]">
                   <div className="flex items-center gap-[10px]">
                     <Icon
                       icon={
@@ -158,8 +153,7 @@ const Layout = () => {
                     <Ul
                       className="book-frop-down"
                       margin=""
-                      padding="0px 0px 0px 20px"
-                    >
+                      padding="0px 0px 0px 20px">
                       {dropDownBookData.map((item, key) => (
                         <Li
                           key={key}
@@ -244,8 +238,7 @@ const Layout = () => {
                     padding={""}
                     margin={""}
                     className={""}
-                    bgColor=""
-                  >
+                    bgColor="">
                     <Ul margin={""} padding={""} className={""}>
                       <div className="py-[10px] px-[15px] text-[#333] flex items-center w-full">
                         <span>
@@ -269,8 +262,7 @@ const Layout = () => {
                         className="profile"
                         borderRadius="0px"
                         onClick={handleDropDown}
-                        icon={<PersonOutlineOutlinedIcon />}
-                      ></Li>
+                        icon={<PersonOutlineOutlinedIcon />}></Li>
                       <Li
                         href={"/"}
                         text={"Link"}
@@ -281,8 +273,7 @@ const Layout = () => {
                         className="Link"
                         borderRadius="0px"
                         onClick={handleDropDown}
-                        icon={<InsertLinkOutlinedIcon />}
-                      ></Li>
+                        icon={<InsertLinkOutlinedIcon />}></Li>
                       <div
                         className="
                         transition duration-[0.4s]
@@ -292,8 +283,7 @@ const Layout = () => {
                         hover:bg-hover-color
                         hover:text-[#fff]
                       "
-                        onClick={logOut}
-                      >
+                        onClick={logOut}>
                         <Icon icon={<LogoutIcon />} />
                         <span> LogOut </span>
                       </div>
@@ -302,8 +292,7 @@ const Layout = () => {
                 </div>
                 <div
                   className="fixed top-0 left-0 w-full h-full z-[999] bg-[rgba(255,255,255,0.1)]"
-                  onClick={handleDropDown}
-                ></div>
+                  onClick={handleDropDown}></div>
               </>
             ) : null}
           </div>
