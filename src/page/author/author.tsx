@@ -29,16 +29,20 @@ import Alert from "../../component/alert/ui/alert";
 import { toastStatus } from "../../utils/Toastify/toastify";
 
 const Author = () => {
+  //// get token for authorization
+  const getToken = JSON.parse(localStorage.getItem("login") as any);
+  const [token, setToken] = useState(getToken);
+
   /// get api for author
   const { data: getAuther, isLoading } = useGetAuterQuery({});
-
+  console.log({ getAuther });
   /// add author
   const [addAuthor, { isSuccess, isError, reset: resetAdd }] =
     useAddAuthorMutation();
 
   /// Schema for Input add author
   const schema = yup.object().shape({
-    authorName: yup
+    name: yup
       .string()
       .matches(/^[a-zA-Z ]*$/, "Must be character")
       .min(10, "Must be more than 10")
@@ -60,6 +64,7 @@ const Author = () => {
       return { ...prev, ...selectAuthor };
     });
   };
+  console.log({ getAuthorInfo });
   const updateHandler = (id: number) => {
     getAuthorById(id);
     setPopup(true);
@@ -228,8 +233,7 @@ const Author = () => {
                             fontWeight={"500"}
                             padding={"10px 15px"}
                             margin={"0px"}
-                            textAlign={"left"}
-                          >
+                            textAlign={"left"}>
                             {item?.id}
                           </Td>
                           <Td
@@ -238,8 +242,7 @@ const Author = () => {
                             fontWeight={"500"}
                             padding={"10px 15px"}
                             margin={"0px"}
-                            textAlign={"left"}
-                          >
+                            textAlign={"left"}>
                             {item?.label}
                           </Td>
                           <Td
@@ -248,8 +251,7 @@ const Author = () => {
                             fontWeight={""}
                             padding={""}
                             margin={""}
-                            textAlign={""}
-                          >
+                            textAlign={""}>
                             <>
                               {item.bookTitle?.length > 0 ? (
                                 <select className="w-full h-full p-[10px] border border-[#ccc]">
@@ -274,8 +276,7 @@ const Author = () => {
                             fontWeight={"500"}
                             padding={"10px 15px"}
                             margin={"0px"}
-                            textAlign={"left"}
-                          >
+                            textAlign={"left"}>
                             <ActionButton
                               deleteIcon={{
                                 icon: (
@@ -313,8 +314,7 @@ const Author = () => {
               </p>
               <p
                 onClick={handleOpenPopup}
-                className="text-main-color font-bold text-[18px] cursor-pointer"
-              >
+                className="text-main-color font-bold text-[18px] cursor-pointer">
                 Add One?
               </p>
             </div>
@@ -335,38 +335,36 @@ const Author = () => {
             isOpen={popup}
             paddingBodyBottom={"0px"}
             className="add-author"
-            zIndex="1002"
-          >
+            zIndex="1002">
             <div className="p-2">
               <Formik
                 validationSchema={schema}
                 initialValues={
                   getAuthorInfo
                     ? {
-                        authorName: getAuthorInfo?.name,
+                        name: getAuthorInfo?.value,
                       }
                     : {
-                        authorName: "",
+                        name: "",
                       }
                 }
                 onSubmit={(values, { resetForm }) => {
                   getAuthorInfo
                     ? updateAuthor({
-                        authorName: values.authorName,
+                        name: values.name,
                         id: getAuthorInfo?.id,
                       })
                     : addAuthor(values);
                   setPopup(false);
                   setGetAuthorInfo(null);
                   resetForm();
-                }}
-              >
+                }}>
                 <Form>
                   <div className="my-[10px]">
                     <Field
                       as={Input}
                       className={"author-name"}
-                      name={"authorName"}
+                      name={"name"}
                       placeholder={"Author name"}
                       id={"Author"}
                       width={"100%"}
@@ -381,7 +379,7 @@ const Author = () => {
                       type={"text"}
                     />
                     <ErrorMessage
-                      name={"authorName"}
+                      name={"name"}
                       render={(msg) => (
                         <p className="text-[red] text-[18px]">{msg}</p>
                       )}

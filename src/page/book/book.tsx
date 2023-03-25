@@ -40,7 +40,10 @@ import Select from "../../component/shared/select/ui/select";
 import MenuItem from "@mui/material/MenuItem";
 
 import { SelectChangeEvent } from "@mui/material/Select";
-import { useGetAuterQuery } from "../../api/author/author";
+import {
+  useAddAuthorMutation,
+  useGetAuterQuery,
+} from "../../api/author/author";
 import Alert from "../../component/alert/ui/alert";
 import { toastStatus } from "../../utils/Toastify/toastify";
 import SectionLoading from "../../component/loader/section-loading";
@@ -56,6 +59,10 @@ const Books = () => {
       .max(20, "Must be less than 20")
       .required("This field is required"),
     numberPages: yup
+      .string()
+      .matches(/[1-9]/, "Just Number")
+      .required("This field is required"),
+    quantity: yup
       .string()
       .matches(/[1-9]/, "Just Number")
       .required("This field is required"),
@@ -88,6 +95,7 @@ const Books = () => {
   /// get books data api
   const [page, setPage] = React.useState(1);
   const { data: getBooks, isLoading: isLoadingBook } = useGetBooksQuery(page);
+  console.log({ getBooks });
   // pagination from Mui with handle change
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -101,37 +109,30 @@ const Books = () => {
   // author box, create new author + add post of author
   const { data: getAutherData, isLoading: isLoadingGetAuthor } =
     useGetAuterQuery({});
+  const [addAuthor] = useAddAuthorMutation();
   const createOption = (label: string) => ({
     label,
-    value: label.toLowerCase().replace(/\W/g, ""),
+    value: label.toLowerCase().replace(/\W/g, " "),
   });
-  const authorTestData = [
-    {
-      label: "obada",
-      value: "obada",
-    },
-  ];
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [options, setOptions] = useState<any>([]);
-  const [tagValue, setTagValue] = useState<any>([]);
+  const [tagValue, setAuthorValue] = useState<any>([]);
   const handleCreate = (inputValue: string) => {
     setIsLoading(true);
     setTimeout(() => {
       const newOption = createOption(inputValue);
       setIsLoading(false);
-      // addTag({ tagName: newOption.value });
+      addAuthor({ name: newOption.value });
       setOptions((prev: any) => {
-        console.log({ newOption });
         return [...prev, newOption];
       });
-      setTagValue((prev: any) => {
-        // console.log(prev);
+      setAuthorValue((prev: any) => {
         return [...prev, newOption];
       });
     }, 1500);
   };
   const authorToBook = tagValue.map((item: any) => item.id);
-  console.log({ authorToBook });
 
   /// add book
   const [
@@ -147,12 +148,13 @@ const Books = () => {
       price: values.price,
       languagesId: values.languages,
       genreId: values.genreType,
+      quantity: values.quantity,
       authors: authorToBook,
       image: uploadedImage,
     });
     isError ? setPopup(true) : setPopup(false);
     isError ? setUploadedImage(uploadedImage) : setUploadedImage(undefined);
-    isError ? setAuthors(authors) : setAuthors([]);
+    isError ? setAuthorValue(authors) : setAuthorValue([]);
   };
 
   /// update book
@@ -224,7 +226,7 @@ const Books = () => {
   const { data: publishers, isLoading: isLoadingPublishers } =
     useGetPublishersQuery({});
 
-  const result = useGetPublishersQuery({});
+  // const result = useGetPublishersQuery({});
   // open popup
   const [popup, setPopup] = useState(false);
   const handleOpenPopup = () => {
@@ -293,6 +295,12 @@ const Books = () => {
                     onClick={handleOpenPopup}
                   />
                 </div>
+                <div className="flex justify-center items-center mt-[20px]">
+                  <h1>
+                    Total Books :{" "}
+                    <strong> {getBooks?.response?.length} </strong>
+                  </h1>
+                </div>
                 <Table width="100%">
                   <Thead>
                     <Tr>
@@ -345,12 +353,12 @@ const Books = () => {
                             textAlign={""}>
                             <div className="flex items-center justify-center">
                               <Image
-                                className={""}
+                                className={"book-image"}
                                 src={item?.image}
                                 alt={item?.title}
-                                width={"80px"}
-                                height={"80px"}
-                                borderRaduis={""}
+                                width={"180px"}
+                                height={"240px"}
+                                borderRadius={""}
                               />
                             </div>
                           </Td>
@@ -374,7 +382,7 @@ const Books = () => {
                               {item?.authors?.length > 0 ? (
                                 <div>
                                   {item?.authors?.map((item: any, key: any) => (
-                                    <span key={key}> {item} </span>
+                                    <span key={key}> {item}, </span>
                                   ))}
                                 </div>
                               ) : (
@@ -434,6 +442,15 @@ const Books = () => {
                             padding={""}
                             margin={""}
                             textAlign={"left"}>
+                            <span> {item?.quantity} </span>
+                          </Td>
+                          <Td
+                            color={"#333"}
+                            fontSize={"16px"}
+                            fontWeight={""}
+                            padding={""}
+                            margin={""}
+                            textAlign={"left"}>
                             <span> {item?.publicationDate?.slice(0, 10)} </span>
                           </Td>
                           <Td
@@ -443,7 +460,7 @@ const Books = () => {
                             padding={""}
                             margin={""}
                             textAlign={"left"}>
-                            <span> {item?.description.slice(0, 60)} </span>
+                            <span> {item?.description.slice(0, 120)} </span>
                           </Td>
                           <Td
                             color={"#333"}
@@ -483,7 +500,7 @@ const Books = () => {
                 </Table>
                 <div className="flex justify-center items-center">
                   <Pagination
-                    count={getBooks?.pageNumber}
+                    count={getBooks?.metaData?.totalPage}
                     page={page}
                     onChange={handleChange}
                     size="small"
@@ -537,6 +554,7 @@ const Books = () => {
                             price: getBookById?.price,
                             languages: getBookById?.language,
                             genreType: getBookById?.genreType,
+                            quantity: getBookById?.quantity,
                           }
                         : {
                             title: "",
@@ -546,6 +564,7 @@ const Books = () => {
                             price: "",
                             languages: "",
                             genreType: "",
+                            quantity: "",
                           }
                     }
                     onSubmit={(values) => {
@@ -641,7 +660,7 @@ const Books = () => {
                                 <option>Choise Language</option>
                                 {getLanguages?.map((option: any, key: any) => (
                                   <option key={key} value={option.id}>
-                                    {option.languageName}
+                                    {option.name}
                                   </option>
                                 ))}
                               </Field>
@@ -654,7 +673,7 @@ const Books = () => {
                                 )}
                               />
                             </div>
-                            <div className="md:col-span-6 col-span-12">
+                            <div className="md:col-span-12 col-span-12">
                               <Field
                                 as={Select}
                                 className={"get-publishers"}
@@ -696,8 +715,10 @@ const Books = () => {
                                 isMulti={true}
                                 isSearchable={true}
                                 onCreateOption={handleCreate}
-                                onChange={(newValue) => setTagValue(newValue)}
-                                options={authorTestData}
+                                onChange={(newValue) =>
+                                  setAuthorValue(newValue)
+                                }
+                                options={getAutherData}
                                 // options={tagData}
                                 value={tagValue}
                               />
@@ -783,7 +804,7 @@ const Books = () => {
             </Popup>
 
             {uploadedImage || getBookById ? (
-              <div className="z-[1002] bg-[white] w-[300px] h-[200px] fixed top-0 right-0 p-[10px] shadow-xl">
+              <div className="z-[1000] bg-[white] w-[300px] h-[300px] fixed top-0 right-0 p-[10px] shadow-xl">
                 {!getBookById?.image && (
                   <div className="fixed right-[15px] top-[15px] rounded-full bg-[rgba(255,255,255,0.4)] cursor-pointer">
                     <IconButton onClick={() => setUploadedImage(undefined)}>
@@ -796,8 +817,8 @@ const Books = () => {
                     src={uploadedImage ? uploadedImage : getBookById?.image}
                     alt={"image"}
                     width={"100%"}
-                    height={"180px"}
-                    borderRaduis={""}
+                    height={"280px"}
+                    borderRadius={""}
                     className={"add-image-popup"}
                   />
                 </div>

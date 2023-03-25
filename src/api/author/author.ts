@@ -4,7 +4,7 @@ const extendedApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAuter: builder.query({
       query: () => ({
-        url: "/api/AdminAuthors/GetAllAuthors/get-all-authors",
+        url: "/api/AdminAuthors/get-all-authors",
         method: "GET",
       }),
       transformResponse: (
@@ -24,7 +24,7 @@ const extendedApi = apiSlice.injectEndpoints({
     }),
     addAuthor: builder.mutation({
       query: (body) => ({
-        url: `/api/AdminAuthors/AddAuthor/add-author`,
+        url: `/api/AdminAuthors/add-author`,
         method: "POST",
         body,
       }),
@@ -32,7 +32,7 @@ const extendedApi = apiSlice.injectEndpoints({
     }),
     updateAuthor: builder.mutation({
       query: (body) => ({
-        url: `/api/AdminAuthors/UpdateAuthor/update-author/${body.id}`,
+        url: `/api/AdminAuthors/update-author/${body.id}`,
         method: "PUT",
         body,
       }),
@@ -40,7 +40,7 @@ const extendedApi = apiSlice.injectEndpoints({
     }),
     deleteAuthor: builder.mutation({
       query: (id) => ({
-        url: `/api/AdminAuthors/DeleteAuthor/delete-author/${id}`,
+        url: `/api/AdminAuthors/delete-author/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Author"],

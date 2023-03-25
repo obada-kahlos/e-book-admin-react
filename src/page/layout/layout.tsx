@@ -8,6 +8,7 @@ import Divider from "../../component/shared/divider/ui/divider";
 import { Avatar } from "@mui/material";
 import FloatingButton from "../../component/shared/floating-button/ui/floating-button";
 
+import { useDispatch } from "react-redux";
 /// logo
 import logo from "../../assets/Logo.png";
 
@@ -24,8 +25,16 @@ import SegmentIcon from "@mui/icons-material/Segment";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
+
+import { setToken } from "../../app/slices/autoSlice";
+
+import { useLocation } from "react-router-dom";
+
 const Layout = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation();
+  console.log(location);
 
   const [showNav, setShowNav] = useState(false);
   const handlerShowNav = () => {
@@ -61,11 +70,16 @@ const Layout = () => {
   };
 
   const getToken = JSON.parse(localStorage.getItem("login") as any);
-  const [token, setToken] = useState(getToken);
+  const [tokenData, setTokenData] = useState(getToken?.token);
+  console.log({ tokenData });
+
+  useEffect(() => {
+    dispatch(setToken(tokenData));
+  }, [dispatch, location.pathname, tokenData, getToken]);
 
   const logOut = () => {
     localStorage.removeItem("login");
-    setToken(null);
+    setTokenData(null);
   };
 
   // useEffect(() => {
@@ -204,15 +218,17 @@ const Layout = () => {
         </div>
         <div className={`xl:col-span-10 col-span-9`}>
           <div className="bg-main-color text-[white] h-[70px]  w-full p-2 px-8 flex justify-between items-center">
-            <Image
-              src={logo}
-              alt="Logo"
-              width={"80px"}
-              height={"80px"}
-              borderRaduis={""}
-              SmWidth={"80px"}
-              className={"logo"}
-            />
+            <Link to="/dashbord/info">
+              <Image
+                src={logo}
+                alt="Logo"
+                width={"80px"}
+                height={"80px"}
+                borderRadius={""}
+                SmWidth={"80px"}
+                className={"logo"}
+              />
+            </Link>
             <div>
               <div className="flex gap-2 items-center relative">
                 {/* <Icon
@@ -242,7 +258,7 @@ const Layout = () => {
                     <Ul margin={""} padding={""} className={""}>
                       <div className="py-[10px] px-[15px] text-[#333] flex items-center w-full">
                         <span>
-                          {token?.first_name}_{token?.last_name}
+                          {tokenData?.first_name}_{tokenData?.last_name}
                         </span>
                       </div>
                       <Divider
@@ -296,7 +312,7 @@ const Layout = () => {
               </>
             ) : null}
           </div>
-          <div className="h-[calc(100vh-70px)] overflow-y-auto relative">
+          <div className="h-[calc(100vh-70px)] w-full mx-auto p-0 overflow-y-auto relative">
             <Outlet />
             {/* <CopyRight /> */}
           </div>

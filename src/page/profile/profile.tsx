@@ -36,7 +36,7 @@ const Profile = () => {
             alt={"profile-image"}
             width={"250px"}
             height={"250px"}
-            borderRaduis={"50%"}
+            borderRadius={"50%"}
             border={"border-[5px] border-main-color"}
           />
         ) : (
@@ -48,8 +48,7 @@ const Profile = () => {
 
         <label
           htmlFor="add"
-          className="absolute bottom-[25px] right-[25px] w-[25px] h-[25px] rounded-full cursor-pointer"
-        >
+          className="absolute bottom-[25px] right-[25px] w-[25px] h-[25px] rounded-full cursor-pointer">
           <Icon icon={<CameraAltIcon sx={{ color: "#333" }} />} />
         </label>
       </div>

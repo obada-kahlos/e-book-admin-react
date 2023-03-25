@@ -12,10 +12,9 @@ const Image: React.FC<ImageProps> = ({ ...props }) => {
       <style>
         {`  
           img.${props.className}{
-            border-radius: ${props.borderRaduis};
+            border-radius: ${props.borderRadius};
             width : ${props.width};
             height : ${props.height};
-            z-index : 100;
           }
           @media(max-width : 768px){
             img.${props.className}{

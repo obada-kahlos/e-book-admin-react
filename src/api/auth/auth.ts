@@ -13,4 +13,4 @@ const extendedApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const {useLoginMutation} = extendedApi;
+export const { useLoginMutation } = extendedApi;
