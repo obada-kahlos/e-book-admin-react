@@ -1,6 +1,5 @@
 import { ReactEventHandler } from "react";
 
-
 export interface ButtonProps {
   className: string;
   buttonText: string;

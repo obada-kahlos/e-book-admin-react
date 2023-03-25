@@ -4,7 +4,10 @@ import { ButtonProps } from "../data-access/button";
 const Button: React.FC<ButtonProps> = ({ ...props }) => {
   return (
     <>
-      <button onClick={props.onClick} className={`${props.className}-btn ${props.bgColor} hover:${props.bgHover}`} type={'submit'}>
+      <button
+        onClick={props.onClick}
+        className={`${props.className}-btn ${props.bgColor} hover:${props.bgHover}`}
+        type={"submit"}>
         {props.buttonText}
       </button>
       <style>
@@ -22,8 +25,7 @@ const Button: React.FC<ButtonProps> = ({ ...props }) => {
             }
             @media(max-width : 768px){
               .${props.className}-btn{
-                font-size : 14px;
-                padding : 10px 15px
+                font-size : 18px;
               }
             }
         `}

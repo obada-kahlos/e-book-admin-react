@@ -90,8 +90,8 @@ const Profile = () => {
         <h5 className="text-[20px] text-[#666]">{data?.address}</h5>
 
         <Button
-          className={"Add-Image"}
-          buttonText={"Add Image"}
+          className={"edit-profile"}
+          buttonText={"edit-profile"}
           width={"100%"}
           padding={"5px 10px"}
           margin={"10px 0px"}

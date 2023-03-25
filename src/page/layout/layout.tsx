@@ -257,7 +257,7 @@ const Layout = () => {
                     <Ul margin={""} padding={""} className={""}>
                       <div className="py-[10px] px-[15px] text-[#333] flex items-center w-full">
                         <span>
-                          {tokenData?.fisrtName}_{tokenData?.lastName}
+                          {tokenData?.firstName}_{tokenData?.lastName}
                         </span>
                       </div>
                       <Divider

@@ -1,8 +1,8 @@
-import { ReactEventHandler } from 'react';
+import { ReactEventHandler } from "react";
 import { IconProps } from "../../icon/data-access/icon";
 
 export interface LiProps extends IconProps {
-  href: string;
+  href?: string | any;
   text: string;
   fontSize: string;
   color: string;
@@ -10,5 +10,5 @@ export interface LiProps extends IconProps {
   margin: string;
   className: string;
   borderRadius: string;
-  onClick? : ReactEventHandler
+  onClick?: ReactEventHandler;
 }
