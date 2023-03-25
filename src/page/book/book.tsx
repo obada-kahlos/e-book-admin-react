@@ -451,7 +451,7 @@ const Books = () => {
                             padding={""}
                             margin={""}
                             textAlign={"left"}>
-                            <span> {item?.publicationDate?.slice(0, 10)} </span>
+                            <span> {item?.publicationDate} </span>
                           </Td>
                           <Td
                             color={"#333"}
