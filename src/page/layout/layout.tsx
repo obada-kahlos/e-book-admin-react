@@ -34,7 +34,6 @@ const Layout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
-  console.log(location);
 
   const [showNav, setShowNav] = useState(false);
   const handlerShowNav = () => {
@@ -70,11 +69,11 @@ const Layout = () => {
   };
 
   const getToken = JSON.parse(localStorage.getItem("login") as any);
-  const [tokenData, setTokenData] = useState(getToken?.token);
+  const [tokenData, setTokenData] = useState(getToken);
   console.log({ tokenData });
 
   useEffect(() => {
-    dispatch(setToken(tokenData));
+    dispatch(setToken(getToken?.token));
   }, [dispatch, location.pathname, tokenData, getToken]);
 
   const logOut = () => {
@@ -258,7 +257,7 @@ const Layout = () => {
                     <Ul margin={""} padding={""} className={""}>
                       <div className="py-[10px] px-[15px] text-[#333] flex items-center w-full">
                         <span>
-                          {tokenData?.first_name}_{tokenData?.last_name}
+                          {tokenData?.fisrtName}_{tokenData?.lastName}
                         </span>
                       </div>
                       <Divider

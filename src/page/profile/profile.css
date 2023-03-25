@@ -1,0 +1,19 @@
+div.profile-image {
+  overflow: hidden;
+}
+div.edit-profile-image {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: -100%;
+  transition: 0.2s ease-in;
+}
+div.profile-image:hover div.edit-profile-image {
+  left: 0;
+}

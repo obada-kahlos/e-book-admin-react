@@ -31,10 +31,6 @@ const Auth = () => {
 
   if (isSuccess) localStorage.setItem("login", JSON.stringify(data));
 
-  const getToken = JSON.parse(localStorage.getItem("login") as any);
-  const [tokenData, setTokenDAta] = useState(getToken?.token);
-  dispatch(setToken(tokenData));
-
   const handleLogin = (values: {}) => {
     login(values);
   };

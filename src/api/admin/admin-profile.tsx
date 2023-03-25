@@ -2,23 +2,23 @@ import { apiSlice } from "../api-slice";
 
 const extendedApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    adminGetProfileImage: builder.query({
+    adminGetProfile: builder.query({
       query: () => ({
-        url: "/api/AdminProfile/get-profile-admin/fdd479c2-620d-4f96-a479-17fbfc4faf8c",
+        url: "/api/AdminProfile/get-profile-admin",
         method: "GET",
       }),
       providesTags: ["Login"],
     }),
     adminProfileImage: builder.mutation({
       query: (profilePhoto) => ({
-        url: "/api/AdminProfile/upload-image/fdd479c2-620d-4f96-a479-17fbfc4faf8c",
+        url: "/api/AdminProfile/upload-image",
         method: "POST",
         body: profilePhoto,
       }),
       invalidatesTags: ["Login"],
     }),
   }),
-}); 
+});
 
-export const { useAdminProfileImageMutation, useAdminGetProfileImageQuery } =
+export const { useAdminProfileImageMutation, useAdminGetProfileQuery } =
   extendedApi;

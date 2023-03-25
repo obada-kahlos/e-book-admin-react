@@ -3,12 +3,17 @@ import { Avatar } from "@mui/material";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import Icon from "../../component/shared/icon/ui/icon";
 import { IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import Image from "../../component/shared/image/ui/image";
 import Button from "../../component/shared/button/ui/button";
 import {
-  useAdminGetProfileImageQuery,
+  useAdminGetProfileQuery,
   useAdminProfileImageMutation,
 } from "../../api/admin/admin-profile";
+
+import "./profile.css";
+
 const Profile = () => {
   const [uploadedImage, setUploadedImage] = useState<any>(undefined);
 
@@ -22,53 +27,71 @@ const Profile = () => {
       reader.readAsDataURL(event.target.files[0]);
     }
   };
-  const getToken = JSON.parse(localStorage.getItem("login") as any);
-  const { data } = useAdminGetProfileImageQuery({});
-  const [addAdminImage] = useAdminProfileImageMutation({});
+
+  const { data } = useAdminGetProfileQuery({});
   console.log({ data });
+  const [addAdminImage] = useAdminProfileImageMutation({});
   return (
     <div className="my-[30px] sm:p-4 px-2">
-      <div className="relative w-fit">
-        {uploadedImage ? (
-          <Image
-            className={"profile-image"}
-            src={uploadedImage}
-            alt={"profile-image"}
-            width={"250px"}
-            height={"250px"}
-            borderRadius={"50%"}
-            border={"border-[5px] border-main-color"}
-          />
-        ) : (
-          <Avatar
-            src="./not-found.png"
-            sx={{ width: "250px", height: "250px" }}
-          />
-        )}
-
-        <label
-          htmlFor="add"
-          className="absolute bottom-[25px] right-[25px] w-[25px] h-[25px] rounded-full cursor-pointer">
-          <Icon icon={<CameraAltIcon sx={{ color: "#333" }} />} />
-        </label>
+      <div className="profile-image relative w-fit">
+        <div>
+          {data?.profilePhoto ? (
+            <Image
+              className={"profile-image"}
+              src={data?.profilePhoto ? data?.profilePhoto : null}
+              alt={"profile-image"}
+              width={"250px"}
+              height={"250px"}
+              borderRadius={"10px"}
+              border={"border-[5px] border-main-color"}
+            />
+          ) : (
+            <Avatar
+              src="./not-found.png"
+              sx={{ width: "250px", height: "250px", borderRadius: "10px" }}
+            />
+          )}
+        </div>
+        <div className="edit-profile-image ">
+          {data?.profilePhoto === null ? (
+            <label htmlFor="add" className="rounded-full cursor-pointer">
+              <IconButton color="primary">
+                <Icon icon={<CameraAltIcon sx={{ color: "#fff" }} />} />
+              </IconButton>
+            </label>
+          ) : (
+            <div className="flex gap-4">
+              <IconButton color="primary" onClick={() => console.log("hi")}>
+                <Icon icon={<EditIcon sx={{ color: "#fff" }} />} />
+              </IconButton>
+              <IconButton color="primary" onClick={() => console.log("hi")}>
+                <Icon icon={<DeleteIcon sx={{ color: "#fff" }} />} />
+              </IconButton>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="mt-[10px] w-fit">
         <div className="flex items-center gap-5">
           <h4 className="text-[28px] text-[#333] font-[500] mb-[-8px]">
-            {getToken?.first_name}_{getToken?.last_name}
+            {data?.firstName}_{data?.lastName}
           </h4>
           <h4 className="text-[28px] text-[#333] font-[500] mb-[-8px]">
-            {getToken?.email}
+            {data?.email}
           </h4>
         </div>
         <p> </p>
         <h5 className="text-[20px] text-[#666]">
-          {getToken?.first_name} {getToken?.last_name}
+          {data?.firstName} {data?.lastName}
         </h5>
+        <h5 className="text-[20px] text-[#666]">{data?.gender}</h5>
+        <h5 className="text-[20px] text-[#666]">{data?.phoneNumber}</h5>
+        <h5 className="text-[20px] text-[#666]">{data?.address}</h5>
+
         <Button
-          className={"edit-profile"}
-          buttonText={"Edit Profile"}
+          className={"Add-Image"}
+          buttonText={"Add Image"}
           width={"100%"}
           padding={"5px 10px"}
           margin={"10px 0px"}
