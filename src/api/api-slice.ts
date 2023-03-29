@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { RootState } from "../app/index";
 export const apiSlice = createApi({
-  tagTypes: ["Author", "Login", "Book"],
+  tagTypes: ["Author", "Login", "Book", "Publisher"],
   baseQuery: fetchBaseQuery({
     baseUrl: "https://localhost:7146/",
     prepareHeaders: (headers, { getState }) => {

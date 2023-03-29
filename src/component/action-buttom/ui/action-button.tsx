@@ -20,7 +20,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({ ...props }) => {
                 display : flex;
                 justify-content: center;
                 align-items: center;
-                gap: 40px;
+                gap: 0px;
             }
         `}
       </style>

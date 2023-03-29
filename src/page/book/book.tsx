@@ -295,7 +295,7 @@ const Books = () => {
                     onClick={handleOpenPopup}
                   />
                 </div>
-                <div className="flex justify-center items-center mt-[20px]">
+                <div className="flex justify-center items-center mt-[5px]">
                   <h1>
                     Total Books :{" "}
                     <strong> {getBooks?.response?.length} </strong>

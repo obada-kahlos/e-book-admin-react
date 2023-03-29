@@ -11,11 +11,10 @@ import Author from "./page/author/author";
 import Auth from "./page/auth/auth";
 import { ToastContainer } from "react-toastify";
 
-import 'react-toastify/dist/ReactToastify.css';
-
-
+import "react-toastify/dist/ReactToastify.css";
 
 import Test from "./page/test";
+import Publisher from "./page/publisher/publisher";
 function App() {
   return (
     <div className="App">
@@ -27,6 +26,7 @@ function App() {
             <Route path="test" element={<Test />} />
             <Route path="books" element={<Books />} />
             <Route path="auther" element={<Author />} />
+            <Route path="publisher" element={<Publisher />} />
             <Route path="Profile" element={<Profile />} />
             <Route path="users" element={<Users />} />
             <Route path="admins" element={<Admins />} />

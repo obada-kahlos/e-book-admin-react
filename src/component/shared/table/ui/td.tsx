@@ -16,7 +16,7 @@ const Td: React.FC<TdProps> = ({ ...props }) => {
                 text-align: ${props.textAlign};
                 text-transform: capitalize;
                 max-width : 300px;
-                min-width : 140px;
+                min-width : 10px;
                 vertical-align: top;
                 word-break: break-all;
             }

@@ -2,6 +2,7 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import PeopleIcon from "@mui/icons-material/People";
 import AdminPanelSettingsTwoToneIcon from "@mui/icons-material/AdminPanelSettingsTwoTone";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
+import DateRangeIcon from "@mui/icons-material/DateRange";
 export const asidedata = [
   {
     href: "admins",
@@ -10,7 +11,7 @@ export const asidedata = [
     color: "#fff",
     padding: "10px 15px",
     margin: "1px",
-    className : 'admins',
+    className: "admins",
     icon: AdminPanelSettingsTwoToneIcon,
   },
   {
@@ -20,7 +21,7 @@ export const asidedata = [
     color: "#fff",
     padding: "10px 15px",
     margin: "1px",
-    className : 'users',
+    className: "users",
     icon: PeopleIcon,
   },
 ];
@@ -44,5 +45,15 @@ export const dropDownBookData = [
     margin: "1px",
     className: "auther",
     icon: BorderColorIcon,
+  },
+  {
+    href: "publisher",
+    text: "Publisher",
+    fontSize: "18px",
+    color: "#fff",
+    padding: "10px 15px",
+    margin: "1px",
+    className: "Publisher",
+    icon: DateRangeIcon,
   },
 ];

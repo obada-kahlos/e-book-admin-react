@@ -24,27 +24,26 @@ th {
   padding: 8px;
 }
 
-
 tr:nth-child(odd) {
-  background-color: rgba(242, 242, 242,0.4);
+  background-color: rgba(242, 242, 242, 0.4);
 }
 
 /* width */
-::-webkit-scrollbar {
-  display: block;
+body::-webkit-scrollbar {
+  display: none;
 }
 
 /* Track */
-::-webkit-scrollbar-track {
-  display: block;
+body::-webkit-scrollbar-track {
+  display: none;
 }
 
 /* Handle */
-::-webkit-scrollbar-thumb {
-  display: block;
+body::-webkit-scrollbar-thumb {
+  display: none;
 }
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  display: block;
+body::-webkit-scrollbar-thumb:hover {
+  display: none;
 }
