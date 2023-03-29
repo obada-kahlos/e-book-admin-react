@@ -325,7 +325,7 @@ const Author = () => {
             translate={"translate(-50% , -50%)"}
             onClick={handleOpenPopup}
             width={"800px"}
-            height={"300px"}
+            height={"250px"}
             bgClor={"#fff"}
             borderRadius={"10px"}
             top={"50%"}
@@ -333,7 +333,7 @@ const Author = () => {
             right={"0"}
             bottom={"0"}
             isOpen={popup}
-            paddingBodyBottom={"0px"}
+            paddingBodyBottom={"30px"}
             className="add-author"
             zIndex="1002">
             <div className="p-2">

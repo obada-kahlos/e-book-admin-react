@@ -1,17 +1,25 @@
-import React from 'react'
-import Icon from '../../icon/ui/icon'
-import { InfoCartProps } from '../data-access/info-cart'
+import React from "react";
+import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Icon from "../../icon/ui/icon";
+import { InfoCartProps } from "../data-access/info-cart";
 
-const InfoCart : React.FC<InfoCartProps> = ({...props}) => {
+const InfoCart: React.FC<InfoCartProps> = ({ ...props }) => {
   return (
     <>
-      <div className={`${props.className}-cart`}>
+      <Link to={props.href} className={`${props.className}-cart`}>
         <div>
-          <p className='text-[46px] text-main-color mb-0 font-mono'> {props.count} </p>
-          <p className='text-[20px] mt-[-10px] font-mono text-[#6d6c6c]'> {props.title} </p>
+          <p className="text-[46px] text-main-color mb-0 font-mono">
+            {" "}
+            {props.count}{" "}
+          </p>
+          <p className="text-[20px] mt-[-10px] font-mono text-[#6d6c6c]">
+            {" "}
+            {props.title}{" "}
+          </p>
         </div>
-          <Icon icon={props.icon}/>
-      </div>
+        <Icon icon={props.icon} />
+      </Link>
       <style>
         {`
           .${props.className}-cart{
@@ -34,7 +42,7 @@ const InfoCart : React.FC<InfoCartProps> = ({...props}) => {
         `}
       </style>
     </>
-  )
-}
+  );
+};
 
-export default InfoCart
+export default InfoCart;

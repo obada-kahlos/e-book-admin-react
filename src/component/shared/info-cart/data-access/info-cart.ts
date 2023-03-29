@@ -10,4 +10,5 @@ export interface InfoCartProps extends IconProps {
   margin: string;
   width: string;
   height: string;
+  href: string;
 }

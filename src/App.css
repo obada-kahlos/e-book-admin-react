@@ -29,21 +29,21 @@ tr:nth-child(odd) {
 }
 
 /* width */
-body::-webkit-scrollbar {
-  display: none;
+::-webkit-scrollbar {
+  width: 4px;
 }
 
 /* Track */
-body::-webkit-scrollbar-track {
-  display: none;
+::-webkit-scrollbar-track {
+  background: #ffffff;
 }
 
 /* Handle */
-body::-webkit-scrollbar-thumb {
-  display: none;
+::-webkit-scrollbar-thumb {
+  background: #31588a;
 }
 
 /* Handle on hover */
-body::-webkit-scrollbar-thumb:hover {
-  display: none;
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

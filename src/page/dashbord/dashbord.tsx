@@ -5,11 +5,11 @@ import PersonIcon from "@mui/icons-material/Person";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import Loader from "../../component/loader/loader";
 import { useGetDashbordInfoQuery } from "../../api/books/books";
-import AddBusinessIcon from '@mui/icons-material/AddBusiness';
-import CreateIcon from '@mui/icons-material/Create';
+import AddBusinessIcon from "@mui/icons-material/AddBusiness";
+import CreateIcon from "@mui/icons-material/Create";
 const Dashbord = () => {
-  const { data: booksData , isLoading } = useGetDashbordInfoQuery({});
-  
+  const { data: booksData, isLoading } = useGetDashbordInfoQuery({});
+
   const CartInfo: InfoCartProps[] = [
     {
       title: "Books",
@@ -22,6 +22,7 @@ const Dashbord = () => {
       margin: "10px",
       width: "",
       height: "100px",
+      href: "/dashbord/books",
     },
     {
       title: "Users",
@@ -34,6 +35,7 @@ const Dashbord = () => {
       margin: "10px",
       width: "",
       height: "100px",
+      href: "/dashbord/users",
     },
     {
       title: "Publishers",
@@ -46,6 +48,7 @@ const Dashbord = () => {
       margin: "10px",
       width: "",
       height: "100px",
+      href: "/dashbord/publisher",
     },
     {
       title: "Authors",
@@ -58,14 +61,15 @@ const Dashbord = () => {
       margin: "10px",
       width: "",
       height: "100px",
+      href: "/dashbord/auther",
     },
   ];
 
-
   return (
     <>
-      {
-         isLoading ? <Loader /> :  
+      {isLoading ? (
+        <Loader />
+      ) : (
         <div className="my-[30px] sm:p-4 sm:flex gap-0 items-center flex-wrap">
           {CartInfo.map((item, key) => (
             <div className="sm:w-[calc(100%/2)]" key={key}>
@@ -80,12 +84,12 @@ const Dashbord = () => {
                 icon={item.icon}
                 title={item.title}
                 count={item.count}
+                href={item.href}
               />
             </div>
           ))}
-          
         </div>
-      }
+      )}
     </>
   );
 };

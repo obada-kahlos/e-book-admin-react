@@ -13,9 +13,16 @@ import {
 } from "../../api/admin/admin-profile";
 
 import "./profile.css";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import Input from "../../component/shared/input/ui/input";
+import Popup from "../../component/popup/ui/popup";
+import Select from "../../component/shared/select/ui/select";
 
 const Profile = () => {
-  const [uploadedImage, setUploadedImage] = useState<any>(undefined);
+  const [uploadedImage, setUploadedImage] = useState<
+    string | ArrayBuffer | null
+  >();
+  const [popup, setPopup] = useState(false);
 
   const onUploadFile = (event: any) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -29,7 +36,6 @@ const Profile = () => {
   };
 
   const { data } = useAdminGetProfileQuery({});
-  console.log({ data });
   const [addAdminImage] = useAdminProfileImageMutation({});
   return (
     <div className="my-[30px] sm:p-4 px-2">
@@ -100,10 +106,186 @@ const Profile = () => {
           color={"#fff"}
           fontSize={"16px"}
           bgHover={"bg-hover-color"}
-          onClick={() => addAdminImage({ profilePhoto: uploadedImage })}
+          onClick={() => setPopup(true)}
         />
       </div>
       <input hidden type={"file"} id="add" onChange={onUploadFile} />
+
+      <Popup
+        headerTitle={"Profile Info"}
+        translate={"translate(-50% , -50%)"}
+        onClick={() => setPopup(false)}
+        width={"750px"}
+        height={"500px"}
+        bgClor={"#fff"}
+        borderRadius={"10px"}
+        top={"50%"}
+        left={"50%"}
+        right={"0"}
+        bottom={"0"}
+        isOpen={popup}
+        paddingBodyBottom={"40px"}
+        className="add-Publisher"
+        zIndex="1002">
+        <div className="p-2">
+          <Formik
+            validationSchema={{}}
+            initialValues={{
+              email: data?.email,
+              firstName: data?.firstName,
+              lastName: data?.lastName,
+              phoneNumber: data?.phoneNumber,
+              gender: data?.gender,
+            }}
+            onSubmit={(values, { resetForm }) => {
+              console.log(values);
+            }}>
+            <Form>
+              <div className="my-[10px]">
+                <div className="grid grid-cols-12 gap-1">
+                  <div className="col-span-12">
+                    <Field
+                      as={Input}
+                      className={"email"}
+                      name={"email"}
+                      placeholder={"Email"}
+                      id={"Email"}
+                      width={"100%"}
+                      margin={"10px 0px"}
+                      padding={"6px 10px"}
+                      borderradius={"5px"}
+                      border={"1px solid #ccc"}
+                      bgcolor={"transparent"}
+                      color={"#333"}
+                      fontSize={"18px"}
+                      lable={"Email"}
+                      type={"text"}
+                      disabled={true}
+                    />
+                  </div>
+                  <div className="md:col-span-6 col-span-12">
+                    <Field
+                      as={Input}
+                      className={"First-Name"}
+                      name={"firstName"}
+                      placeholder={"Email"}
+                      id={"FirstName"}
+                      width={"100%"}
+                      margin={"10px 0px"}
+                      padding={"6px 10px"}
+                      borderradius={"5px"}
+                      border={"1px solid #ccc"}
+                      bgcolor={"transparent"}
+                      color={"#333"}
+                      fontSize={"18px"}
+                      lable={"First Name"}
+                      type={"text"}
+                      disabled={false}
+                    />
+                    <ErrorMessage
+                      name={"firstName"}
+                      render={(msg) => (
+                        <p className="text-[red] text-[18px]">{msg}</p>
+                      )}
+                    />
+                  </div>
+                  <div className="md:col-span-6 col-span-12">
+                    <Field
+                      as={Input}
+                      className={"Last-Name"}
+                      name={"lastName"}
+                      placeholder={"Email"}
+                      id={"LastName"}
+                      width={"100%"}
+                      margin={"10px 0px"}
+                      padding={"6px 10px"}
+                      borderradius={"5px"}
+                      border={"1px solid #ccc"}
+                      bgcolor={"transparent"}
+                      color={"#333"}
+                      fontSize={"18px"}
+                      lable={"Last Name"}
+                      type={"text"}
+                      disabled={false}
+                    />
+                    <ErrorMessage
+                      name={"lastName"}
+                      render={(msg) => (
+                        <p className="text-[red] text-[18px]">{msg}</p>
+                      )}
+                    />
+                  </div>
+                  <div className="md:col-span-12">
+                    <Field
+                      as={Input}
+                      className={"phoneNumber"}
+                      name={"phoneNumber"}
+                      placeholder={"Email"}
+                      id={"phoneNumber"}
+                      width={"100%"}
+                      margin={"10px 0px"}
+                      padding={"6px 10px"}
+                      borderradius={"5px"}
+                      border={"1px solid #ccc"}
+                      bgcolor={"transparent"}
+                      color={"#333"}
+                      fontSize={"18px"}
+                      lable={"Last Name"}
+                      type={"text"}
+                      disabled={false}
+                    />
+                    <ErrorMessage
+                      name={"phoneNumber"}
+                      render={(msg) => (
+                        <p className="text-[red] text-[18px]">{msg}</p>
+                      )}
+                    />
+                  </div>
+                  <div className="col-span-12">
+                    <Field
+                      as={Select}
+                      className={"gender"}
+                      lable={"gender"}
+                      name={"gender"}
+                      id={""}
+                      width={"100%"}
+                      margin={"10px 0px"}
+                      padding={"8px 5px"}
+                      borderradius={"4px"}
+                      border={"1px solid #ccc"}
+                      bgcolor={"#fff"}
+                      color={"#5b5a5a"}
+                      fontSize={"16px"}>
+                      <option>Mail</option>
+                      <option>Female</option>
+                    </Field>
+                    <ErrorMessage
+                      name={"gender"}
+                      render={(msg) => (
+                        <p className="text-[red] text-[18px]">{msg}</p>
+                      )}
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-center items-center mt-[10px] mb-[30px]">
+                  <Button
+                    className={"profile-data"}
+                    buttonText={"Edit"}
+                    padding={"8px 30px"}
+                    margin={"10px 0px"}
+                    borderRadius={"30px"}
+                    bgColor={"bg-main-color"}
+                    bgHover={"bg-hover-color"}
+                    color={"#fff"}
+                    fontSize={"16px"}
+                    width={"40%"}
+                  />
+                </div>
+              </div>
+            </Form>
+          </Formik>
+        </div>
+      </Popup>
     </div>
   );
 };

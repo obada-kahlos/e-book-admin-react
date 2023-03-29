@@ -156,7 +156,7 @@ const Publisher = () => {
         translate={"translate(-50% , -50%)"}
         onClick={() => setPopup(false)}
         width={"800px"}
-        height={"300px"}
+        height={"250px"}
         bgClor={"#fff"}
         borderRadius={"10px"}
         top={"50%"}
@@ -164,7 +164,7 @@ const Publisher = () => {
         right={"0"}
         bottom={"0"}
         isOpen={popup}
-        paddingBodyBottom={"0px"}
+        paddingBodyBottom={"30px"}
         className="add-Publisher"
         zIndex="1002">
         <div className="p-2">

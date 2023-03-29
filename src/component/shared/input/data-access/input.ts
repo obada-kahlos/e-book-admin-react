@@ -36,5 +36,6 @@ export interface InputProps extends IconProps {
   fontSize: string;
   list?: string;
   passwordIcon?: IconProps;
+  disabled?: boolean;
   onChange?: ReactEventHandler;
 }

@@ -1,21 +1,37 @@
-import React , {useState} from "react";
+import React, { useState } from "react";
 import Icon from "../../icon/ui/icon";
 import { InputProps } from "../data-access/input";
 
 const Input: React.FC<InputProps> = ({ ...props }) => {
-
   return (
     <>
-        <label className="lable" htmlFor={props.id}>
+      <label className="lable" htmlFor={props.id}>
         {props.lable}
-        </label>
-        <div className={`input-container-${props.className} relative`}>
-          <input className={props.className}  type={props.type} {...props} placeholder={props.placeholder} onChange={props.onChange}/>
-          <span className="input-icon"> <Icon icon={props.icon} /> </span>
-          {
-            props.name === 'password' ? <span className="password-icon"> <Icon  icon={props.passwordIcon?.icon} onClick={props.passwordIcon?.onClick}/></span>: ''
-          }
-        </div>
+      </label>
+      <div className={`input-container-${props.className} relative`}>
+        <input
+          className={props.className}
+          type={props.type}
+          {...props}
+          placeholder={props.placeholder}
+          onChange={props.onChange}
+        />
+        <span className="input-icon">
+          {" "}
+          <Icon icon={props.icon} />{" "}
+        </span>
+        {props.name === "password" ? (
+          <span className="password-icon">
+            {" "}
+            <Icon
+              icon={props.passwordIcon?.icon}
+              onClick={props.passwordIcon?.onClick}
+            />
+          </span>
+        ) : (
+          ""
+        )}
+      </div>
       <style>
         {`
             .lable{
@@ -27,7 +43,9 @@ const Input: React.FC<InputProps> = ({ ...props }) => {
                 width : ${props.width};
                 padding : ${props.padding};
                 margin : ${props.margin};
-                background-color : ${props.bgcolor};
+                background-color : ${
+                  props.disabled ? "rgb(204, 204, 204,0.5)" : props.bgcolor
+                };
                 border-radius : ${props.borderradius};
                 border: ${props.border};
                 color : ${props.color};
