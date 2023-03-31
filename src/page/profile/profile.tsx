@@ -10,6 +10,7 @@ import Button from "../../component/shared/button/ui/button";
 import {
   useAdminGetProfileQuery,
   useAdminProfileImageMutation,
+  useUpdateProfileInfoMutation,
 } from "../../api/admin/admin-profile";
 
 import "./profile.css";
@@ -17,6 +18,8 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import Input from "../../component/shared/input/ui/input";
 import Popup from "../../component/popup/ui/popup";
 import Select from "../../component/shared/select/ui/select";
+import { toastStatus } from "../../utils/Toastify/toastify";
+import Alert from "../../component/alert/ui/alert";
 
 const Profile = () => {
   const [uploadedImage, setUploadedImage] = useState<
@@ -35,15 +38,36 @@ const Profile = () => {
     }
   };
 
-  const { data, isSuccess } = useAdminGetProfileQuery({});
+  const { data, isSuccess, refetch } = useAdminGetProfileQuery({});
   const [addAdminImage] = useAdminProfileImageMutation({});
 
   if (data && isSuccess) {
     localStorage.setItem("admin-image", JSON.stringify(data?.profilePhoto));
   }
 
+  const [updateData, { isSuccess: isUpdated, reset: resetUpdate }] =
+    useUpdateProfileInfoMutation({});
+  console.log({ isUpdated });
+
+  useEffect(() => {
+    if (isUpdated) {
+      toastStatus("isSuccess", "Updated successfully");
+    }
+    resetUpdate();
+    refetch();
+  }, [isUpdated]);
+
   return (
     <div className="my-[30px] sm:p-4 px-2">
+      {/* <Alert
+        isOpen={openAlert}
+        onClose={() => {
+          setPopup(false);
+        }}
+        onAction={() => {
+          handleDeleteAuthor();
+        }}
+      /> */}
       <div className="profile-image relative w-fit">
         <div>
           {data?.profilePhoto ? (
@@ -84,21 +108,27 @@ const Profile = () => {
       </div>
 
       <div className="mt-[10px] w-fit">
-        <div className="flex items-center gap-5">
-          <h4 className="text-[28px] text-[#333] font-[500] mb-[-8px]">
+        <div className="md:flex items-center gap-5 my-[10px]">
+          <h4 className="md:text-[28px] text-[20px] text-[#333] font-[500] mb-[-8px]">
             {data?.firstName}_{data?.lastName}
           </h4>
-          <h4 className="text-[28px] text-[#333] font-[500] mb-[-8px]">
+          <h4 className="md:text-[28px] text-[20px] text-[#333] font-[500] mb-[-8px]">
             {data?.email}
           </h4>
         </div>
         <p> </p>
-        <h5 className="text-[20px] text-[#666]">
+        <h5 className="md:text-[20px] text-[16px] text-[#666]">
           {data?.firstName} {data?.lastName}
         </h5>
-        <h5 className="text-[20px] text-[#666]">{data?.gender}</h5>
-        <h5 className="text-[20px] text-[#666]">{data?.phoneNumber}</h5>
-        <h5 className="text-[20px] text-[#666]">{data?.address}</h5>
+        <h5 className="md:text-[20px] text-[16px] text-[#666]">
+          {data?.gender}
+        </h5>
+        <h5 className="md:text-[20px] text-[16px] text-[#666]">
+          {data?.phoneNumber}
+        </h5>
+        <h5 className="md:text-[20px] text-[16px] text-[#666]">
+          {data?.address}
+        </h5>
 
         <Button
           className={"edit-profile"}
@@ -134,21 +164,30 @@ const Profile = () => {
         zIndex="1002">
         <div className="p-2">
           <Formik
-            validationSchema={{}}
             initialValues={{
+              userName: data?.userName,
               email: data?.email,
               firstName: data?.firstName,
               lastName: data?.lastName,
               phoneNumber: data?.phoneNumber,
               gender: data?.gender,
+              address: data?.address,
             }}
-            onSubmit={(values, { resetForm }) => {
-              console.log(values);
+            onSubmit={(values) => {
+              updateData({
+                userName: values.userName,
+                firstName: values.firstName,
+                lastName: values.lastName,
+                phoneNumber: values.phoneNumber,
+                address: values.address,
+                gender: values.gender,
+              });
+              setPopup(false);
             }}>
             <Form>
               <div className="my-[10px]">
                 <div className="grid grid-cols-12 gap-1">
-                  <div className="col-span-12">
+                  <div className="md:col-span-6 col-span-12">
                     <Field
                       as={Input}
                       className={"email"}
@@ -168,6 +207,33 @@ const Profile = () => {
                       disabled={true}
                     />
                   </div>
+
+                  <div className="md:col-span-6 col-span-12">
+                    <Field
+                      as={Input}
+                      className={"UserName"}
+                      name={"userName"}
+                      placeholder={"userName"}
+                      id={"userName"}
+                      width={"100%"}
+                      margin={"10px 0px"}
+                      padding={"6px 10px"}
+                      borderradius={"5px"}
+                      border={"1px solid #ccc"}
+                      bgcolor={"transparent"}
+                      color={"#333"}
+                      fontSize={"18px"}
+                      lable={"userName"}
+                      type={"text"}
+                    />
+                    <ErrorMessage
+                      name={"userName"}
+                      render={(msg) => (
+                        <p className="text-[red] text-[18px]">{msg}</p>
+                      )}
+                    />
+                  </div>
+
                   <div className="md:col-span-6 col-span-12">
                     <Field
                       as={Input}
@@ -220,7 +286,7 @@ const Profile = () => {
                       )}
                     />
                   </div>
-                  <div className="md:col-span-12">
+                  <div className="md:col-span-6 col-span-12">
                     <Field
                       as={Input}
                       className={"phoneNumber"}
@@ -235,7 +301,7 @@ const Profile = () => {
                       bgcolor={"transparent"}
                       color={"#333"}
                       fontSize={"18px"}
-                      lable={"Last Name"}
+                      lable={"Phone Number"}
                       type={"text"}
                       disabled={false}
                     />
@@ -246,6 +312,33 @@ const Profile = () => {
                       )}
                     />
                   </div>
+                  <div className="md:col-span-6 col-span-12">
+                    <Field
+                      as={Input}
+                      className={"address"}
+                      name={"address"}
+                      placeholder={"Email"}
+                      id={"address"}
+                      width={"100%"}
+                      margin={"10px 0px"}
+                      padding={"6px 10px"}
+                      borderradius={"5px"}
+                      border={"1px solid #ccc"}
+                      bgcolor={"transparent"}
+                      color={"#333"}
+                      fontSize={"18px"}
+                      lable={"Address"}
+                      type={"text"}
+                      disabled={false}
+                    />
+                    <ErrorMessage
+                      name={"address"}
+                      render={(msg) => (
+                        <p className="text-[red] text-[18px]">{msg}</p>
+                      )}
+                    />
+                  </div>
+
                   <div className="col-span-12">
                     <Field
                       as={Select}

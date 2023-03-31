@@ -17,8 +17,18 @@ const extendedApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Login"],
     }),
+    updateProfileInfo: builder.mutation({
+      query: (body) => ({
+        url: "/api/AdminProfile/update-profile",
+        method: "PATCH",
+        body: body,
+      }),
+    }),
   }),
 });
 
-export const { useAdminProfileImageMutation, useAdminGetProfileQuery } =
-  extendedApi;
+export const {
+  useAdminProfileImageMutation,
+  useAdminGetProfileQuery,
+  useUpdateProfileInfoMutation,
+} = extendedApi;
