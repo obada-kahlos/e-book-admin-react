@@ -35,8 +35,13 @@ const Profile = () => {
     }
   };
 
-  const { data } = useAdminGetProfileQuery({});
+  const { data, isSuccess } = useAdminGetProfileQuery({});
   const [addAdminImage] = useAdminProfileImageMutation({});
+
+  if (data && isSuccess) {
+    localStorage.setItem("admin-image", JSON.stringify(data?.profilePhoto));
+  }
+
   return (
     <div className="my-[30px] sm:p-4 px-2">
       <div className="profile-image relative w-fit">

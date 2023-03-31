@@ -1,3 +1,4 @@
+import { ReactEventHandler } from "react";
 export interface ImageProps {
   className: string;
   src: string;

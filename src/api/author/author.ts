@@ -16,6 +16,7 @@ const extendedApi = apiSlice.injectEndpoints({
             label: obj.name,
             value: obj.name,
             id: obj.id,
+            bookTitle: obj.bookTitle,
           };
         });
         return renamedArr;

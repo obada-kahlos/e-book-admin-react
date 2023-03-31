@@ -29,6 +29,7 @@ import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
 import { setToken } from "../../app/slices/autoSlice";
 
 import { useLocation } from "react-router-dom";
+import { ImageProps } from "../../component/shared/image/data-access/image";
 
 const Layout = () => {
   const navigate = useNavigate();
@@ -78,14 +79,19 @@ const Layout = () => {
 
   const logOut = () => {
     localStorage.removeItem("login");
+    localStorage.removeItem("admin-image");
+    navigate("/");
     setTokenData(null);
   };
 
-  // useEffect(() => {
-  //   if (!token) {
-  //     navigate("/");
-  //   }
-  // }, [logOut, token]);
+  useEffect(() => {
+    if (!tokenData) {
+      navigate("/");
+    }
+  }, [logOut, tokenData]);
+
+  const profileImage = JSON.parse(localStorage.getItem("admin-image") as any);
+  console.log({ profileImage });
 
   return (
     <>
@@ -237,11 +243,26 @@ const Layout = () => {
                     />
                   }
                 /> */}
-                <Avatar
-                  onClick={handleDropDown}
-                  src="./not-found.png"
-                  sx={{ width: "35px", height: "35px", cursor: "pointer" }}
-                />
+
+                {profileImage ? (
+                  <div onClick={handleDropDown}>
+                    <Image
+                      src={profileImage}
+                      alt="admin-image"
+                      width={"35px"}
+                      height={"35px"}
+                      borderRadius={"50%"}
+                      SmWidth={"35px"}
+                      className={"admin-image"}
+                    />
+                  </div>
+                ) : (
+                  <Avatar
+                    onClick={handleDropDown}
+                    src="./not-found.png"
+                    sx={{ width: "35px", height: "35px", cursor: "pointer" }}
+                  />
+                )}
               </div>
             </div>
             {dropDown ? (

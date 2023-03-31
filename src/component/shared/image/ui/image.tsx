@@ -15,6 +15,7 @@ const Image: React.FC<ImageProps> = ({ ...props }) => {
             border-radius: ${props.borderRadius};
             width : ${props.width};
             height : ${props.height};
+            cursor : pointer;
           }
           @media(max-width : 768px){
             img.${props.className}{
