@@ -354,8 +354,8 @@ const Profile = () => {
                       bgcolor={"#fff"}
                       color={"#5b5a5a"}
                       fontSize={"16px"}>
-                      <option>Mail</option>
-                      <option>Female</option>
+                      <option value={0}>Male</option>
+                      <option value={1}>Female</option>
                     </Field>
                     <ErrorMessage
                       name={"gender"}
