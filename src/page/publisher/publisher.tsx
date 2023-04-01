@@ -35,7 +35,6 @@ const Publisher = () => {
   const { data: PublishersData, refetch } = useGetPublishersQuery({});
   const [addPublisher, { isSuccess, isError, reset: resetAdd, error }] =
     useAddPublisherMutation();
-  console.log(error);
   useEffect(() => {
     if (isSuccess) {
       toastStatus("isSuccess", "Added successfully");

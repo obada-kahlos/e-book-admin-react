@@ -47,7 +47,6 @@ const Profile = () => {
 
   const [updateData, { isSuccess: isUpdated, reset: resetUpdate }] =
     useUpdateProfileInfoMutation({});
-  console.log({ isUpdated });
 
   useEffect(() => {
     if (isUpdated) {

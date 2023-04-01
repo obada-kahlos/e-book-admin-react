@@ -71,7 +71,6 @@ const Layout = () => {
 
   const getToken = JSON.parse(localStorage.getItem("login") as any);
   const [tokenData, setTokenData] = useState(getToken);
-  console.log({ tokenData });
 
   useEffect(() => {
     dispatch(setToken(getToken?.token));
@@ -86,12 +85,11 @@ const Layout = () => {
 
   useEffect(() => {
     if (!tokenData) {
-      navigate("/");
+      navigate("/auth");
     }
   }, [logOut, tokenData]);
 
   const profileImage = JSON.parse(localStorage.getItem("admin-image") as any);
-  console.log({ profileImage });
 
   return (
     <>

@@ -11,19 +11,18 @@ import Author from "./page/author/author";
 import Auth from "./page/auth/auth";
 import { ToastContainer } from "react-toastify";
 
-import "react-toastify/dist/ReactToastify.css";
-
-import Test from "./page/test";
 import Publisher from "./page/publisher/publisher";
+import Redirect from "./page/redirect/redirect";
+import "react-toastify/dist/ReactToastify.css";
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Auth />} />
+          <Route path="/" element={<Redirect />} />
+          <Route path="auth" element={<Auth />} />
           <Route path="dashbord" element={<Layout />}>
             <Route path="info" element={<Dashbord />} />
-            <Route path="test" element={<Test />} />
             <Route path="books" element={<Books />} />
             <Route path="auther" element={<Author />} />
             <Route path="publisher" element={<Publisher />} />

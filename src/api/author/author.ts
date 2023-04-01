@@ -10,7 +10,6 @@ const extendedApi = apiSlice.injectEndpoints({
       transformResponse: (
         response: unknown | Array<{ id: string; name: string }> | any
       ) => {
-        console.log("transform", response);
         const renamedArr = response?.map((obj: any) => {
           return {
             label: obj.name,

@@ -15,6 +15,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 
 import { useDispatch } from "react-redux";
 import { setToken } from "../../app/slices/autoSlice";
+import SectionLoading from "../../component/loader/section-loading";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -23,14 +24,9 @@ const Auth = () => {
   const handleShowPasswWord = () => {
     setIsPassWord((prev) => !prev);
   };
-
   const [login, { isLoading, data, isSuccess, error }]: any =
     useLoginMutation();
-
-  const dispatch = useDispatch();
-
   if (isSuccess) localStorage.setItem("login", JSON.stringify(data));
-
   const handleLogin = (values: {}) => {
     login(values);
   };
@@ -38,7 +34,7 @@ const Auth = () => {
   useEffect(() => {
     const getToken = JSON.parse(localStorage.getItem("login") as any);
     if (getToken) {
-      navigate("dashbord/info");
+      navigate("/");
     }
   }, [handleLogin]);
 
@@ -135,7 +131,9 @@ const Auth = () => {
                   {error ? error?.data : ""}
                 </p>
                 {isLoading ? (
-                  "isLoading "
+                  <div className="flex my-[10px] justify-center items-center">
+                    <SectionLoading />
+                  </div>
                 ) : (
                   <Button
                     className={"login-button"}

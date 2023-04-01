@@ -95,7 +95,6 @@ const Books = () => {
   /// get books data api
   const [page, setPage] = React.useState(1);
   const { data: getBooks, isLoading: isLoadingBook } = useGetBooksQuery(page);
-  console.log({ getBooks });
   // pagination from Mui with handle change
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);

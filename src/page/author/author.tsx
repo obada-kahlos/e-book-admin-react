@@ -35,7 +35,6 @@ const Author = () => {
 
   /// get api for author
   const { data: getAuther, isLoading } = useGetAuterQuery({});
-  console.log({ getAuther });
   /// add author
   const [addAuthor, { isSuccess, isError, reset: resetAdd }] =
     useAddAuthorMutation();
@@ -64,7 +63,6 @@ const Author = () => {
       return { ...prev, ...selectAuthor };
     });
   };
-  console.log({ getAuthorInfo });
   const updateHandler = (id: number) => {
     getAuthorById(id);
     setPopup(true);
